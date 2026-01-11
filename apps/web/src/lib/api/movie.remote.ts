@@ -1,5 +1,5 @@
 import { getRequestEvent, query } from '$app/server'
-import { TMDB_BASE_URL } from '$env/static/private'
+import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
 import type { APIResponse, Movie } from '$types'
 import { z } from 'zod/v4'
 
@@ -14,7 +14,7 @@ export const getMovies = query(
 		const { fetch } = getRequestEvent()
 
 		const fetchPage = async (pageNumber: number) => {
-			const res = await fetch(`${TMDB_BASE_URL}/movie/${list}?page=${pageNumber}`)
+			const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/movie/${list}?page=${pageNumber}`)
 			if (!res.ok) throw new Error(res.statusText)
 			return (await res.json()) as APIResponse<Movie>
 		}

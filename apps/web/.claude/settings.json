@@ -1,0 +1,9 @@
+{
+	"$schema": "https://json.schemastore.org/claude-code-settings.json",
+	"permissions": {
+		"allow": ["mcp__plugin_svelte_svelte"]
+	},
+	"enabledPlugins": {
+		"ralph-loop@claude-plugins-official": true
+	}
+}
