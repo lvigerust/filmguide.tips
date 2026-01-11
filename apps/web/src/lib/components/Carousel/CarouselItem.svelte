@@ -8,6 +8,6 @@
 <div
 	{...restProps}
 	style="container-type: scroll-state;"
-	class={cn('shrink-0 snap-start snap-always overflow-clip rounded-lg', className)}>
+	class={cn('shrink-0 snap-start overflow-clip rounded-lg', className)}>
 	{@render children?.()}
 </div>

@@ -29,24 +29,20 @@
 			</NavbarItem>
 		</div>
 		<div class="min-w-0 flex-1">
-			<Navbar>
-				<NavbarSection>
+			<Navbar class="grid grid-cols-3">
+				<NavbarSection class="max-lg:hidden">
 					<NavbarItem href="/">
 						<NavbarLabel>Filmguide.tips</NavbarLabel>
 					</NavbarItem>
 				</NavbarSection>
 
-				<NavbarSpacer />
-
-				<NavbarSection>
+				<NavbarSection class="justify-center max-lg:hidden">
 					{#each navItems as { label, href } (label)}
 						<NavbarItem {href}>
 							<NavbarLabel>{label}</NavbarLabel>
 						</NavbarItem>
 					{/each}
 				</NavbarSection>
-
-				<NavbarSpacer />
 
 				<NavbarSection></NavbarSection>
 			</Navbar>

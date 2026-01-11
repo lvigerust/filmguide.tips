@@ -19,13 +19,5 @@
 
 	.carousel {
 		scrollbar-width: none;
-
-		&::before,
-		&::after {
-			content: '';
-			display: block;
-			inline-size: 50cqi;
-			flex-shrink: 0;
-		}
 	}
 </style>
