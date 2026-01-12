@@ -12,16 +12,16 @@
 	}: ComponentProps<typeof Carousel> & { items: (Movie | Show)[] } = $props()
 </script>
 
-<Carousel {...restProps} class={cn('full-bleed hero__carousel snap-always sm:gap-x-10', className)}>
+<Carousel {...restProps} class={cn('full-bleed hero__carousel snap-always sm:gap-x-8', className)}>
 	{#each items as item, i (item.id)}
 		{@const title = 'title' in item ? item.title : item.name}
-		<CarouselItem class="relative max-w-96 snap-center sm:max-w-4xl sm:rounded-2xl">
+		<CarouselItem class="relative max-w-[85%] snap-center sm:max-w-4xl sm:rounded-2xl">
 			<figure class:scroll-start={i === 1}>
 				<picture>
 					<img
-						src={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`}
+						src={`https://image.tmdb.org/t/p/w1280/${item.backdrop_path}`}
 						alt={title}
-						class="object-cover" />
+						class="aspect-video object-cover" />
 				</picture>
 
 				<figcaption
@@ -37,16 +37,6 @@
 
 <style lang="postcss">
 	@reference "tailwindcss";
-
-	:global(.hero__carousel) {
-		&::before,
-		&::after {
-			content: '';
-			display: block;
-			inline-size: 50cqi;
-			flex-shrink: 0;
-		}
-	}
 
 	@container scroll-state(snapped: inline) {
 		figcaption {

@@ -15,8 +15,6 @@
 </div>
 
 <style lang="postcss">
-	@reference "tailwindcss";
-
 	.carousel {
 		scrollbar-width: none;
 	}

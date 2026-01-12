@@ -6,16 +6,6 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-@layer components {
-	.full-bleed {
-		@apply ml-[calc(50%-50vw)] w-screen;
-	}
-
-	.scroll-start {
-		scroll-initial-target: nearest;
-	}
-}
-
 @layer base {
 	* {
 		@apply divide-zinc-950/10 border-zinc-950/10 ring-zinc-950/10 outline-zinc-950/10 selection:bg-blue-600 selection:text-white dark:divide-white/10 dark:border-white/10 dark:ring-white/10 dark:outline-white/10;
@@ -23,5 +13,15 @@
 
 	html {
 		@apply scroll-smooth bg-white text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950;
+	}
+}
+
+@layer utilities {
+	.scroll-start {
+		scroll-initial-target: nearest;
+	}
+
+	.full-bleed {
+		@apply ml-[calc(50%-50vw)] w-screen;
 	}
 }
