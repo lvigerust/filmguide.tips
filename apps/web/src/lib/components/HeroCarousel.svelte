@@ -15,7 +15,7 @@
 <Carousel {...restProps} class={cn('full-bleed hero__carousel snap-always sm:gap-x-10', className)}>
 	{#each items as item, i (item.id)}
 		{@const title = 'title' in item ? item.title : item.name}
-		<CarouselItem class="relative max-w-96 snap-center sm:max-w-4xl">
+		<CarouselItem class="relative max-w-96 snap-center sm:max-w-4xl sm:rounded-2xl">
 			<figure class:scroll-start={i === 1}>
 				<picture>
 					<img
@@ -25,7 +25,7 @@
 				</picture>
 
 				<figcaption
-					class="absolute inset-0 flex items-end opacity-0 transition-opacity duration-1000 ease-in-out">
+					class="absolute inset-0 flex translate-y-40 items-end transition-transform duration-500 ease-in-out">
 					<div class="flex w-full bg-linear-to-b to-black p-6 sm:px-10 sm:py-12">
 						<Heading level={3} class="text-xl">{title}</Heading>
 					</div>
@@ -50,7 +50,7 @@
 
 	@container scroll-state(snapped: inline) {
 		figcaption {
-			@apply opacity-100;
+			@apply translate-y-0;
 		}
 	}
 </style>

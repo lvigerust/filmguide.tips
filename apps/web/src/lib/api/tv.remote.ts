@@ -3,7 +3,7 @@ import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
 import type { APIResponse, Show } from '$types'
 import { z } from 'zod/v4'
 
-const lists = ['airing_today', 'on_the_air', 'popular', 'top_rated'] as const
+const lists = ['airing_today', 'on_the_air', 'popular', 'top_rated', 'trending'] as const
 
 export const getTvShows = query(
 	z.object({
@@ -13,8 +13,13 @@ export const getTvShows = query(
 	async ({ list, page = 1 }) => {
 		const { fetch } = getRequestEvent()
 
+		const endpoint =
+			list === 'trending'
+				? `${PUBLIC_TMDB_BASE_URL}/trending/tv/week`
+				: `${PUBLIC_TMDB_BASE_URL}/tv/${list}`
+
 		const fetchPage = async (pageNumber: number) => {
-			const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/tv/${list}?page=${pageNumber}`)
+			const res = await fetch(`${endpoint}?page=${pageNumber}`)
 			if (!res.ok) throw new Error(res.statusText)
 			return (await res.json()) as APIResponse<Show>
 		}
@@ -27,3 +32,11 @@ export const getTvShows = query(
 			.filter((m) => (seen.has(m.id) ? false : seen.add(m.id)))
 	}
 )
+
+export const getTvShow = query(z.string(), async (id) => {
+	const { fetch } = getRequestEvent()
+
+	const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/tv/${id}`)
+	if (!res.ok) throw new Error(res.statusText)
+	return (await res.json()) as Show
+})

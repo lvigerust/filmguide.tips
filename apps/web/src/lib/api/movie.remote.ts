@@ -3,7 +3,7 @@ import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
 import type { APIResponse, Movie } from '$types'
 import { z } from 'zod/v4'
 
-const lists = ['now_playing', 'popular', 'top_rated', 'upcoming'] as const
+const lists = ['now_playing', 'popular', 'top_rated', 'upcoming', 'trending'] as const
 
 export const getMovies = query(
 	z.object({
@@ -13,8 +13,13 @@ export const getMovies = query(
 	async ({ list, page = 1 }) => {
 		const { fetch } = getRequestEvent()
 
+		const endpoint =
+			list === 'trending'
+				? `${PUBLIC_TMDB_BASE_URL}/trending/movie/week`
+				: `${PUBLIC_TMDB_BASE_URL}/movie/${list}`
+
 		const fetchPage = async (pageNumber: number) => {
-			const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/movie/${list}?page=${pageNumber}`)
+			const res = await fetch(`${endpoint}?page=${pageNumber}`)
 			if (!res.ok) throw new Error(res.statusText)
 			return (await res.json()) as APIResponse<Movie>
 		}
@@ -27,3 +32,11 @@ export const getMovies = query(
 			.filter((m) => (seen.has(m.id) ? false : seen.add(m.id)))
 	}
 )
+
+export const getMovie = query(z.string(), async (id) => {
+	const { fetch } = getRequestEvent()
+
+	const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/movie/${id}`)
+	if (!res.ok) throw new Error(res.statusText)
+	return (await res.json()) as Movie
+})
