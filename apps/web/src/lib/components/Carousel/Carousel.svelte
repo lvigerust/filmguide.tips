@@ -1,16 +1,20 @@
 <script lang="ts">
 	import { cn } from '@lvigerust/utils'
 	import type { SvelteHTMLElements } from 'svelte/elements'
+	import type { WithElementRef } from 'bits-ui'
 
-	let { class: className, children, ...restProps }: SvelteHTMLElements['div'] = $props()
+	let {
+		ref = $bindable(),
+		class: className,
+		children,
+		...restProps
+	}: WithElementRef<SvelteHTMLElements['div'], HTMLDivElement> = $props()
 </script>
 
 <div
 	{...restProps}
-	class={cn(
-		'carousel flex snap-x snap-mandatory gap-x-4 overflow-x-auto scroll-smooth',
-		className
-	)}>
+	class={cn('carousel flex snap-x snap-mandatory gap-x-4 overflow-x-auto scroll-smooth', className)}
+	bind:this={ref}>
 	{@render children?.()}
 </div>
 

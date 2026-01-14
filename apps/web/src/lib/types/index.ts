@@ -10,6 +10,7 @@ export interface APIResponse<T> {
 }
 
 export interface Movie {
+	media_type: 'movie'
 	adult: boolean
 	backdrop_path: string
 	genre_ids: number[]
@@ -27,6 +28,7 @@ export interface Movie {
 }
 
 export interface Show {
+	media_type: 'tv'
 	backdrop_path: string
 	first_air_date: Date
 	genre_ids: number[]
@@ -49,4 +51,21 @@ export interface Network {
 	logo_path: string
 	name: string
 	origin_country: string
+}
+
+export interface Images {
+	backdrops: Image[]
+	id: number
+	logos?: Image[]
+	posters: Image[]
+}
+
+export interface Image {
+	aspect_ratio: number
+	height: number
+	iso_639_1: null | string
+	file_path: string
+	vote_average: number
+	vote_count: number
+	width: number
 }

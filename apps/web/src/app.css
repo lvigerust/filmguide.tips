@@ -16,12 +16,9 @@
 	}
 }
 
-@layer utilities {
-	.scroll-start {
-		scroll-initial-target: nearest;
-	}
-
-	.full-bleed {
-		@apply ml-[calc(50%-50vw)] w-screen;
-	}
+.scroll-start {
+	scroll-initial-target: nearest;
+}
+.full-bleed {
+	@apply ml-[calc(50%-50vw)] w-screen;
 }

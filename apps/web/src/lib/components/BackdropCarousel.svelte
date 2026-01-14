@@ -7,13 +7,17 @@
 	import { TextLink } from '@lvigerust/components/Text'
 	import { resolve } from '$app/paths'
 	import { Image } from '$components'
+	import type { SvelteMap } from 'svelte/reactivity'
 
 	let {
 		heading,
 		items,
 		class: className,
 		...restProps
-	}: ComponentProps<typeof Carousel> & { heading: string; items: (Movie | Show)[] } = $props()
+	}: ComponentProps<typeof Carousel> & {
+		heading: string
+		items: SvelteMap<number, Movie | Show>
+	} = $props()
 </script>
 
 <div class="full-bleed [--gutter:--spacing(6)] sm:[--gutter:--spacing(20)]">
@@ -25,17 +29,20 @@
 	</div>
 
 	<Carousel {...restProps} class={cn('scroll-px-(--gutter) px-(--gutter)', className)}>
-		{#each items as item (item.id)}
-			{@const title = 'title' in item ? item.title : item.name}
+		{#each items.values() as item (item.id)}
 			<CarouselItem class="group relative max-w-80">
 				<a href={resolve(`/movie/${item.id}`)}>
 					<figure>
-						<Image path={item.backdrop_path} alt={title} class="aspect-video object-cover" />
+						<Image
+							path={item.backdrop_path}
+							alt={item.media_type === 'movie' ? item.title : item.name}
+							class="aspect-video object-cover" />
 
 						<figcaption class="absolute inset-0 flex items-end">
 							<div
 								class="flex w-full bg-linear-to-b to-black p-6 opacity-0 transition-opacity group-hover:opacity-100">
-								<Heading level={3} class="text-xl">{title}</Heading>
+								<Heading level={3} class="text-xl"
+									>{item.media_type === 'movie' ? item.title : item.name}</Heading>
 							</div>
 						</figcaption>
 					</figure>

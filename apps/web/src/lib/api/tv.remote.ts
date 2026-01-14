@@ -1,6 +1,7 @@
 import { getRequestEvent, query } from '$app/server'
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
 import type { APIResponse, Show } from '$types'
+import { SvelteMap } from 'svelte/reactivity'
 import { z } from 'zod/v4'
 
 const lists = ['airing_today', 'on_the_air', 'popular', 'top_rated', 'trending'] as const
@@ -25,11 +26,12 @@ export const getTvShows = query(
 		}
 
 		const responses = await Promise.all(Array.from({ length: page }, (_, i) => fetchPage(i + 1)))
-		const seen = new Set<number>()
 
-		return responses
-			.flatMap((r) => r.results)
-			.filter((m) => (seen.has(m.id) ? false : seen.add(m.id)))
+		return new SvelteMap<number, Show>(
+			responses
+				.flatMap((r) => r.results)
+				.map((show) => [show.id, { ...show, media_type: 'tv' as const }])
+		)
 	}
 )
 

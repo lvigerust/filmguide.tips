@@ -1,6 +1,7 @@
 import { getRequestEvent, query } from '$app/server'
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import type { APIResponse, Movie } from '$types'
+import type { APIResponse, Images, Movie } from '$types'
+import { SvelteMap } from 'svelte/reactivity'
 import { z } from 'zod/v4'
 
 const lists = ['now_playing', 'popular', 'top_rated', 'upcoming', 'trending'] as const
@@ -25,11 +26,12 @@ export const getMovies = query(
 		}
 
 		const responses = await Promise.all(Array.from({ length: page }, (_, i) => fetchPage(i + 1)))
-		const seen = new Set<number>()
 
-		return responses
-			.flatMap((r) => r.results)
-			.filter((m) => (seen.has(m.id) ? false : seen.add(m.id)))
+		return new SvelteMap<number, Movie>(
+			responses
+				.flatMap((r) => r.results)
+				.map((movie) => [movie.id, { ...movie, media_type: 'movie' as const }])
+		)
 	}
 )
 
@@ -40,3 +42,16 @@ export const getMovie = query(z.string(), async (id) => {
 	if (!res.ok) throw new Error(res.statusText)
 	return (await res.json()) as Movie
 })
+
+export const getMovieImages = query(
+	z.object({ id: z.number(), media_type: z.string() }),
+	async ({ id, media_type }) => {
+		const { fetch } = getRequestEvent()
+
+		const res = await fetch(
+			`${PUBLIC_TMDB_BASE_URL}/${media_type}/${id}/images?include_image_language=en-US,null`
+		)
+		if (!res.ok) throw new Error(res.statusText)
+		return (await res.json()) as Images
+	}
+)

@@ -6,7 +6,7 @@
 
 <HeroCarousel items={await getTvShows({ list: 'trending' })} />
 
-<section class="mt-10 flex flex-col gap-y-10">
+<section class="full-bleed mt-10 flex flex-col gap-y-10">
 	<PosterCarousel heading="Popular" items={await getTvShows({ list: 'popular' })} />
 	<PosterCarousel heading="Now Playing" items={await getTvShows({ list: 'on_the_air' })} />
 	<PosterCarousel heading="Airing Today" items={await getTvShows({ list: 'airing_today' })} />
