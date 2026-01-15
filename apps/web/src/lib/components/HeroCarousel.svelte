@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '@lvigerust/utils'
+	import { cn, slugify } from '@lvigerust/utils'
 	import type { ComponentProps } from 'svelte'
 	import type { Movie, Show } from '$types'
 	import { Carousel, CarouselItem } from './Carousel'
@@ -42,7 +42,9 @@
 	{#each items.values() as item, i (item.id)}
 		<CarouselItem
 			data-id={item.id}
-			href={resolve(`/${item.media_type}/${item.id}`)}
+			href={resolve(
+				`/${item.media_type}/${item.id}-${slugify(item.media_type === 'movie' ? item.title : item.name)}`
+			)}
 			class="relative max-w-[85%] snap-center sm:max-w-4xl sm:rounded-2xl">
 			<figure class:scroll-start={i === 1} class="opacity-75 transition-opacity duration-300">
 				<Image {item} sizes="896px" backdrop />

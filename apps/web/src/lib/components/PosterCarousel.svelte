@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '@lvigerust/utils'
+	import { cn, slugify } from '@lvigerust/utils'
 	import type { ComponentProps } from 'svelte'
 	import type { Movie, Show } from '$types'
 	import { Carousel, CarouselItem } from './Carousel'
@@ -38,7 +38,9 @@
 		class={cn('poster-carousel scroll-px-(--gutter) px-(--gutter)', className)}>
 		{#each items.values() as item (item.id)}
 			<CarouselItem
-				href={resolve(`/${item.media_type}/${item.id}`)}
+				href={resolve(
+					`/${item.media_type}/${item.id}-${slugify(item.media_type === 'movie' ? item.title : item.name)}`
+				)}
 				class={backdrop ? 'max-w-84' : 'max-w-40'}>
 				<Image {item} {backdrop} />
 			</CarouselItem>
