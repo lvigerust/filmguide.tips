@@ -46,7 +46,7 @@ export const getTvShow = query(z.string(), async (id) => {
 	return { ...show, media_type: 'tv' as const }
 })
 
-const SEASONS_PER_PAGE = 10
+const SEASONS_PER_PAGE = 5
 
 export const getTvShowSeasons = query(
 	z.object({
