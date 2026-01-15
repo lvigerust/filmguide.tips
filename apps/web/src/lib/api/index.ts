@@ -1,2 +1,2 @@
-export { getMovies, getMovie } from './movie.remote'
-export { getTvShows, getTvShow } from './tv.remote'
+export * from './movie.remote'
+export * from './tv.remote'

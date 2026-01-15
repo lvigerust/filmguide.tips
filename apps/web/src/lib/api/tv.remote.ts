@@ -46,15 +46,35 @@ export const getTvShow = query(z.string(), async (id) => {
 	return { ...show, media_type: 'tv' as const }
 })
 
+const SEASONS_PER_PAGE = 10
+
 export const getTvShowSeasons = query(
-	z.object({ id: z.string(), seasonNumber: z.number() }),
-	async ({ id, seasonNumber }) => {
+	z.object({
+		id: z.string(),
+		numberOfSeasons: z.number(),
+		offset: z.number().default(0)
+	}),
+	async ({ id, numberOfSeasons, offset = 0 }) => {
 		const { fetch } = getRequestEvent()
 
-		const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/tv/${id}/season/${seasonNumber}`)
+		const remaining = numberOfSeasons - offset
+		const count = Math.min(remaining, SEASONS_PER_PAGE)
+
+		const seasonKeys = Array.from({ length: count }, (_, i) => `season/${offset + i + 1}`)
+		const appendToResponse = seasonKeys.join(',')
+
+		const res = await fetch(
+			`${PUBLIC_TMDB_BASE_URL}/tv/${id}?append_to_response=${appendToResponse}`
+		)
 		if (!res.ok) throw new Error(res.statusText)
 
-		const season: TvSeasonDetails = await res.json()
-		return season
+		const data: TvDetails & Record<`season/${number}`, TvSeasonDetails> = await res.json()
+
+		return new SvelteMap<number, TvSeasonDetails>(
+			seasonKeys.map((key) => [
+				data[key as `season/${number}`].season_number,
+				data[key as `season/${number}`]
+			])
+		)
 	}
 )
