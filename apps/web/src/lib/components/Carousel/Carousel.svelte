@@ -4,7 +4,7 @@
 	import type { WithElementRef } from 'bits-ui'
 
 	let {
-		ref = $bindable(),
+		ref = $bindable(null),
 		class: className,
 		children,
 		...restProps

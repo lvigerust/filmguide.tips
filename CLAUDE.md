@@ -43,11 +43,31 @@ $lib         →  src/lib (default SvelteKit alias)
 ### TMDB API Integration
 - **hooks.server.ts**: Intercepts fetch requests to TMDB base URL and injects auth header
 - **$api/**: Remote functions using SvelteKit's experimental `query()` with Zod validation
-- Environment variables: `TMDB_API_KEY` (private), `PUBLIC_TMDB_BASE_URL` (public)
+- Remote functions return `SvelteMap` for reactive collections (enables fine-grained reactivity)
+- Environment variables:
+  - `TMDB_API_KEY` (private) - API authentication
+  - `PUBLIC_TMDB_BASE_URL` (public) - API base URL
+  - `PUBLIC_TMDB_IMG_URL` (public) - Image CDN URL
 
 ### Experimental Features Enabled
-- **remoteFunctions**: Server functions callable from components via `query()`
+- **remoteFunctions**: Server functions callable from components via `query()` from `$app/server`
 - **async components**: Top-level `await` in `.svelte` files (e.g., `{await getMovies(...)}`)
+
+### Remote Function Pattern
+```typescript
+// $api/movie.remote.ts - must end with .remote.ts
+import { getRequestEvent, query } from '$app/server'
+import { z } from 'zod/v4'  // Note: zod/v4 import for Zod 4
+
+export const getMovies = query(
+  z.object({ list: z.enum(['popular', 'trending']), page: z.number() }),
+  async ({ list, page }) => {
+    const { fetch } = getRequestEvent()
+    // fetch automatically has auth header injected via hooks.server.ts
+    return new SvelteMap(...)  // Return SvelteMap for reactive collections
+  }
+)
+```
 
 ### External Packages
 - `@lvigerust/components`: Shared UI components (Heading, etc.)
@@ -62,8 +82,15 @@ $effect(() => { ... })         // Side effects
 let { prop } = $props()        // Component props
 ```
 
-### Component Structure
-- **Carousel/**: Base carousel with CarouselItem
-- **HeroCarousel, PosterCarousel, BackdropCarousel**: Specialized movie/show carousels
-- **Image**: TMDB image wrapper with size variants
+### Route Structure
+- `/` - Home page
+- `/movie` - Movie listings
+- `/movie/[id]` - Movie detail (uses `+page.server.ts` for data loading)
+- `/tv` - TV show listings
+- `/tv/[id]` - TV show detail
+
+### Key Components
+- **Carousel/**: Base carousel with CarouselItem (used as foundation)
+- **HeroCarousel, PosterCarousel, BackdropCarousel**: Specialized carousels for different layouts
+- **Image**: TMDB image wrapper with responsive srcset (poster vs backdrop sizes)
 - **Logo**: Fetches and displays movie/show logos from TMDB

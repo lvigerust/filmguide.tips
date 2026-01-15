@@ -1,6 +1,14 @@
 {
-	"$schema": "https://json.schemastore.org/claude-code-settings.json",
-	"permissions": {
-		"allow": ["mcp__plugin_svelte_svelte", "mcp__plugin_context7_context7", "Bash(pnpm check:*)"]
-	}
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "mcp__plugin_svelte_svelte",
+      "mcp__plugin_context7_context7",
+      "Bash(pnpm check:*)"
+    ]
+  },
+  "enabledPlugins": {
+    "learning-output-style@claude-plugins-official": true,
+    "explanatory-output-style@claude-plugins-official": true
+  }
 }

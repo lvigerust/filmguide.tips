@@ -22,7 +22,8 @@ export const getMovies = query(
 		const fetchPage = async (pageNumber: number) => {
 			const res = await fetch(`${endpoint}?page=${pageNumber}`)
 			if (!res.ok) throw new Error(res.statusText)
-			return (await res.json()) as APIResponse<Movie>
+			const movies: APIResponse<Movie> = await res.json()
+			return movies
 		}
 
 		const responses = await Promise.all(Array.from({ length: page }, (_, i) => fetchPage(i + 1)))
@@ -40,7 +41,9 @@ export const getMovie = query(z.string(), async (id) => {
 
 	const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/movie/${id}`)
 	if (!res.ok) throw new Error(res.statusText)
-	return (await res.json()) as Movie
+
+	const movie: Movie = await res.json()
+	return { ...movie, media_type: 'movie' as const }
 })
 
 export const getMovieImages = query(
@@ -52,6 +55,7 @@ export const getMovieImages = query(
 			`${PUBLIC_TMDB_BASE_URL}/${media_type}/${id}/images?include_image_language=en-US,null`
 		)
 		if (!res.ok) throw new Error(res.statusText)
-		return (await res.json()) as Images
+		const images: Images = await res.json()
+		return images
 	}
 )

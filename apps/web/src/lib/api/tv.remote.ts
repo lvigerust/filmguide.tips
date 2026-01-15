@@ -22,7 +22,8 @@ export const getTvShows = query(
 		const fetchPage = async (pageNumber: number) => {
 			const res = await fetch(`${endpoint}?page=${pageNumber}`)
 			if (!res.ok) throw new Error(res.statusText)
-			return (await res.json()) as APIResponse<Show>
+			const shows: APIResponse<Show> = await res.json()
+			return shows
 		}
 
 		const responses = await Promise.all(Array.from({ length: page }, (_, i) => fetchPage(i + 1)))
@@ -40,5 +41,7 @@ export const getTvShow = query(z.string(), async (id) => {
 
 	const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/tv/${id}`)
 	if (!res.ok) throw new Error(res.statusText)
-	return (await res.json()) as Show
+
+	const show: Show = await res.json()
+	return { ...show, media_type: 'tv' as const }
 })
