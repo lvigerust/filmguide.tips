@@ -1,6 +1,6 @@
 import { getRequestEvent, query } from '$app/server'
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import type { APIResponse, Show } from '$types'
+import type { Page, Show } from '$types'
 import { SvelteMap } from 'svelte/reactivity'
 import { z } from 'zod/v4'
 
@@ -22,7 +22,7 @@ export const getTvShows = query(
 		const fetchPage = async (pageNumber: number) => {
 			const res = await fetch(`${endpoint}?page=${pageNumber}`)
 			if (!res.ok) throw new Error(res.statusText)
-			const shows: APIResponse<Show> = await res.json()
+			const shows: Page<Show> = await res.json()
 			return shows
 		}
 
@@ -45,3 +45,16 @@ export const getTvShow = query(z.string(), async (id) => {
 	const show: Show = await res.json()
 	return { ...show, media_type: 'tv' as const }
 })
+
+export const getTvShowSeasons = query(
+	z.object({ id: z.string(), seasonNumber: z.number() }),
+	async ({ id, seasonNumber }) => {
+		const { fetch } = getRequestEvent()
+
+		const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/tv/${id}/season/${seasonNumber}`)
+		if (!res.ok) throw new Error(res.statusText)
+
+		const show: Show = await res.json()
+		return { ...show, media_type: 'tv' as const }
+	}
+)

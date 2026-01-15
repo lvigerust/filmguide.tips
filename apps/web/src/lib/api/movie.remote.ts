@@ -1,6 +1,6 @@
 import { getRequestEvent, query } from '$app/server'
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import type { APIResponse, Images, Movie } from '$types'
+import type { Images, Movie, Page } from '$types'
 import { SvelteMap } from 'svelte/reactivity'
 import { z } from 'zod/v4'
 
@@ -22,7 +22,7 @@ export const getMovies = query(
 		const fetchPage = async (pageNumber: number) => {
 			const res = await fetch(`${endpoint}?page=${pageNumber}`)
 			if (!res.ok) throw new Error(res.statusText)
-			const movies: APIResponse<Movie> = await res.json()
+			const movies: Page<Movie> = await res.json()
 			return movies
 		}
 
