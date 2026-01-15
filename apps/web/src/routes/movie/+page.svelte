@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { getMovies } from '$api'
-	import { PosterCarousel } from '$components'
+	import { HeroCarousel, PosterCarousel } from '$components'
 </script>
+
+<HeroCarousel items={await getMovies({ list: 'top_rated' })} />
 
 <div class="full-bleed mt-10 flex flex-col gap-y-10">
 	<PosterCarousel heading="Trending" items={await getMovies({ list: 'trending' })} />

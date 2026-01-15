@@ -4,7 +4,8 @@
 	import type { Movie, Show } from '$types'
 	import { Carousel, CarouselItem } from './Carousel'
 	import type { SvelteMap } from 'svelte/reactivity'
-	import { Logo } from '$components'
+	import { Image, Logo } from '$components'
+	import { resolve } from '$app/paths'
 
 	let snappedId = $state<string>()
 
@@ -40,21 +41,17 @@
 	class={cn('hero__carousel full-bleed snap-always sm:gap-x-8', className)}>
 	{#each items.values() as item, i (item.id)}
 		<CarouselItem
-			class="relative max-w-[85%] snap-center sm:max-w-4xl sm:rounded-2xl"
-			data-id={item.id}>
+			data-id={item.id}
+			href={resolve(`/${item.media_type}/${item.id}`)}
+			class="relative max-w-[85%] snap-center sm:max-w-4xl sm:rounded-2xl">
 			<figure class:scroll-start={i === 1} class="opacity-75 transition-opacity duration-300">
-				<picture>
-					<img
-						src={`https://image.tmdb.org/t/p/w1280/${item.backdrop_path}`}
-						alt={item.media_type === 'movie' ? item.title : item.name}
-						class="aspect-video object-cover" />
-				</picture>
+				<Image {item} sizes="896px" backdrop />
 
-				<div class="absolute inset-x-0 bottom-0">
-					{#if snappedId === String(item.id)}
+				{#if snappedId === String(item.id)}
+					<div class="absolute inset-x-0 bottom-0 p-12">
 						<Logo {item} />
-					{/if}
-				</div>
+					</div>
+				{/if}
 			</figure>
 		</CarouselItem>
 	{/each}
