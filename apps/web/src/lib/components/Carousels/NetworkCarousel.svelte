@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cn } from '@lvigerust/utils'
-	import { Carousel, CarouselItem } from './Carousel'
+	import { Carousel, CarouselItem } from '../Carousel'
 	import type { ComponentProps } from 'svelte'
 
 	const networks = [

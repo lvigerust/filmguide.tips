@@ -2,7 +2,7 @@
 	import { cn, slugify } from '@lvigerust/utils'
 	import type { ComponentProps } from 'svelte'
 	import type { Movie, Show } from '$types'
-	import { Carousel, CarouselItem } from './Carousel'
+	import { Carousel, CarouselItem } from '../Carousel'
 	import type { SvelteMap } from 'svelte/reactivity'
 	import { Image, Logo } from '$components'
 	import { resolve } from '$app/paths'

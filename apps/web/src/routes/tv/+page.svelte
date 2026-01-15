@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { getTvShows } from '$api'
-	import HeroCarousel from '$components/HeroCarousel.svelte'
-	import PosterCarousel from '$components/PosterCarousel.svelte'
+	import { HeroCarousel, PosterCarousel } from '$components'
 </script>
 
 <HeroCarousel items={await getTvShows({ list: 'trending' })} />

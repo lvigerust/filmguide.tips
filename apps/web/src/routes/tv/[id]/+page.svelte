@@ -10,6 +10,7 @@
 		DescriptionDetails
 	} from '@lvigerust/components/DescriptionList'
 	import { slugify } from '@lvigerust/utils'
+	import { SeriesCarousel } from '$components'
 
 	let { data } = $props()
 	let show = $derived(data.show)
@@ -64,5 +65,7 @@
 				</DescriptionTerm>
 			{/if}
 		</DescriptionList>
+
+		<SeriesCarousel seasons={data.seasons} />
 	</div>
 </div>
