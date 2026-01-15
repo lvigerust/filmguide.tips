@@ -47,7 +47,7 @@
 
 	<!--? Content -->
 	<main class="flex flex-1 flex-col pb-2 lg:px-2">
-		<div class="grow p-6 lg:p-10 lg:pt-0">
+		<div class="grow p-6 lg:p-10">
 			<div class="mx-auto max-w-6xl">
 				{@render children?.()}
 			</div>

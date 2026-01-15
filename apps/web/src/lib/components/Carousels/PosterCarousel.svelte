@@ -24,24 +24,18 @@
 	} = $props()
 </script>
 
-<div
-	class={cn(
-		'carousel__container [--gutter:--spacing(6)] sm:[--gutter:--spacing(20)]',
-		containerClass
-	)}>
+<div class={cn('slide-up [--gutter:--spacing(6)] sm:[--gutter:--spacing(20)]', containerClass)}>
 	<Heading class="mb-4 px-(--gutter) text-lg">
 		{heading}
 	</Heading>
 
-	<Carousel
-		{...restProps}
-		class={cn('poster-carousel scroll-px-(--gutter) px-(--gutter)', className)}>
+	<Carousel {...restProps} class={cn('scroll-px-(--gutter) px-(--gutter)', className)}>
 		{#each items.values() as item (item.id)}
 			<CarouselItem
 				href={resolve(
 					`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
 				)}
-				class={backdrop ? 'max-w-84' : 'max-w-40'}>
+				class={['appear', backdrop ? 'max-w-84' : 'max-w-40']}>
 				<Image {item} {backdrop} />
 			</CarouselItem>
 		{/each}
@@ -51,29 +45,29 @@
 <style lang="postcss">
 	@reference "tailwindcss";
 
-	:global(.carousel__container) {
-		animation: carousel--enter-view linear both;
+	:global(.slide-up) {
+		animation: carousel--slide-up linear forwards;
 		animation-timeline: view();
-		animation-range: 0vh 20vh;
+		animation-range: entry 0px entry calc((--spacing(40) / (2 / 3) / 1.5));
 	}
 
-	:global(.poster-carousel > .carousel__item) {
+	:global(.appear) {
 		--start-opacity: 0.5;
 		--start-scale: 0.95;
 		--end: 1;
 		container-type: scroll-state;
-		animation: carousel-item--visibility linear both;
+		animation: carousel-item--appear linear both;
 		animation-timeline: view(inline);
 	}
 
-	@keyframes carousel--enter-view {
+	@keyframes carousel--slide-up {
 		from {
 			opacity: 0;
 			translate: 0 --spacing(5);
 		}
 	}
 
-	@keyframes carousel-item--visibility {
+	@keyframes carousel-item--appear {
 		entry 0% {
 			opacity: var(--start-opacity);
 			scale: var(--start-scale);

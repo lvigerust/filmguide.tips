@@ -1,9 +1,13 @@
 <script lang="ts">
-	import { cn } from '@lvigerust/utils'
-	import { PUBLIC_TMDB_IMG_URL } from '$env/static/public'
+	import { cn, formatDate } from '@lvigerust/utils'
 	import type { TvSeasonDetails } from '$types'
 	import type { SvelteMap } from 'svelte/reactivity'
 	import type { SvelteHTMLElements } from 'svelte/elements'
+	import { Text } from '@lvigerust/components/Text'
+	import { Subheading } from '@lvigerust/components/Heading'
+	import { Icon } from '@lvigerust/components/UI'
+	import { Photo } from 'svelte-heros-v2'
+	import { Image } from '$components'
 
 	let {
 		seasons,
@@ -21,40 +25,45 @@
 	aria-label="Episodes">
 	<div class="carousel" aria-live="polite">
 		{#each seasons.values() as season (season._id)}
-			{#each season.episodes as episode, episodeIndex (episode.id)}
-				{@const isSeasonStart = episodeIndex === 0}
-				<div
+			{#each season.episodes as episode, index (episode.id)}
+				<di
 					class="carousel__slide"
-					class:season-start={isSeasonStart}
-					data-season-content={isSeasonStart ? season.season_number : undefined}>
-					<figure class="episode">
+					class:season-start={index === 0}
+					data-season-number={index === 0 ? season.season_number : undefined}>
+					<figure
+						class:opacity-50={episode.air_date &&
+							new Date().getTime() < new Date(episode.air_date).getTime()}>
 						{#if episode.still_path}
-							<img
-								src={`${PUBLIC_TMDB_IMG_URL}/w300${episode.still_path}`}
-								srcset={`${PUBLIC_TMDB_IMG_URL}/w185${episode.still_path} 185w, ${PUBLIC_TMDB_IMG_URL}/w300${episode.still_path} 300w, ${PUBLIC_TMDB_IMG_URL}/w500${episode.still_path} 500w`}
-								sizes="300px"
-								width="300"
-								height="169"
+							<Image
+								item={episode}
+								still
 								alt={episode.name || `Episode ${episode.episode_number}`}
-								loading="lazy" />
+								loading="lazy"
+								class="still-image" />
 						{:else}
-							<div class="episode__placeholder">
-								<span>No image</span>
+							<div
+								class="grid aspect-video place-items-center rounded-lg ring dark:bg-zinc-900 dark:ring-white/5 dark:ring-inset">
+								<span class="sr-only">No image</span>
+								<Icon src={Photo} solid class="size-10" />
 							</div>
 						{/if}
-						<figcaption class="episode-details">
-							<p class="episode-number">Episode {episode.episode_number}</p>
-							<p class="episode-title">{episode.name}</p>
-							{#if episode.overview}
-								<p class="episode-description">{episode.overview}</p>
-							{/if}
-							<p class="episode-meta">
-								<span>{episode.runtime}min</span>
-								<time datetime={episode.air_date}>{episode.air_date}</time>
-							</p>
+						<figcaption class="mt-2">
+							<Text class="uppercase">Episode {episode.episode_number}</Text>
+							<Subheading level={4}>{episode.name}</Subheading>
+
+							<Text class="my-2">{episode.overview}</Text>
+
+							<div class="flex gap-3 dark:*:text-white">
+								<Text class={{ hidden: !episode.runtime }}>
+									{episode.runtime} min
+								</Text>
+								<Text class={{ hidden: !episode.air_date }}>
+									{formatDate(episode.air_date, undefined, 'en-US')}
+								</Text>
+							</div>
 						</figcaption>
 					</figure>
-				</div>
+				</di>
 			{/each}
 		{/each}
 	</div>
@@ -68,15 +77,25 @@
 	}
 
 	.carousel {
+		/* Match layout: main has lg:px-2, inner div has p-6 lg:p-10, then max-w-6xl mx-auto */
+		--container-max: 72rem;
+		--layout-padding: --spacing(6);
+
+		@media (width >= 64rem) {
+			--layout-padding: calc(--spacing(2) + --spacing(10));
+		}
+
+		--gutter: max(calc((100vw - var(--container-max)) / 2), var(--layout-padding));
+
 		inline-size: 100cqi;
 		padding-block-start: --spacing(3);
-		padding-inline: 5vmin;
-		scroll-padding-inline: 5vmin;
+		padding-inline-start: var(--gutter);
+		scroll-padding-inline-start: var(--gutter);
 
 		display: grid;
 		grid-auto-flow: column;
 		grid-auto-columns: 300px;
-		gap: 4vmin;
+		gap: 2vmin;
 
 		overflow-x: auto;
 		scroll-snap-type: x mandatory;
@@ -84,130 +103,51 @@
 		scroll-behavior: smooth;
 
 		scroll-marker-group: before;
-		margin-block-start: 2lh;
+		margin-block-start: 1.5lh;
 
 		&::scroll-marker-group {
-			position: absolute;
 			position-anchor: --carousel;
+
 			inset-inline-start: anchor(left);
 			inset-block-end: anchor(top);
-			margin-inline-start: 5vmin;
+			margin-inline-start: var(--gutter);
 
-			block-size: 1lh;
-			display: flex;
-			gap: --spacing(7);
+			@apply absolute flex gap-5;
 		}
 
-		&::before,
 		&::after {
 			content: '';
 			display: block;
-			inline-size: 85cqi;
 		}
 	}
 
 	.carousel__slide {
-		padding: 0;
-		position: relative;
 		container-type: scroll-state;
-		scroll-snap-align: start;
+		@apply relative snap-start p-0;
 
 		&.season-start::scroll-marker {
-			content: 'Season ' attr(data-season-content);
-			white-space: nowrap;
-			font-size: --text(lg);
-			font-weight: 300;
-			color: --color(zinc-400);
-			text-decoration: underline 2px transparent;
-			text-underline-offset: 5px;
-			cursor: pointer;
-
-			@media (prefers-reduced-motion: no-preference) {
-				transition:
-					text-decoration 0.8s ease,
-					font-weight 0.3s ease;
-			}
+			content: 'Season ' attr(data-season-number);
+			@apply text-base text-zinc-500 no-underline transition-['font-weight'] duration-300 dark:text-zinc-400;
 		}
 
+		/*! BUG: This seems to have no effect */
 		&.season-start::scroll-marker:is(:hover, :focus-visible, :target-current) {
-			color: --color(zinc-100);
+			@apply text-red-500 dark:text-red-500;
 		}
 
 		&.season-start::scroll-marker:target-current {
-			text-decoration-color: --color(blue-500);
-			font-weight: 800;
+			@apply font-semibold text-zinc-950 dark:text-white;
 		}
 
 		&.season-start::scroll-marker:focus-visible {
-			outline-offset: 10px;
+			@apply rounded-md outline-2 outline-offset-4 outline-blue-500;
 		}
 	}
 
-	.episode {
-		display: grid;
-		line-height: 1.25;
-		anchor-name: --episode;
-		anchor-scope: --episode;
-
-		> img {
-			background-color: --color(zinc-800);
-			border-radius: --radius(lg);
-			aspect-ratio: 16 / 9;
-			object-fit: cover;
-			width: 100%;
-			transition: filter 0.3s ease;
-
-			@container not scroll-state(snapped: inline) {
-				filter: grayscale(1);
-			}
+	:global(.carousel__slide .still-image) {
+		@apply transition duration-300 ease-in-out;
+		@container not scroll-state(snapped: inline) {
+			@apply grayscale-75;
 		}
-
-		> figcaption {
-			padding-block-start: --spacing(3);
-
-			> .episode-number {
-				text-transform: uppercase;
-				font-weight: 500;
-				font-size: --text(xs);
-				color: --color(zinc-400);
-			}
-
-			> .episode-title {
-				font-size: --text(lg);
-				font-weight: 700;
-				line-height: 1.2;
-				margin-block-start: --spacing(1);
-				color: --color(zinc-100);
-			}
-
-			> .episode-description {
-				margin-block: --spacing(2);
-				font-weight: 300;
-				font-size: --text(sm);
-				color: --color(zinc-400);
-				display: -webkit-box;
-				-webkit-line-clamp: 3;
-				-webkit-box-orient: vertical;
-				overflow: hidden;
-			}
-
-			> .episode-meta {
-				display: flex;
-				align-items: baseline;
-				gap: --spacing(2);
-				font-size: --text(xs);
-				color: --color(zinc-500);
-			}
-		}
-	}
-
-	.episode__placeholder {
-		background-color: --color(zinc-800);
-		border-radius: --radius(lg);
-		aspect-ratio: 16 / 9;
-		display: grid;
-		place-items: center;
-		color: --color(zinc-500);
-		font-size: --text(sm);
 	}
 </style>

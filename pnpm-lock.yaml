@@ -27,11 +27,11 @@ importers:
         specifier: ^9.39.1
         version: 9.39.1
       '@lvigerust/components':
-        specifier: ^0.1.9433
-        version: 0.1.9433(bits-ui@2.15.4(@internationalized/date@3.10.1)(@sveltejs/kit@2.49.3(@sveltejs/vite-plugin-svelte@6.2.3(svelte@5.46.1)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)(typescript@5.9.3)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1))(svelte-heros-v2@3.0.1(svelte@5.46.1))(svelte@5.46.1)(tailwindcss@4.1.18)
+        specifier: ^0.1.9435
+        version: 0.1.9435(bits-ui@2.15.4(@internationalized/date@3.10.1)(@sveltejs/kit@2.49.3(@sveltejs/vite-plugin-svelte@6.2.3(svelte@5.46.1)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)(typescript@5.9.3)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1))(svelte-heros-v2@3.0.1(svelte@5.46.1))(svelte@5.46.1)(tailwindcss@4.1.18)
       '@lvigerust/utils':
-        specifier: ^0.0.3
-        version: 0.0.3
+        specifier: ^0.0.31
+        version: 0.0.31
       '@sveltejs/adapter-vercel':
         specifier: ^6.2.0
         version: 6.3.0(@sveltejs/kit@2.49.3(@sveltejs/vite-plugin-svelte@6.2.3(svelte@5.46.1)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)(typescript@5.9.3)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(rollup@4.55.1)
@@ -668,16 +668,16 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@lvigerust/components@0.1.9433':
-    resolution: {integrity: sha512-cNcqqqM5ohgRu1cy2Y/Mj74UW1nXstjTTQZbaj5lCYwXNLw5W2WCx4BuCnPGBdeLeGfNot7rJB7G4XhC1/ueKA==, tarball: https://npm.pkg.github.com/download/@lvigerust/components/0.1.9433/4bf3c66d1e9a0aaaa0de1ce1ec1121abd7576fe7}
+  '@lvigerust/components@0.1.9435':
+    resolution: {integrity: sha512-Jzbc71O9zSmrTGjrCgULjMdpAaZJO602WWh7ter5eTgBhtlNC0izO+Lda2Wtf5Rjx2RghQhOs88o9F1t92pHhg==, tarball: https://npm.pkg.github.com/download/@lvigerust/components/0.1.9435/8f4b0fc9d4efea4fae6577eac5bf038ab6bcaccf}
     peerDependencies:
       bits-ui: ^2.14.0
       svelte: ^5.0.0
       svelte-heros-v2: ^3.0.1
       tailwindcss: ^4.1.0
 
-  '@lvigerust/utils@0.0.3':
-    resolution: {integrity: sha512-RKWkgLSWUYWkRv+VQ+ww+n2bTSJp11jXGtJHbnUOJgh1r1y7YCsk+5f/Ol7z+8Cd+RBGWXzLUyhQejjDwXYAtQ==, tarball: https://npm.pkg.github.com/download/@lvigerust/utils/0.0.3/a7254dd975041fc87a770c9b42039005b01b955b}
+  '@lvigerust/utils@0.0.31':
+    resolution: {integrity: sha512-DhLe5gGLxUFP0E6RymzTbWX3SlJxUDCWJG4h5Eq6w8EuwlWvNegIMa2N0qpRKVbAiGdMuwX6gn+iHMzkzwS7nw==, tarball: https://npm.pkg.github.com/download/@lvigerust/utils/0.0.31/5ec8e6fff2b0337aba2e86b92e46998a5efdfa69}
 
   '@mapbox/node-pre-gyp@2.0.3':
     resolution: {integrity: sha512-uwPAhccfFJlsfCxMYTwOdVfOz3xqyj8xYL3zJj8f0pb30tLohnnFPhLuqp4/qoEz8sNxe4SESZedcBojRefIzg==}
@@ -2396,7 +2396,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@lvigerust/components@0.1.9433(bits-ui@2.15.4(@internationalized/date@3.10.1)(@sveltejs/kit@2.49.3(@sveltejs/vite-plugin-svelte@6.2.3(svelte@5.46.1)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)(typescript@5.9.3)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1))(svelte-heros-v2@3.0.1(svelte@5.46.1))(svelte@5.46.1)(tailwindcss@4.1.18)':
+  '@lvigerust/components@0.1.9435(bits-ui@2.15.4(@internationalized/date@3.10.1)(@sveltejs/kit@2.49.3(@sveltejs/vite-plugin-svelte@6.2.3(svelte@5.46.1)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)(typescript@5.9.3)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1))(svelte-heros-v2@3.0.1(svelte@5.46.1))(svelte@5.46.1)(tailwindcss@4.1.18)':
     dependencies:
       bits-ui: 2.15.4(@internationalized/date@3.10.1)(@sveltejs/kit@2.49.3(@sveltejs/vite-plugin-svelte@6.2.3(svelte@5.46.1)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)(typescript@5.9.3)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)
       clsx: 2.1.1
@@ -2406,7 +2406,7 @@ snapshots:
       tailwind-merge: 3.4.0
       tailwindcss: 4.1.18
 
-  '@lvigerust/utils@0.0.3':
+  '@lvigerust/utils@0.0.31':
     dependencies:
       clsx: 2.1.1
       tailwind-merge: 3.4.0
