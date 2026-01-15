@@ -51,7 +51,9 @@
 	<div>
 		<Heading level={2}>Seasons</Heading>
 
-		<DescriptionList>
+		<SeriesCarousel seasons={data.seasons} />
+
+		<!-- <DescriptionList>
 			{#each data.seasons.values() as season (season._id)}
 				{#if season.episodes?.length}
 					<DescriptionTerm>Season {season.season_number}</DescriptionTerm>
@@ -64,8 +66,6 @@
 					<Button plain>{show.number_of_seasons - data.seasons.size} more seasons</Button>
 				</DescriptionTerm>
 			{/if}
-		</DescriptionList>
-
-		<SeriesCarousel seasons={data.seasons} />
+		</DescriptionList> -->
 	</div>
 </div>
