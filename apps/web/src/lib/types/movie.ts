@@ -1,17 +1,11 @@
-export interface Movie {
-	media_type: 'movie'
-	adult: boolean
-	backdrop_path: string
-	genre_ids: number[]
-	id: number
-	original_language: string
-	original_title: string
-	overview: string
-	popularity: number
-	poster_path: string
-	release_date: Date
-	title: string
-	video: boolean
-	vote_average: number
-	vote_count: number
-}
+import type { Response, ResultItem } from '$types'
+
+// Movie types (raw from API)
+export type MovieListResponse = Response<'movie-popular-list'>
+export type MovieListItem = ResultItem<'movie-popular-list'>
+export type MovieDetails = Response<'movie-details'>
+export type MovieImages = Response<'movie-images'>
+
+export type TrendingMovieResponse = Response<'trending-movies'>
+
+export type Movie = (MovieListItem | MovieDetails) & { media_type: 'movie' }

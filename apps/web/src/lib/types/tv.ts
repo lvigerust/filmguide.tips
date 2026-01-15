@@ -1,65 +1,12 @@
-import type { Network } from '$types'
+import type { Response, ResultItem } from '$types'
 
-export interface Show {
-	media_type: 'tv'
-	backdrop_path: string
-	first_air_date: Date
-	genre_ids: number[]
-	id: number
-	name: string
-	origin_country: string[]
-	original_language: string
-	original_name: string
-	overview: string
-	popularity: number
-	poster_path: string
-	vote_average: number
-	vote_count: number
-}
+// TV types (raw from API)
+export type TvListResponse = Response<'tv-series-popular-list'>
+export type TvListItem = ResultItem<'tv-series-popular-list'>
+export type TvDetails = Response<'tv-series-details'>
+export type TvImages = Response<'tv-series-images'>
+export type TvSeasonDetails = Response<'tv-season-details'>
 
-export interface Season {
-	_id: string
-	air_date: Date
-	episodes: Episode[]
-	name: string
-	networks: Omit<Network, 'headquarters' | 'homepage'>[]
-	overview: string
-	id: number
-	poster_path: string
-	season_number: number
-	vote_average: number
-}
+export type TrendingTvResponse = Response<'trending-tv'>
 
-export interface Episode {
-	air_date: Date
-	episode_number: number
-	episode_type: string
-	id: number
-	name: string
-	overview: string
-	production_code: string
-	runtime: number
-	season_number: number
-	show_id: number
-	still_path: string
-	vote_average: number
-	vote_count: number
-	crew: Crew[]
-	guest_stars: Crew[]
-}
-
-export interface Crew {
-	department?: string
-	job?: string
-	credit_id: string
-	adult: boolean
-	gender: number
-	id: number
-	known_for_department: string
-	name: string
-	original_name: string
-	popularity: number
-	profile_path: null | string
-	character?: string
-	order?: number
-}
+export type Show = (TvListItem | TvDetails) & { media_type: 'tv' }

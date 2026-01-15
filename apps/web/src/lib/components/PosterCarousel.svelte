@@ -39,7 +39,7 @@
 		{#each items.values() as item (item.id)}
 			<CarouselItem
 				href={resolve(
-					`/${item.media_type}/${item.id}-${slugify(item.media_type === 'movie' ? item.title : item.name)}`
+					`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
 				)}
 				class={backdrop ? 'max-w-84' : 'max-w-40'}>
 				<Image {item} {backdrop} />

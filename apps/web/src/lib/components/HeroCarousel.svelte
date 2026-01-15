@@ -43,7 +43,7 @@
 		<CarouselItem
 			data-id={item.id}
 			href={resolve(
-				`/${item.media_type}/${item.id}-${slugify(item.media_type === 'movie' ? item.title : item.name)}`
+				`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
 			)}
 			class="relative max-w-[85%] snap-center sm:max-w-4xl sm:rounded-2xl">
 			<figure class:scroll-start={i === 1} class="opacity-75 transition-opacity duration-300">

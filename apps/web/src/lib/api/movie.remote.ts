@@ -1,6 +1,6 @@
 import { getRequestEvent, query } from '$app/server'
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import type { Images, Movie, Page } from '$types'
+import type { Images, MovieDetails, MovieListItem, MovieListResponse } from '$types'
 import { SvelteMap } from 'svelte/reactivity'
 import { z } from 'zod/v4'
 
@@ -22,15 +22,15 @@ export const getMovies = query(
 		const fetchPage = async (pageNumber: number) => {
 			const res = await fetch(`${endpoint}?page=${pageNumber}`)
 			if (!res.ok) throw new Error(res.statusText)
-			const movies: Page<Movie> = await res.json()
+			const movies: MovieListResponse = await res.json()
 			return movies
 		}
 
 		const responses = await Promise.all(Array.from({ length: page }, (_, i) => fetchPage(i + 1)))
 
-		return new SvelteMap<number, Movie>(
+		return new SvelteMap<number, MovieListItem & { media_type: 'movie' }>(
 			responses
-				.flatMap((r) => r.results)
+				.flatMap((r) => r.results ?? [])
 				.map((movie) => [movie.id, { ...movie, media_type: 'movie' as const }])
 		)
 	}
@@ -42,7 +42,7 @@ export const getMovie = query(z.string(), async (id) => {
 	const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/movie/${id}`)
 	if (!res.ok) throw new Error(res.statusText)
 
-	const movie: Movie = await res.json()
+	const movie: MovieDetails = await res.json()
 	return { ...movie, media_type: 'movie' as const }
 })
 

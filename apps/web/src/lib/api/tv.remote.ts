@@ -1,6 +1,6 @@
 import { getRequestEvent, query } from '$app/server'
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import type { Page, Show } from '$types'
+import type { TvDetails, TvListItem, TvListResponse, TvSeasonDetails } from '$types'
 import { SvelteMap } from 'svelte/reactivity'
 import { z } from 'zod/v4'
 
@@ -22,15 +22,15 @@ export const getTvShows = query(
 		const fetchPage = async (pageNumber: number) => {
 			const res = await fetch(`${endpoint}?page=${pageNumber}`)
 			if (!res.ok) throw new Error(res.statusText)
-			const shows: Page<Show> = await res.json()
+			const shows: TvListResponse = await res.json()
 			return shows
 		}
 
 		const responses = await Promise.all(Array.from({ length: page }, (_, i) => fetchPage(i + 1)))
 
-		return new SvelteMap<number, Show>(
+		return new SvelteMap<number, TvListItem & { media_type: 'tv' }>(
 			responses
-				.flatMap((r) => r.results)
+				.flatMap((r) => r.results ?? [])
 				.map((show) => [show.id, { ...show, media_type: 'tv' as const }])
 		)
 	}
@@ -42,7 +42,7 @@ export const getTvShow = query(z.string(), async (id) => {
 	const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/tv/${id}`)
 	if (!res.ok) throw new Error(res.statusText)
 
-	const show: Show = await res.json()
+	const show: TvDetails = await res.json()
 	return { ...show, media_type: 'tv' as const }
 })
 
@@ -54,7 +54,7 @@ export const getTvShowSeasons = query(
 		const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/tv/${id}/season/${seasonNumber}`)
 		if (!res.ok) throw new Error(res.statusText)
 
-		const show: Show = await res.json()
-		return { ...show, media_type: 'tv' as const }
+		const season: TvSeasonDetails = await res.json()
+		return season
 	}
 )
