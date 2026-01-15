@@ -7,21 +7,28 @@
 	import { resolve } from '$app/paths'
 	import { Image } from '$components'
 	import type { SvelteMap } from 'svelte/reactivity'
+	import type { ClassValue } from 'svelte/elements'
 
 	let {
 		heading,
 		items,
 		backdrop = false,
+		containerClass,
 		class: className,
 		...restProps
 	}: ComponentProps<typeof Carousel> & {
 		heading: string
 		items: SvelteMap<number, Movie | Show>
 		backdrop?: boolean
+		containerClass?: ClassValue
 	} = $props()
 </script>
 
-<div class="[--gutter:--spacing(6)] sm:[--gutter:--spacing(20)]">
+<div
+	class={cn(
+		'carousel__container [--gutter:--spacing(6)] sm:[--gutter:--spacing(20)]',
+		containerClass
+	)}>
 	<Heading class="mb-4 px-(--gutter) text-lg">
 		{heading}
 	</Heading>
@@ -42,6 +49,12 @@
 <style lang="postcss">
 	@reference "tailwindcss";
 
+	:global(.carousel__container) {
+		animation: carousel--enter-view linear both;
+		animation-timeline: view();
+		animation-range: 0vh 20vh;
+	}
+
 	:global(.poster-carousel > .carousel__item) {
 		--start-opacity: 0.5;
 		--start-scale: 0.95;
@@ -49,6 +62,13 @@
 		container-type: scroll-state;
 		animation: carousel-item--visibility linear both;
 		animation-timeline: view(inline);
+	}
+
+	@keyframes carousel--enter-view {
+		from {
+			opacity: 0;
+			translate: 0 --spacing(5);
+		}
 	}
 
 	@keyframes carousel-item--visibility {
