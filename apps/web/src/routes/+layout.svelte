@@ -5,12 +5,14 @@
 	import { navItems } from '$lib/config'
 	import { Icon } from '@lvigerust/components/UI'
 	import { Bars2 } from 'svelte-heros-v2'
+	import { page } from '$app/state'
 
 	let { children } = $props()
 </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<title>{[page.data.title, 'Filmguide'].filter(Boolean).join(' — ')}</title>
 </svelte:head>
 
 <div

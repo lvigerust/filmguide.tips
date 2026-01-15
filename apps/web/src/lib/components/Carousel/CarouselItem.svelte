@@ -18,9 +18,3 @@
 	bind:this={ref}>
 	{@render children?.()}
 </svelte:element>
-
-<style lang="postcss">
-	.carousel__item {
-		container-type: scroll-state;
-	}
-</style>
