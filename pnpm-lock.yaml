@@ -27,8 +27,8 @@ importers:
         specifier: ^9.39.1
         version: 9.39.1
       '@lvigerust/components':
-        specifier: ^0.1.9435
-        version: 0.1.9435(bits-ui@2.15.4(@internationalized/date@3.10.1)(@sveltejs/kit@2.49.3(@sveltejs/vite-plugin-svelte@6.2.3(svelte@5.46.1)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)(typescript@5.9.3)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1))(svelte-heros-v2@3.0.1(svelte@5.46.1))(svelte@5.46.1)(tailwindcss@4.1.18)
+        specifier: ^0.1.9436
+        version: 0.1.9436(@tailwindcss/forms@0.5.11(tailwindcss@4.1.18))(@toolwind/corner-shape@0.0.8-3)(bits-ui@2.15.4(@internationalized/date@3.10.1)(@sveltejs/kit@2.49.3(@sveltejs/vite-plugin-svelte@6.2.3(svelte@5.46.1)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)(typescript@5.9.3)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1))(svelte-heros-v2@3.0.1(svelte@5.46.1))(svelte@5.46.1)(tailwindcss@4.1.18)
       '@lvigerust/utils':
         specifier: ^0.0.31
         version: 0.0.31
@@ -668,9 +668,11 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@lvigerust/components@0.1.9435':
-    resolution: {integrity: sha512-Jzbc71O9zSmrTGjrCgULjMdpAaZJO602WWh7ter5eTgBhtlNC0izO+Lda2Wtf5Rjx2RghQhOs88o9F1t92pHhg==, tarball: https://npm.pkg.github.com/download/@lvigerust/components/0.1.9435/8f4b0fc9d4efea4fae6577eac5bf038ab6bcaccf}
+  '@lvigerust/components@0.1.9436':
+    resolution: {integrity: sha512-rRAgrbnPgiAjjtBIwmmuIcIsO0MmXoOtqKbnhm+6H8xaaKlCnM/8bzJTUTU5bpOIJD6y0AXMxvD0/UYZq111Kg==, tarball: https://npm.pkg.github.com/download/@lvigerust/components/0.1.9436/6cdb52ba3bc515f1fb32f6681fa674191a7a305b}
     peerDependencies:
+      '@tailwindcss/forms': ^0.5.11
+      '@toolwind/corner-shape': 0.0.8-3
       bits-ui: ^2.14.0
       svelte: ^5.0.0
       svelte-heros-v2: ^3.0.1
@@ -2396,8 +2398,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@lvigerust/components@0.1.9435(bits-ui@2.15.4(@internationalized/date@3.10.1)(@sveltejs/kit@2.49.3(@sveltejs/vite-plugin-svelte@6.2.3(svelte@5.46.1)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)(typescript@5.9.3)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1))(svelte-heros-v2@3.0.1(svelte@5.46.1))(svelte@5.46.1)(tailwindcss@4.1.18)':
+  '@lvigerust/components@0.1.9436(@tailwindcss/forms@0.5.11(tailwindcss@4.1.18))(@toolwind/corner-shape@0.0.8-3)(bits-ui@2.15.4(@internationalized/date@3.10.1)(@sveltejs/kit@2.49.3(@sveltejs/vite-plugin-svelte@6.2.3(svelte@5.46.1)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)(typescript@5.9.3)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1))(svelte-heros-v2@3.0.1(svelte@5.46.1))(svelte@5.46.1)(tailwindcss@4.1.18)':
     dependencies:
+      '@tailwindcss/forms': 0.5.11(tailwindcss@4.1.18)
+      '@toolwind/corner-shape': 0.0.8-3
       bits-ui: 2.15.4(@internationalized/date@3.10.1)(@sveltejs/kit@2.49.3(@sveltejs/vite-plugin-svelte@6.2.3(svelte@5.46.1)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)(typescript@5.9.3)(vite@7.3.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.46.1)
       clsx: 2.1.1
       svelte: 5.46.1

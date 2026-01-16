@@ -1,6 +1,6 @@
 import type { operations } from './tmdb'
-import type { Movie, MovieImages } from './movie'
-import type { Show, TvImages } from './tv'
+import type { Movie, MovieImages, MovieWatchProviders } from './movie'
+import type { Show, TvImages, TvWatchProviders } from './tv'
 
 /**
  * Extracts the JSON response type from an operation
@@ -19,3 +19,4 @@ export type Media = Movie | Show
 
 // Images type (works for both movie and TV)
 export type Images = MovieImages | TvImages
+export type WatchProviders = MovieWatchProviders | TvWatchProviders

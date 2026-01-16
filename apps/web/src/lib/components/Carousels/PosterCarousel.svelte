@@ -24,7 +24,7 @@
 	} = $props()
 </script>
 
-<div class={cn('slide-up [--gutter:--spacing(6)] sm:[--gutter:--spacing(20)]', containerClass)}>
+<div class={cn('[--gutter:--spacing(6)] sm:[--gutter:--spacing(20)]', containerClass)}>
 	<Heading class="mb-4 px-(--gutter) text-lg">
 		{heading}
 	</Heading>
@@ -35,7 +35,7 @@
 				href={resolve(
 					`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
 				)}
-				class={['appear', backdrop ? 'max-w-84' : 'max-w-40']}>
+				class={['poster', backdrop ? 'max-w-84' : 'max-w-40']}>
 				<Image {item} {backdrop} />
 			</CarouselItem>
 		{/each}
@@ -45,44 +45,35 @@
 <style lang="postcss">
 	@reference "tailwindcss";
 
-	:global(.slide-up) {
-		animation: carousel--slide-up linear forwards;
-		animation-timeline: view();
-		animation-range: entry 0px entry calc((--spacing(40) / (2 / 3) / 1.5));
-	}
-
-	:global(.appear) {
-		--start-opacity: 0.5;
-		--start-scale: 0.95;
-		--end: 1;
-		container-type: scroll-state;
-		animation: carousel-item--appear linear both;
+	:global(.poster) {
+		animation:
+			animate-in linear forwards,
+			animate-out linear forwards;
 		animation-timeline: view(inline);
+		animation-range:
+			entry -100% entry 0%,
+			exit;
 	}
 
-	@keyframes carousel--slide-up {
-		from {
-			opacity: 0;
-			translate: 0 --spacing(5);
+	@keyframes animate-in {
+		0% {
+			opacity: 0.5;
+			scale: 0.95;
+		}
+		100% {
+			opacity: 1;
+			scale: 1;
 		}
 	}
 
-	@keyframes carousel-item--appear {
-		entry 0% {
-			opacity: var(--start-opacity);
-			scale: var(--start-scale);
+	@keyframes animate-out {
+		0% {
+			opacity: 1;
+			scale: 1;
 		}
-		contain 0% {
-			opacity: var(--end);
-			scale: var(--end);
-		}
-		contain 100% {
-			opacity: var(--end);
-			scale: var(--end);
-		}
-		exit 100% {
-			opacity: var(--start-opacity);
-			scale: var(--start-scale);
+		100% {
+			opacity: 0.5;
+			scale: 0.95;
 		}
 	}
 </style>

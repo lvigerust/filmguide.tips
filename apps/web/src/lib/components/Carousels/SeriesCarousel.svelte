@@ -30,9 +30,7 @@
 					class="carousel__slide"
 					class:season-start={index === 0}
 					data-season-number={index === 0 ? season.season_number : undefined}>
-					<figure
-						class:opacity-50={episode.air_date &&
-							new Date().getTime() < new Date(episode.air_date).getTime()}>
+					<figure>
 						{#if episode.still_path}
 							<Image
 								item={episode}
@@ -51,7 +49,7 @@
 							<Text class="uppercase">Episode {episode.episode_number}</Text>
 							<Subheading level={4}>{episode.name}</Subheading>
 
-							<Text class="my-2">{episode.overview}</Text>
+							<Text class="my-2 line-clamp-6">{episode.overview}</Text>
 
 							<div class="flex gap-3 dark:*:text-white">
 								<Text class={{ hidden: !episode.runtime }}>

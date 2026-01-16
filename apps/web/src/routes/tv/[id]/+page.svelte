@@ -4,7 +4,7 @@
 	import { Text } from '@lvigerust/components/Text'
 	import { BadgeButton } from '@lvigerust/components/Badge'
 	import { formatDate, formatNumber, slugify } from '@lvigerust/utils'
-	import { SeriesCarousel } from '$components'
+	import { SeriesCarousel, WatchProviders } from '$components'
 
 	let { data } = $props()
 	let show = $derived(data.show)
@@ -12,15 +12,17 @@
 
 <div class="space-y-12">
 	<div class="flex gap-8 max-sm:flex-col">
-		<Image item={show} class="max-w-[calc((100cqi/2-20px)/1.5)] sm:max-w-80" sizes="320px" />
+		<Image item={show} class="max-w-[calc((100cqi/4))] sm:max-w-80" sizes="320px" />
 
 		<div class="flex flex-col gap-4">
-			<Heading class="font-bold sm:text-2xl">
-				{show.name}
-				<span class="font-normal text-zinc-500 dark:text-zinc-400">
-					({show.first_air_date && formatDate(show.first_air_date, { year: 'numeric' })})
-				</span>
-			</Heading>
+			<div class="flex">
+				<Heading class="font-bold sm:text-2xl">
+					{show.name}
+					<span class="font-normal text-zinc-500 dark:text-zinc-400">
+						({show.first_air_date && formatDate(show.first_air_date, { year: 'numeric' })})
+					</span>
+				</Heading>
+			</div>
 
 			<div class="flex gap-1.5">
 				<Text
@@ -45,13 +47,15 @@
 				</div>
 			{/if}
 
-			{#if show.tagline}
-				<Text class="my-4 italic">{show.tagline}</Text>
-			{/if}
+			<Text class="my-4 italic">{show.tagline}</Text>
 
 			<div class="max-w-prose">
 				<Subheading>Overview</Subheading>
 				<Text class="mt-1">{show.overview}</Text>
+			</div>
+
+			<div>
+				<WatchProviders item={show} class="-mx-3.5 sm:-mx-3" />
 			</div>
 		</div>
 	</div>

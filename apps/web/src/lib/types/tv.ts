@@ -7,6 +7,7 @@ export type TvDetails = Response<'tv-series-details'>
 export type TvImages = Response<'tv-series-images'>
 export type TvSeasonDetails = Response<'tv-season-details'>
 export type TvEpisodeDetails = Response<'tv-episode-details'>
+export type TvWatchProviders = Response<'tv-series-watch-providers'>
 
 export type TrendingTvResponse = Response<'trending-tv'>
 

@@ -1,3 +1,5 @@
+export * from './error'
 export * from './helpers'
 export * from './movie'
+export * from './search'
 export * from './tv'

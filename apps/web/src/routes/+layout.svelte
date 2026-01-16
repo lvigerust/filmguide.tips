@@ -6,8 +6,22 @@
 	import { Icon } from '@lvigerust/components/UI'
 	import { Bars2 } from 'svelte-heros-v2'
 	import { page } from '$app/state'
+	import {
+		MobileSidebar,
+		Sidebar,
+		SidebarBody,
+		SidebarHeader,
+		SidebarItem,
+		SidebarLabel,
+		SidebarSection
+	} from '@lvigerust/components/Sidebar'
+	import { afterNavigate } from '$app/navigation'
+	import { CommandPalette } from '$components'
 
 	let { children } = $props()
+
+	let showSidebar = $state(false)
+	afterNavigate(() => (showSidebar = false)) // Close mobile sidebar when navigating
 </script>
 
 <svelte:head>
@@ -17,10 +31,33 @@
 
 <div
 	class="relative isolate flex min-h-svh w-full flex-col bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
+	<!--? Sidebar on mobile -->
+	<MobileSidebar bind:open={showSidebar}>
+		<Sidebar>
+			<SidebarHeader>
+				<SidebarSection>
+					<SidebarItem>
+						<SidebarLabel>Filmguide</SidebarLabel>
+					</SidebarItem>
+				</SidebarSection>
+			</SidebarHeader>
+
+			<SidebarBody>
+				<SidebarSection>
+					{#each navItems as { href, label } (href)}
+						<SidebarItem {href}>
+							<SidebarLabel>{label}</SidebarLabel>
+						</SidebarItem>
+					{/each}
+				</SidebarSection>
+			</SidebarBody>
+		</Sidebar>
+	</MobileSidebar>
+
 	<!--? Navbar -->
 	<header class="flex items-center px-4">
 		<div class="py-2.5 lg:hidden">
-			<NavbarItem>
+			<NavbarItem onclick={() => (showSidebar = true)}>
 				<Icon src={Bars2} solid />
 			</NavbarItem>
 		</div>
@@ -40,7 +77,9 @@
 					{/each}
 				</NavbarSection>
 
-				<NavbarSection></NavbarSection>
+				<NavbarSection class="justify-end">
+					<CommandPalette />
+				</NavbarSection>
 			</Navbar>
 		</div>
 	</header>
