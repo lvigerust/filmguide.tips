@@ -1,12 +1,19 @@
 import { getRequestEvent, query } from '$app/server'
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import type { TvDetails, TvListItem, TvListResponse, TvSeasonDetails } from '$types'
+import {
+	append_tv_options,
+	type TvDetailsWithAppends,
+	type TvDetails,
+	type TvListItem,
+	type TvListResponse,
+	type TvSeasonDetails
+} from '$types'
 import { SvelteMap } from 'svelte/reactivity'
 import { z } from 'zod/v4'
 
 const lists = ['airing_today', 'on_the_air', 'popular', 'top_rated', 'trending'] as const
 
-export const getTvShows = query(
+export const getShows = query(
 	z.object({
 		list: z.enum(lists),
 		page: z.number().positive().default(1)
@@ -36,19 +43,23 @@ export const getTvShows = query(
 	}
 )
 
-export const getTvShow = query(z.string(), async (id) => {
-	const { fetch } = getRequestEvent()
+export const getShowDetails = query(
+	z.object({ id: z.string(), append: z.array(z.enum(append_tv_options)) }),
+	async ({ id, append }) => {
+		const { fetch } = getRequestEvent()
+		const res = await fetch(
+			`${PUBLIC_TMDB_BASE_URL}/tv/${id}?append_to_response=${append.join(',')}`
+		)
+		if (!res.ok) throw new Error(res.statusText)
 
-	const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/tv/${id}`)
-	if (!res.ok) throw new Error(res.statusText)
-
-	const show: TvDetails = await res.json()
-	return { ...show, media_type: 'tv' as const }
-})
+		const show: TvDetailsWithAppends = await res.json()
+		return { ...show, media_type: 'tv' as const }
+	}
+)
 
 const SEASONS_PER_PAGE = 5
 
-export const getTvShowSeasons = query(
+export const getShowSeasons = query(
 	z.object({
 		id: z.string(),
 		numberOfSeasons: z.number(),

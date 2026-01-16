@@ -1,10 +1,13 @@
-import { getTvShow, getTvShowSeasons } from '$api'
+import { getShowSeasons, getShowDetails } from '$api'
 
 export const load = async ({ params }) => {
-	const show = await getTvShow(params.id)
+	const show = await getShowDetails({
+		id: params.id,
+		append: ['watch/providers', 'external_ids']
+	})
 
-	const seasons = await getTvShowSeasons({
-		id: String(show.id),
+	const seasons = await getShowSeasons({
+		id: params.id,
 		numberOfSeasons: show.number_of_seasons
 	})
 

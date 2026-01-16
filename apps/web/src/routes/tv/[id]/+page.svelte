@@ -25,10 +25,9 @@
 			</div>
 
 			<div class="flex gap-1.5">
-				<Text
-					>{show.first_air_date
-						? formatDate(show.first_air_date, undefined, 'en-US')
-						: 'Unknown'}</Text>
+				<Text>
+					{show.first_air_date ? formatDate(show.first_air_date, undefined, 'en-US') : 'Unknown'}
+				</Text>
 				<span class="text-zinc-500">∙</span>
 				<Text>{show.number_of_seasons} seasons</Text>
 				<span class="text-zinc-500">∙</span>
@@ -55,7 +54,7 @@
 			</div>
 
 			<div>
-				<WatchProviders item={show} class="-mx-3.5 sm:-mx-3" />
+				<WatchProviders providers={show['watch/providers']} class="-mx-3.5 sm:-mx-3" />
 			</div>
 		</div>
 	</div>
