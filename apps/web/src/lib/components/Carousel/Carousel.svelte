@@ -14,7 +14,7 @@
 <div
 	{...restProps}
 	class={cn(
-		'carousel flex snap-x snap-mandatory gap-x-4 overflow-x-auto scroll-smooth pt-1',
+		'carousel flex snap-x snap-mandatory gap-x-4 overflow-x-auto scroll-smooth pt-0.5',
 		className
 	)}
 	bind:this={ref}>

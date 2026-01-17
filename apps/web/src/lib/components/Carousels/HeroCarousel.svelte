@@ -47,6 +47,15 @@
 	@reference "../../../app.css";
 
 	.hero-carousel {
+		/* Transition modifiers that are applied to the transition below */
+		figure {
+			@apply transition-opacity duration-500;
+
+			figcaption {
+				@apply transition delay-300 duration-1000 ease-out-3;
+			}
+		}
+
 		/* Unsnapped items */
 		@container not scroll-state(snapped: inline) {
 			figure {
@@ -55,15 +64,6 @@
 				figcaption {
 					@apply translate-x-8 opacity-0;
 				}
-			}
-		}
-
-		/* Transition modifiers */
-		figure {
-			@apply transition-opacity duration-500;
-
-			figcaption {
-				@apply transition delay-300 duration-1000 ease-out-3;
 			}
 		}
 

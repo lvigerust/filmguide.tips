@@ -18,17 +18,14 @@
 	} = $props()
 </script>
 
-<div
-	{...restProps}
-	class={cn('series-carousel full-bleed', className)}
-	role="region"
-	aria-label="Episodes">
-	<div class="carousel" aria-live="polite">
+<div class={cn('full-bleed', className)} {...restProps}>
+	<div class="carousel">
 		{#each seasons.values() as season (season._id)}
 			{#each season.episodes as episode, index (episode.id)}
-				<di
-					class="carousel__slide"
-					class:season-start={index === 0}
+				<div
+					style="container-type: scroll-state;"
+					class="relative snap-start"
+					class:scroll-button={index === 0}
 					data-season-number={index === 0 ? season.season_number : undefined}>
 					<figure class="group">
 						{#if episode.still_path}
@@ -38,7 +35,7 @@
 									still
 									alt={episode.name || `Episode ${episode.episode_number}`}
 									loading="lazy"
-									class="still-image scale-[102.5%] group-hover:scale-100" />
+									class="scale-[102.5%] transition-transform duration-1000 ease-spring-1 group-hover:scale-100" />
 							</div>
 						{:else}
 							<div
@@ -63,22 +60,18 @@
 							</div>
 						</figcaption>
 					</figure>
-				</di>
+				</div>
 			{/each}
 		{/each}
 	</div>
 </div>
 
 <style lang="postcss">
-	@reference "tailwindcss";
-
-	.series-carousel {
-		container-type: inline-size;
-	}
+	@reference "../../../app.css";
 
 	.carousel {
 		/* Match layout: main has lg:px-2, inner div has p-6 lg:p-10, then max-w-6xl mx-auto */
-		--container-max: 72rem;
+		--container-max: var(--container-6xl);
 		--layout-padding: --spacing(6);
 
 		@media (width >= 64rem) {
@@ -87,32 +80,16 @@
 
 		--gutter: max(calc((100vw - var(--container-max)) / 2), var(--layout-padding));
 
-		inline-size: 100cqi;
-		padding-block-start: --spacing(3);
-		padding-inline-start: var(--gutter);
-		scroll-padding-inline-start: var(--gutter);
+		@apply scroll-ps-(--gutter) ps-(--gutter) pt-0.5;
 
-		display: grid;
-		grid-auto-flow: column;
-		grid-auto-columns: 300px;
-		gap: 2vmin;
+		@apply grid auto-cols-[--spacing(80)] grid-flow-col gap-[2vmin];
+		@apply snap-x snap-mandatory overflow-x-auto scroll-smooth;
 
-		overflow-x: auto;
-		scroll-snap-type: x mandatory;
 		scrollbar-width: none;
-		scroll-behavior: smooth;
-
 		scroll-marker-group: before;
-		margin-block-start: 1.5lh;
 
 		&::scroll-marker-group {
-			position-anchor: --carousel;
-
-			inset-inline-start: anchor(left);
-			inset-block-end: anchor(top);
-			margin-inline-start: var(--gutter);
-
-			@apply absolute flex gap-5;
+			@apply mb-4 flex h-lh gap-5 px-(--gutter);
 		}
 
 		&::after {
@@ -121,31 +98,32 @@
 		}
 	}
 
-	.carousel__slide {
-		container-type: scroll-state;
-		@apply relative snap-start p-0;
-
-		&.season-start::scroll-marker {
+	/* Scroll marker for the first episode of a season */
+	.scroll-button {
+		&::scroll-marker {
 			content: 'Season ' attr(data-season-number);
-			@apply text-base text-zinc-500 no-underline transition-['font-weight'] duration-300 dark:text-zinc-400;
+			@apply text-zinc-500 no-underline transition-['font-weight'] duration-300 dark:text-zinc-400;
 		}
 
 		/*! BUG: This seems to have no effect */
-		&.season-start::scroll-marker:is(:hover, :focus-visible, :target-current) {
+		&::scroll-marker:is(:hover, :focus-visible, :target-current) {
 			@apply text-red-500 dark:text-red-500;
 		}
 
-		&.season-start::scroll-marker:target-current {
+		&::scroll-marker:target-current {
 			@apply font-semibold text-zinc-950 dark:text-white;
 		}
 
-		&.season-start::scroll-marker:focus-visible {
+		&::scroll-marker:focus-visible {
 			@apply rounded-md outline-2 outline-offset-4 outline-blue-500;
 		}
 	}
 
-	:global(.carousel__slide .still-image) {
-		@apply transition duration-300 ease-in-out;
+	figure {
+		/* Transition modifiers that are applied to the transition below */
+		@apply transition-['filter'] duration-700 ease-out-3;
+
+		/* Unsnapped items */
 		@container not scroll-state(snapped: inline) {
 			@apply not-hover:grayscale-75;
 		}

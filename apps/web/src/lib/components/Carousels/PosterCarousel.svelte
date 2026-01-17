@@ -36,7 +36,7 @@
 					`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
 				)}
 				class={[
-					'poster transition-transform duration-200 ease-out hover:-translate-y-0.5',
+					'carousel__item-poster transition-transform duration-200 ease-out-1 hover:-translate-y-0.5',
 					backdrop ? 'max-w-84' : 'max-w-40'
 				]}>
 				<Image {item} {backdrop} />
@@ -48,7 +48,7 @@
 <style lang="postcss">
 	@reference "tailwindcss";
 
-	:global(.poster) {
+	:global(.carousel__item-poster) {
 		animation:
 			animate-in linear forwards,
 			animate-out linear forwards;
