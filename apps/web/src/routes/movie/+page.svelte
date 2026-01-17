@@ -5,7 +5,7 @@
 
 <HeroCarousel items={await getMovies({ list: 'top_rated' })} />
 
-<div class="full-bleed mt-10 flex flex-col gap-y-10">
+<div class="mt-10 full-bleed flex flex-col gap-y-10">
 	<PosterCarousel heading="Trending" items={await getMovies({ list: 'trending' })} />
 	<PosterCarousel heading="Now Playing" items={await getMovies({ list: 'now_playing' })} />
 	<PosterCarousel heading="Popular" items={await getMovies({ list: 'popular' })} backdrop />

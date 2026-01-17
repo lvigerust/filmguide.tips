@@ -12,4 +12,6 @@ export type TrendingMovieResponse = Response<'trending-movies'>
 export type Movie = (MovieListItem | MovieDetails) & { media_type: 'movie' }
 
 // Extract the country provider data type from watch providers results
-export type CountryProviders = NonNullable<MovieWatchProviders['results']>[keyof NonNullable<MovieWatchProviders['results']>]
+export type CountryProviders = NonNullable<MovieWatchProviders['results']>[keyof NonNullable<
+	MovieWatchProviders['results']
+>]
