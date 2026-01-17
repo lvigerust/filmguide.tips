@@ -82,7 +82,7 @@
 					{/each}
 				</NavbarSection>
 
-				<NavbarSection class="justify-end">
+				<NavbarSection class="col-start-3 justify-end">
 					<CommandPalette />
 				</NavbarSection>
 			</Navbar>

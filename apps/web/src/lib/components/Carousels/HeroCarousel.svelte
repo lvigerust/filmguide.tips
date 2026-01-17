@@ -34,8 +34,10 @@
 					class="grid aspect-video [place-items:end_stretch] overflow-clip rounded-lg *:[grid-area:1/1]">
 					<Image {item} sizes="896px" backdrop />
 
-					<figcaption class="px-16 pb-12">
-						<Logo {item} />
+					<figcaption class="px-8 pb-6 sm:px-16 sm:pb-12">
+						<div class="logo w-full">
+							<Logo {item} />
+						</div>
 					</figcaption>
 				</figure>
 			</CarouselItem>
@@ -52,16 +54,26 @@
 			@apply transition-opacity duration-500;
 
 			figcaption {
-				@apply transition delay-300 duration-1000 ease-out-3;
+				@apply transition-colors duration-1000 ease-out-2;
+
+				> .logo {
+					@apply transition delay-300 duration-1000 ease-out-3;
+				}
 			}
 		}
 
+		/* Snapped items */
+		@container scroll-state(snapped: inline) {
+			figcaption {
+				@apply flex h-1/3 items-end bg-linear-to-t from-zinc-950/25;
+			}
+		}
 		/* Unsnapped items */
 		@container not scroll-state(snapped: inline) {
 			figure {
 				@apply opacity-75;
 
-				figcaption {
+				figcaption > .logo {
 					@apply translate-x-8 opacity-0;
 				}
 			}

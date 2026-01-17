@@ -97,6 +97,6 @@
 
 	::view-transition-group(*.provider) {
 		animation-duration: 0.75s;
-		animation-timing-function: var(--ease-spring-2);
+		animation-timing-function: var(--ease-spring-1);
 	}
 </style>

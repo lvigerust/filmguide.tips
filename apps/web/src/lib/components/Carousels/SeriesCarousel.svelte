@@ -16,6 +16,8 @@
 	}: SvelteHTMLElements['div'] & {
 		seasons: SvelteMap<number, TvSeasonDetails>
 	} = $props()
+
+	const seen = { season_number: 1, episode_number: 3 }
 </script>
 
 <div class={cn('full-bleed', className)} {...restProps}>
@@ -23,10 +25,14 @@
 		{#each seasons.values() as season (season._id)}
 			{#each season.episodes as episode, index (episode.id)}
 				<div
+					class="carousel__item relative snap-start"
 					style="container-type: scroll-state;"
-					class="relative snap-start"
+					class:seen={season.season_number < seen.season_number ||
+						(season.season_number === seen.season_number &&
+							episode.episode_number <= seen.episode_number)}
 					class:scroll-button={index === 0}
-					data-season-number={index === 0 ? season.season_number : undefined}>
+					data-season-number={season.season_number}
+					data-episode-number={episode.episode_number}>
 					<figure class="group">
 						{#if episode.still_path}
 							<div class="overflow-hidden rounded-lg">
@@ -95,6 +101,10 @@
 		&::after {
 			content: '';
 			display: block;
+		}
+
+		& > :not(.seen):nth-child(1 of :not(.seen)) {
+			scroll-initial-target: nearest;
 		}
 	}
 
