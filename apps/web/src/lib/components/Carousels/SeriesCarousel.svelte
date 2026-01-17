@@ -132,6 +132,7 @@
 	figure {
 		/* Transition modifiers that are applied to the transition below */
 		@apply transition-['filter'] duration-700 ease-out-3;
+		transition: filter 0.7s var(--ease-out-3);
 
 		/* Unsnapped items */
 		@container not scroll-state(snapped: inline) {
