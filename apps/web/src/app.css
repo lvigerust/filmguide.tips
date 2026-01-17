@@ -1,9 +1,9 @@
 /* Component essentials (Tailwind + required plugins/utilities) */
 @import '@lvigerust/components/styles';
+@import './lib/assets/styles/easings.css';
+
 @source '../node_modules/@lvigerust/components/dist/components';
 
-@import 'tailwindcss';
-@plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
 @layer base {
@@ -22,26 +22,4 @@
 
 @utility full-bleed {
 	@apply ml-[calc(50%-50vw)] w-screen;
-}
-
-@theme {
-	--ease-spring-2: linear(
-		0,
-		0.007,
-		0.029 2.2%,
-		0.118 4.7%,
-		0.625 14.4%,
-		0.826 19%,
-		0.902,
-		0.962,
-		1.008 26.1%,
-		1.041 28.7%,
-		1.064 32.1%,
-		1.07 36%,
-		1.061 40.5%,
-		1.015 53.4%,
-		0.999 61.6%,
-		0.995 71.2%,
-		1
-	);
 }

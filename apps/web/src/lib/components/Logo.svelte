@@ -15,7 +15,7 @@
 	const images = await untrack(() => getMovieImages({ id: item.id, media_type: item.media_type }))
 </script>
 
-<img
+<enhanced:img
 	{...restProps}
 	src={`${PUBLIC_TMDB_IMG_URL}/w500${images.logos?.[0].file_path}`}
 	alt="Logo"
