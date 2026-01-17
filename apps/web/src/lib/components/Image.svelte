@@ -85,5 +85,5 @@
 	alt={alt || itemName}
 	sizes={sizes || defaultSizes}
 	title={itemName}
-	class={cn('size-full rounded-lg object-cover', aspectRatio, className)}
+	class={cn('size-full rounded-[inherit] object-cover', aspectRatio, className)}
 	bind:this={ref} />

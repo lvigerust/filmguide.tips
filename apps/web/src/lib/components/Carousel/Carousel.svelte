@@ -13,7 +13,10 @@
 
 <div
 	{...restProps}
-	class={cn('carousel flex snap-x snap-mandatory gap-x-4 overflow-x-auto scroll-smooth', className)}
+	class={cn(
+		'carousel flex snap-x snap-mandatory gap-x-4 overflow-x-auto scroll-smooth pt-1',
+		className
+	)}
 	bind:this={ref}>
 	{@render children?.()}
 </div>

@@ -30,14 +30,16 @@
 					class="carousel__slide"
 					class:season-start={index === 0}
 					data-season-number={index === 0 ? season.season_number : undefined}>
-					<figure>
+					<figure class="group">
 						{#if episode.still_path}
-							<Image
-								item={episode}
-								still
-								alt={episode.name || `Episode ${episode.episode_number}`}
-								loading="lazy"
-								class="still-image" />
+							<div class="overflow-hidden rounded-lg">
+								<Image
+									item={episode}
+									still
+									alt={episode.name || `Episode ${episode.episode_number}`}
+									loading="lazy"
+									class="still-image scale-[102.5%] group-hover:scale-100" />
+							</div>
 						{:else}
 							<div
 								class="grid aspect-video place-items-center rounded-lg ring dark:bg-zinc-900 dark:ring-white/5 dark:ring-inset">
@@ -145,7 +147,7 @@
 	:global(.carousel__slide .still-image) {
 		@apply transition duration-300 ease-in-out;
 		@container not scroll-state(snapped: inline) {
-			@apply grayscale-75;
+			@apply not-hover:grayscale-75;
 		}
 	}
 </style>

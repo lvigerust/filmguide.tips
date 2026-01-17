@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Heading } from '@lvigerust/components/Heading'
+
 	let { data } = $props()
 	let { movie } = $derived(data)
 </script>
@@ -8,3 +10,5 @@
 	alt={movie.title}
 	class="max-w-96 object-cover"
 	style:--transition-name={`movie-${movie.id}`} />
+
+<Heading>Bento grid with Collection movies</Heading>

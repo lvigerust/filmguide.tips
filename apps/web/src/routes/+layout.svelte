@@ -45,7 +45,12 @@
 			<SidebarBody>
 				<SidebarSection>
 					{#each navItems as { href, label } (href)}
-						<SidebarItem {href}>
+						<SidebarItem
+							{href}
+							current={page.url.pathname === href ||
+								(href !== '/'
+									? page.url.pathname.startsWith(href)
+									: page.url.pathname.startsWith('/'))}>
 							<SidebarLabel>{label}</SidebarLabel>
 						</SidebarItem>
 					{/each}
@@ -93,3 +98,30 @@
 		</div>
 	</main>
 </div>
+
+<style lang="postcss">
+	@reference "tailwindcss";
+
+	/* View Transition API */
+	:global {
+		::view-transition {
+			pointer-events: none;
+		}
+
+		:root {
+			view-transition-name: none;
+		}
+
+		[data-vt] {
+			view-transition-name: var(--transition-name, none);
+		}
+
+		[data-slot='mobile-sidebar'] {
+			view-transition-name: --mobile-sidebar;
+		}
+
+		::view-transition-group(--mobile-sidebar) {
+			z-index: 1;
+		}
+	}
+</style>

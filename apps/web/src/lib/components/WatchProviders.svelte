@@ -4,7 +4,7 @@
 	import type { WatchProviders } from '$types'
 	import type { ComponentProps } from 'svelte'
 	import { Dialog, DialogBody, DialogDescription, DialogTitle } from '@lvigerust/components/Dialog'
-	import { Button } from '@lvigerust/components/Button'
+	import { Button, TouchTarget } from '@lvigerust/components/Button'
 	import { cn } from '@lvigerust/utils'
 	import { Label } from '@lvigerust/components/Fieldset'
 	import { RadioGroup } from 'bits-ui'
@@ -23,6 +23,19 @@
 			(code) => providers?.results?.[code]?.flatrate
 		)
 	)
+
+	const handleCountryChange = (value: string) => {
+		const update = () => {
+			selectedCountry = value as keyof typeof COUNTRIES
+		}
+
+		if (typeof document === 'undefined' || !document.startViewTransition) {
+			update()
+			return
+		}
+
+		document.startViewTransition(update)
+	}
 </script>
 
 <Button onclick={() => (open = true)} plain class={cn('', className)}>
@@ -41,23 +54,28 @@
 	</DialogDescription>
 
 	<DialogBody class="grid grid-cols-3 border-t pt-6">
-		<RadioGroup.Root bind:value={selectedCountry} class="grid grid-flow-row gap-1">
+		<RadioGroup.Root
+			value={selectedCountry}
+			onValueChange={handleCountryChange}
+			class="grid grid-flow-row gap-1">
 			{#each availableCountries as code (code)}
-				<div>
-					<RadioGroup.Item value={code} class="focus:outline-none">
+				<RadioGroup.Item value={code} class="text-start focus:outline-none">
+					<TouchTarget>
 						<Label
 							class="text-zinc-500 in-data-[state=checked]:font-semibold dark:text-zinc-400 dark:in-data-[state=checked]:text-white">
 							{COUNTRIES[code]}
 						</Label>
-					</RadioGroup.Item>
-				</div>
+					</TouchTarget>
+				</RadioGroup.Item>
 			{/each}
 		</RadioGroup.Root>
 
 		{#if providers?.results?.[selectedCountry]}
-			<ul class="col-span-2 flex flex-wrap gap-2.5">
+			<ul class="col-span-2 flex flex-wrap content-start gap-3">
 				{#each providers?.results?.[selectedCountry]?.flatrate as provider (provider.provider_id)}
-					<li class="flex">
+					<li
+						style:--transition-name={`provider-${provider.provider_id}`}
+						style:view-transition-class="provider">
 						<img
 							src="{PUBLIC_TMDB_IMG_URL}/w300{provider.logo_path}"
 							alt={provider.provider_name}
@@ -69,3 +87,16 @@
 		{/if}
 	</DialogBody>
 </Dialog>
+
+<style lang="postcss">
+	@reference "tailwindcss";
+
+	:where(li) {
+		view-transition-name: var(--transition-name, none);
+	}
+
+	::view-transition-group(*.provider) {
+		animation-duration: 0.75s;
+		animation-timing-function: var(--ease-spring-2);
+	}
+</style>

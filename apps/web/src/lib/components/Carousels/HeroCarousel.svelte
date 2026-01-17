@@ -7,8 +7,6 @@
 	import { Image, Logo } from '$components'
 	import { resolve } from '$app/paths'
 
-	let snappedId = $state<string>()
-
 	let {
 		items,
 		class: className,
@@ -16,23 +14,6 @@
 	}: ComponentProps<typeof Carousel> & { items: SvelteMap<number, Movie | Show> } = $props()
 
 	let ref = $state<HTMLDivElement>()
-
-	$effect(() => {
-		const carousel = ref
-		if (!carousel) return
-
-		const handleSnapChange = (e: Event) => {
-			// @ts-expect-error SnapEvent
-			const element: HTMLElement = e.snapTargetInline
-			snappedId = element.dataset.id ?? '1'
-		}
-
-		carousel.addEventListener('scrollsnapchange', handleSnapChange)
-
-		return () => {
-			carousel.removeEventListener('scrollsnapchange', handleSnapChange)
-		}
-	})
 </script>
 
 <Carousel
@@ -46,14 +27,14 @@
 				`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
 			)}
 			class="relative max-w-[85%] snap-center sm:max-w-4xl sm:rounded-2xl">
-			<figure class:scroll-start={i === 1} class="opacity-75 transition-opacity duration-300">
+			<figure
+				class:scroll-start={i === 3}
+				class="grid aspect-video [place-items:end_stretch] overflow-clip rounded-lg *:[grid-area:1/1]">
 				<Image {item} sizes="896px" backdrop />
 
-				{#if snappedId === String(item.id)}
-					<div class="absolute inset-x-0 bottom-0 p-12">
-						<Logo {item} />
-					</div>
-				{/if}
+				<figcaption class="px-16 pb-12">
+					<Logo {item} class="logo" />
+				</figcaption>
 			</figure>
 		</CarouselItem>
 	{/each}
@@ -62,13 +43,28 @@
 <style lang="postcss">
 	@reference "tailwindcss";
 
-	@container scroll-state(snapped: inline) {
-		figure {
-			@apply opacity-100;
-		}
-	}
-
 	:global(.hero__carousel) {
+		/* Unsnapped items */
+		@container not scroll-state(snapped: inline) {
+			figure {
+				@apply opacity-75;
+			}
+
+			:global(.logo) {
+				@apply translate-x-8 opacity-0;
+			}
+		}
+
+		/* Transition modifiers */
+		figure {
+			@apply transition-opacity duration-500;
+
+			:global(.logo) {
+				--ease-3: cubic-bezier(0.25, 0, 0.3, 1);
+				@apply transition delay-300 duration-1000 ease-(--ease-3);
+			}
+		}
+
 		&::before,
 		&::after {
 			content: '';

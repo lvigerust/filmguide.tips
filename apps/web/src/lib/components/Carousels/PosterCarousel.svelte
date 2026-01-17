@@ -35,7 +35,10 @@
 				href={resolve(
 					`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
 				)}
-				class={['poster', backdrop ? 'max-w-84' : 'max-w-40']}>
+				class={[
+					'poster transition-transform duration-200 ease-out hover:-translate-y-0.5',
+					backdrop ? 'max-w-84' : 'max-w-40'
+				]}>
 				<Image {item} {backdrop} />
 			</CarouselItem>
 		{/each}
