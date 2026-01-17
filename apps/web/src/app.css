@@ -1,6 +1,7 @@
 /* Component essentials (Tailwind + required plugins/utilities) */
 @import '@lvigerust/components/styles';
-@import './lib/assets/styles/easings.css';
+@import './lib/assets/styles/animations.css';
+@import './lib/assets/styles/easing.css';
 
 @source '../node_modules/@lvigerust/components/dist/components';
 
