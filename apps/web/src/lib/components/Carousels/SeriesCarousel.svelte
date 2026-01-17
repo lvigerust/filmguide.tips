@@ -135,6 +135,9 @@
 
 		/* Unsnapped items */
 		@container not scroll-state(snapped: inline) {
+			&:not(:hover) {
+				filter: grayscale(75%);
+			}
 			@apply not-hover:grayscale-75;
 		}
 	}
