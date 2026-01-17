@@ -14,6 +14,8 @@
 	}: ComponentProps<typeof Carousel> & { items: SvelteMap<number, Movie | Show> } = $props()
 
 	let ref = $state<HTMLDivElement>()
+
+	// $inspect('Fetch images for adjecent carousel items to snapped')
 </script>
 
 <div class="hero-carousel contents">
