@@ -50,7 +50,6 @@ export const getMovieImages = query(
 	z.object({ id: z.number(), media_type: z.string() }),
 	async ({ id, media_type }) => {
 		const { fetch } = getRequestEvent()
-
 		const res = await fetch(
 			`${PUBLIC_TMDB_BASE_URL}/${media_type}/${id}/images?include_image_language=en-US,null`
 		)

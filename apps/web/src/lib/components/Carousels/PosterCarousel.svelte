@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { cn, slugify } from '@lvigerust/utils'
 	import type { ComponentProps } from 'svelte'
-	import type { Movie, Show } from '$types'
 	import { Carousel, CarouselItem } from '../Carousel'
 	import { Heading } from '@lvigerust/components/Heading'
 	import { resolve } from '$app/paths'
 	import { Image } from '$components'
 	import type { SvelteMap } from 'svelte/reactivity'
 	import type { ClassValue } from 'svelte/elements'
+	import type { Media } from '$types'
 
 	let {
 		heading,
@@ -18,7 +18,7 @@
 		...restProps
 	}: ComponentProps<typeof Carousel> & {
 		heading: string
-		items: SvelteMap<number, Movie | Show>
+		items: SvelteMap<number, Media>
 		backdrop?: boolean
 		containerClass?: ClassValue
 	} = $props()

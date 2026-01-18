@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { PUBLIC_TMDB_IMG_URL } from '$env/static/public'
 	import { cn } from '@lvigerust/utils'
-	import type { Episode, Movie, Show } from '$types'
+	import type { Episode, Media } from '$types'
 	import type { HTMLImgAttributes } from 'svelte/elements'
 	import type { WithElementRef } from 'bits-ui'
 
@@ -20,12 +20,12 @@
 		class: className,
 		...restProps
 	}: WithElementRef<HTMLImgAttributes, HTMLImageElement> & {
-		item: Movie | Show | Episode
+		item: Media | Episode
 		backdrop?: boolean
 		still?: boolean
 	} = $props()
 
-	const isEpisode = (item: Movie | Show | Episode): item is Episode =>
+	const isEpisode = (item: Media | Episode): item is Episode =>
 		'still_path' in item && !('media_type' in item)
 
 	const src = $derived.by(() => {

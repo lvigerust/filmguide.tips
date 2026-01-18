@@ -3,7 +3,7 @@
 	import { HeroCarousel, PosterCarousel } from '$components'
 </script>
 
-<HeroCarousel items={await getMovies({ list: 'top_rated' })} />
+<HeroCarousel items={await getMovies({ list: 'top_rated' })} startIndex={1} />
 
 <div class="mt-10 full-bleed flex flex-col gap-y-10">
 	<PosterCarousel heading="Trending" items={await getMovies({ list: 'trending' })} />
