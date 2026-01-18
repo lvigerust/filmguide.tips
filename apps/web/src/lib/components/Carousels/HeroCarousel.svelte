@@ -53,8 +53,7 @@
 					class="grid aspect-video [place-items:end_stretch] overflow-clip rounded-lg *:[grid-area:1/1]">
 					<Image {item} sizes="896px" backdrop />
 
-					<figcaption
-						class="flex h-1/3 items-end bg-linear-to-t from-zinc-950/25 px-8 pb-6 sm:px-16 sm:pb-12">
+					<figcaption class="flex h-1/3 items-end px-8 pb-6 sm:px-16 sm:pb-12">
 						{#if fetchedIndexes.has(index)}
 							<div
 								in:fly={{
@@ -79,12 +78,11 @@
 
 	.hero-carousel {
 		/* Transition modifiers that are applied to the transition below */
-
 		figure {
 			@apply transition-opacity duration-500;
 
 			figcaption {
-				@apply transition-colors duration-1000 ease-out-2;
+				@apply bg-linear-to-t from-zinc-950/25 transition-colors duration-1000 ease-out-2;
 
 				> .logo {
 					@apply transition delay-300 duration-1000 ease-out-3;
@@ -92,19 +90,21 @@
 			}
 		}
 
-		/* Snapped items */
-		@container scroll-state(snapped: inline) {
-			figcaption {
-				@apply opacity-100;
+		@supports (container-type: scroll-state) {
+			/* Snapped items */
+			@container scroll-state(snapped: inline) {
+				figcaption {
+					@apply opacity-100;
+				}
 			}
-		}
-		/* Unsnapped items */
-		@container not scroll-state(snapped: inline) {
-			figure {
-				@apply opacity-75;
+			/* Unsnapped items */
+			@container not scroll-state(snapped: inline) {
+				figure {
+					@apply opacity-75;
 
-				figcaption > .logo {
-					@apply translate-x-8 opacity-0;
+					figcaption > .logo {
+						@apply translate-x-8 opacity-0;
+					}
 				}
 			}
 		}

@@ -109,10 +109,9 @@
 	}
 
 	/* Scroll marker for the first episode of a season */
-	.scroll-button {
+	.carousel__item.scroll-button {
 		&::scroll-marker {
-			content: 'Season ' attr(data-season-number);
-			@apply text-zinc-500 no-underline transition-['font-weight'] duration-300 dark:text-zinc-400;
+			@apply text-zinc-500 no-underline transition-['font-weight'] duration-300 content-['Season_'_attr(data-season-number)] dark:text-zinc-400;
 		}
 
 		/*! BUG: This seems to have no effect */
@@ -132,13 +131,9 @@
 	figure {
 		/* Transition modifiers that are applied to the transition below */
 		@apply transition-['filter'] duration-700 ease-out-3;
-		transition: filter 0.7s var(--ease-out-3);
 
 		/* Unsnapped items */
 		@container not scroll-state(snapped: inline) {
-			&:not(:hover) {
-				filter: grayscale(75%);
-			}
 			@apply not-hover:grayscale-75;
 		}
 	}
