@@ -42,8 +42,10 @@
 
 	<Carousel
 		{...restProps}
-		style="container-type: scroll-state;"
-		class={cn('poster-carousel scroll-px-(--gutter) px-(--gutter)', className)}>
+		class={cn(
+			'poster-carousel @container-[scroll-state] scroll-px-(--gutter) px-(--gutter)',
+			className
+		)}>
 		{#each items.values() as item, index (item.id)}
 			<CarouselItem
 				{@attach trackClick}

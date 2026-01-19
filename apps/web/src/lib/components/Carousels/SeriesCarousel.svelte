@@ -120,12 +120,10 @@
 		@apply grid auto-cols-[--spacing(80)] grid-flow-col gap-[2vmin];
 		@apply snap-x snap-mandatory overflow-x-auto scroll-smooth;
 
-		container-type: scroll-state;
-		scrollbar-width: none;
-		scroll-marker-group: before;
+		@apply @container-[scroll-state] [scroll-marker-group:before] [scrollbar-width:none];
 
 		& > :not(.seen):nth-child(1 of :not(.seen)) {
-			scroll-initial-target: nearest;
+			@apply scroll-start;
 		}
 	}
 

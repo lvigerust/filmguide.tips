@@ -43,11 +43,10 @@
 			<CarouselItem
 				data-index={index}
 				data-id={item.id}
-				style="container-type: scroll-state;"
 				href={resolve(
 					`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
 				)}
-				class="relative max-w-[85%] snap-center sm:max-w-4xl sm:rounded-2xl">
+				class="@container-[scroll-state] relative max-w-[85%] snap-center sm:max-w-4xl sm:rounded-2xl">
 				<figure
 					class:scroll-start={index === [...fetchedIndexes][0]}
 					class="grid aspect-video [place-items:end_stretch] overflow-clip rounded-lg *:[grid-area:1/1]">
