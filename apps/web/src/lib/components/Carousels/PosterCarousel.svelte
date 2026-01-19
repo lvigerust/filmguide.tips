@@ -9,15 +9,6 @@
 	import type { ClassValue } from 'svelte/elements'
 	import type { Media } from '$types'
 
-	const trackClick = (itemNode: HTMLDivElement) => {
-		const handler = (event: Event & { currentTarget: HTMLElement }) => {
-			const item = event.currentTarget.dataset.id
-			event.currentTarget.style.setProperty('view-transition-name', `poster-${item}`)
-		}
-		itemNode.addEventListener('click', handler as EventListener)
-		return () => itemNode.removeEventListener('click', handler as EventListener)
-	}
-
 	let {
 		heading,
 		items,
@@ -48,8 +39,6 @@
 		)}>
 		{#each items.values() as item, index (item.id)}
 			<CarouselItem
-				{@attach trackClick}
-				data-vt
 				data-id={item.id}
 				href={resolve(
 					`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`

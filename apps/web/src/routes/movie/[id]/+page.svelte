@@ -1,14 +1,14 @@
 <script lang="ts">
+	import { Image } from '$components'
 	import { Heading } from '@lvigerust/components/Heading'
 
 	let { data } = $props()
 	let { movie } = $derived(data)
 </script>
 
-<img
-	src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-	alt={movie.title}
-	class="max-w-96 object-cover"
-	style:--transition-name={`movie-${movie.id}`} />
+<Image
+	item={movie}
+	class="max-w-[calc((100cqi/4))] rounded-lg sm:max-w-80 sm:rounded-xl"
+	sizes="320px" />
 
 <Heading>Bento grid with Collection movies</Heading>

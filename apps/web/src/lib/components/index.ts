@@ -1,4 +1,5 @@
 export { Carousel, CarouselItem } from './Carousel'
+export { default as AppLayout } from './AppLayout.svelte'
 export { default as CommandPalette } from './CommandPalette.svelte'
 export { default as Image } from './Image.svelte'
 export { default as Logo } from './Logo.svelte'

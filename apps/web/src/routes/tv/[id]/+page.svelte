@@ -13,11 +13,9 @@
 <div class="space-y-8 sm:space-y-12">
 	<div class="flex gap-6 max-sm:flex-col sm:gap-8">
 		<Image
-			data-vt
 			item={show}
 			class="max-w-[calc((100cqi/4))] rounded-lg sm:max-w-80 sm:rounded-xl"
-			sizes="320px"
-			style={`view-transition-name: poster-${show.id}`} />
+			sizes="320px" />
 
 		<div class="flex flex-col gap-4">
 			<div class="flex">

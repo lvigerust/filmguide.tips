@@ -14,6 +14,7 @@
 <svelte:element
 	this={'href' in restProps ? 'a' : 'div'}
 	{...restProps}
+	tabindex={-1}
 	class={cn('carousel__item block shrink-0 overflow-clip rounded-lg', className)}
 	bind:this={ref}>
 	{@render children?.()}
