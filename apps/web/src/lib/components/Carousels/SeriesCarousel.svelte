@@ -158,21 +158,6 @@
 		}
 	}
 
-	@supports not (scroll-marker-group: before) {
-		.carousel__item {
-			animation: animate-out linear forwards;
-			animation-timeline: view(inline);
-			animation-range: exit;
-		}
-
-		@keyframes animate-out {
-			to {
-				opacity: 0.5;
-				scale: 0.95;
-			}
-		}
-	}
-
 	figure {
 		/* Transition modifiers that are applied to the transition below */
 		@apply transition-['filter'] duration-700 ease-out-3;
