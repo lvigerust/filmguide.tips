@@ -25,7 +25,7 @@
 		{#each seasons.values() as season (season._id)}
 			{#each season.episodes as episode, index (episode.id)}
 				<div
-					class="carousel__item relative"
+					class="carousel__item relative snap-start"
 					style="container-type: scroll-state;"
 					class:seen={season.season_number < seen.season_number ||
 						(season.season_number === seen.season_number &&
