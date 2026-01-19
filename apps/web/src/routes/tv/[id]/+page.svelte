@@ -13,9 +13,11 @@
 <div class="space-y-12">
 	<div class="flex gap-8 max-sm:flex-col">
 		<Image
+			data-vt
 			item={show}
 			class="max-w-[calc((100cqi/4))] rounded-lg sm:max-w-80 sm:rounded-xl"
-			sizes="320px" />
+			sizes="320px"
+			style={`view-transition-name: poster-${show.id}`} />
 
 		<div class="flex flex-col gap-4">
 			<div class="flex">
@@ -27,7 +29,7 @@
 				</Heading>
 			</div>
 
-			<div class="flex gap-1.5">
+			<div class="flex flex-wrap gap-1.5">
 				<Text>
 					{show.first_air_date ? formatDate(show.first_air_date, undefined, 'en-US') : 'Unknown'}
 				</Text>

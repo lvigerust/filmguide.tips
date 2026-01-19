@@ -9,7 +9,17 @@
 	import { fly } from 'svelte/transition'
 	import { quadOut } from 'svelte/easing'
 
-	let mobile = new MediaQuery('width < 64rem')
+	const mobile = new MediaQuery('width < 64rem')
+
+	const trackSnap = (carousel: HTMLDivElement) => {
+		const handler = (event: Event & { snapTargetInline: HTMLElement | null }) => {
+			const element = event.snapTargetInline
+			const indexStr = element?.dataset.index
+			if (indexStr) fetchedIndexes.add(Number(indexStr))
+		}
+		carousel.addEventListener('scrollsnapchanging', handler as EventListener)
+		return () => carousel.removeEventListener('scrollsnapchanging', handler as EventListener)
+	}
 
 	let {
 		items,
@@ -22,24 +32,13 @@
 	} = $props()
 
 	let fetchedIndexes = untrack(() => new SvelteSet([startIndex])) // Initial index
-
-	const trackSnap = (carousel: HTMLDivElement) => {
-		const handler = (event: Event & { snapTargetInline: HTMLElement | null }) => {
-			const element = event.snapTargetInline
-			const indexStr = element?.dataset.index
-			if (indexStr) fetchedIndexes.add(Number(indexStr))
-		}
-
-		carousel.addEventListener('scrollsnapchanging', handler as EventListener)
-		return () => carousel.removeEventListener('scrollsnapchanging', handler as EventListener)
-	}
 </script>
 
 <div class="hero-carousel contents">
 	<Carousel
 		{@attach trackSnap}
 		{...restProps}
-		class={cn('full-bleed snap-always sm:gap-x-8', className)}>
+		class={cn('full-bleed snap-always gap-[4vmin] sm:gap-x-8', className)}>
 		{#each items.values() as item, index (item.id)}
 			<CarouselItem
 				data-index={index}

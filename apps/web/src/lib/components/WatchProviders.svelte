@@ -25,9 +25,7 @@
 	)
 
 	const handleCountryChange = (value: string) => {
-		const update = () => {
-			selectedCountry = value as keyof typeof COUNTRIES
-		}
+		const update = () => (selectedCountry = value as keyof typeof COUNTRIES)
 
 		if (typeof document === 'undefined' || !document.startViewTransition) {
 			update()
@@ -53,7 +51,7 @@
 		Providers are listed by country. You can customize the list of countries by creating an account.
 	</DialogDescription>
 
-	<DialogBody class="grid grid-cols-3 border-t pt-6">
+	<DialogBody class="grid grid-cols-3 border-t pt-6 pb-4">
 		<RadioGroup.Root
 			value={selectedCountry}
 			onValueChange={handleCountryChange}
@@ -96,7 +94,7 @@
 	}
 
 	::view-transition-group(*.provider) {
-		animation-duration: 0.75s;
+		animation-duration: 0.5s;
 		animation-timing-function: var(--ease-spring-1);
 	}
 </style>

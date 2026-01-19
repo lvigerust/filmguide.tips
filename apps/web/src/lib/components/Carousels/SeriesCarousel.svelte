@@ -25,7 +25,7 @@
 		{#each seasons.values() as season (season._id)}
 			{#each season.episodes as episode, index (episode.id)}
 				<div
-					class="carousel__item relative snap-start"
+					class="carousel__item relative"
 					style="container-type: scroll-state;"
 					class:seen={season.season_number < seen.season_number ||
 						(season.season_number === seen.season_number &&
@@ -86,7 +86,7 @@
 
 		--gutter: max(calc((100vw - var(--container-max)) / 2), var(--layout-padding));
 
-		@apply scroll-ps-(--gutter) ps-(--gutter) pt-0.5;
+		@apply scroll-px-(--gutter) px-(--gutter) pt-0.5;
 
 		@apply grid auto-cols-[--spacing(80)] grid-flow-col gap-[2vmin];
 		@apply snap-x snap-mandatory overflow-x-auto scroll-smooth;
@@ -95,12 +95,7 @@
 		scroll-marker-group: before;
 
 		&::scroll-marker-group {
-			@apply mb-4 flex h-lh gap-5 px-(--gutter);
-		}
-
-		&::after {
-			content: '';
-			display: block;
+			@apply mb-4 flex h-lh scroll-px-(--gutter) gap-5 overflow-x-scroll px-(--gutter) [scrollbar-width:none];
 		}
 
 		& > :not(.seen):nth-child(1 of :not(.seen)) {
@@ -111,7 +106,7 @@
 	/* Scroll marker for the first episode of a season */
 	.carousel__item.scroll-button {
 		&::scroll-marker {
-			@apply text-zinc-500 no-underline transition-['font-weight'] duration-300 content-['Season_'_attr(data-season-number)] dark:text-zinc-400;
+			@apply whitespace-nowrap text-zinc-500 no-underline transition-['font-weight'] duration-300 content-['Season_'_attr(data-season-number)] dark:text-zinc-400;
 		}
 
 		/*! BUG: This seems to have no effect */

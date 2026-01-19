@@ -9,6 +9,15 @@
 	import type { ClassValue } from 'svelte/elements'
 	import type { Media } from '$types'
 
+	const trackClick = (itemNode: HTMLDivElement) => {
+		const handler = (event: Event & { currentTarget: HTMLElement }) => {
+			const item = event.currentTarget.dataset.id
+			event.currentTarget.style.setProperty('view-transition-name', `poster-${item}`)
+		}
+		itemNode.addEventListener('click', handler as EventListener)
+		return () => itemNode.removeEventListener('click', handler as EventListener)
+	}
+
 	let {
 		heading,
 		items,
@@ -26,7 +35,7 @@
 	} = $props()
 </script>
 
-<div class={cn('relative [--gutter:--spacing(6)] sm:[--gutter:--spacing(20)]', containerClass)}>
+<div class={cn('relative [--gutter:--spacing(4)] sm:[--gutter:--spacing(20)]', containerClass)}>
 	<Heading class="mb-4 px-(--gutter) text-lg">
 		{heading}
 	</Heading>
@@ -34,20 +43,23 @@
 	<Carousel
 		{...restProps}
 		style="container-type: scroll-state;"
-		class={cn('poster-carousel scroll-px-(--gutter) px-(--gutter) max-sm:gap-2.5', className)}>
+		class={cn('poster-carousel scroll-px-(--gutter) px-(--gutter)', className)}>
 		{#each items.values() as item, index (item.id)}
 			<CarouselItem
+				{@attach trackClick}
+				data-vt
+				data-id={item.id}
 				href={resolve(
 					`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
 				)}
 				class={[
-					'transition-transform duration-200 ease-out-1 hover:-translate-y-0.5 max-sm:rounded-md',
+					'snap-start transition-transform duration-200 ease-out-1 hover:-translate-y-0.5 max-sm:rounded-md',
 					backdrop
-						? 'max-w-84'
+						? 'max-w-[55cqi] sm:max-w-84'
 						: 'max-w-[calc((100cqi-var(--gutter)*2-(--spacing(2.5)*3))/3)] sm:max-w-40',
 					index === startIndex && 'scroll-start'
 				]}>
-				<div class="carousel__item-poster">
+				<div class="carousel__item-poster rounded-md sm:rounded-lg">
 					<Image {item} {backdrop} />
 				</div>
 			</CarouselItem>
