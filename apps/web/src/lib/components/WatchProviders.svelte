@@ -16,6 +16,7 @@
 		const code = value as CountryCode
 		const update = () => (selectedCountry = code)
 		if (providersListEl?.startViewTransition) providersListEl.startViewTransition(update)
+		else if (document?.startViewTransition) document.startViewTransition(update)
 		else update()
 	}
 

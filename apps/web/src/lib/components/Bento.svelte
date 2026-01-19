@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { Image } from '$components'
 	import type { Media } from '$types'
-	import { ref } from '$utils'
 	import { RadioGroup } from 'bits-ui'
 	import type { SvelteMap } from 'svelte/reactivity'
 
 	const changeLayout = (value: string) => {
 		const update = () => (selectedItem = value)
-		if (radioGroupEl?.startViewTransition) radioGroupEl.startViewTransition(update)
+		if (document?.startViewTransition) document.startViewTransition(update)
 		else update()
 	}
 
@@ -15,13 +14,10 @@
 
 	let itemsArray = $derived([...items.values()].slice(5, 8))
 	let selectedItem = $derived(String(itemsArray[0].id))
-
-	let radioGroupEl: HTMLDivElement | null = null
 </script>
 
 <div class="full-bleed">
 	<RadioGroup.Root
-		{@attach ref((n) => (radioGroupEl = n))}
 		class="bento container mx-auto"
 		value={selectedItem}
 		onValueChange={changeLayout}>
