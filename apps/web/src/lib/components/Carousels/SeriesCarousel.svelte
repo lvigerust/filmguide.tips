@@ -95,7 +95,7 @@
 		scroll-marker-group: before;
 
 		&::scroll-marker-group {
-			@apply mb-4 flex h-lh scroll-px-(--gutter) gap-5 overflow-x-scroll px-(--gutter) [scrollbar-width:none];
+			@apply mb-4 flex h-lh scroll-px-(--gutter) gap-5 overflow-x-scroll scroll-smooth px-(--gutter) [scrollbar-width:none];
 		}
 
 		& > :not(.seen):nth-child(1 of :not(.seen)) {
