@@ -8,6 +8,12 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	interface HTMLElement {
+		startViewTransition?: (
+			callbackOptions?: ViewTransitionUpdateCallback | StartViewTransitionOptions
+		) => void
+	}
 }
 
 export {}

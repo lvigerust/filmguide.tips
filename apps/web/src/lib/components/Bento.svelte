@@ -1,40 +1,47 @@
 <script lang="ts">
 	import { Image } from '$components'
 	import type { Media } from '$types'
+	import { ref } from '$utils'
 	import { RadioGroup } from 'bits-ui'
 	import type { SvelteMap } from 'svelte/reactivity'
+
+	const changeLayout = (value: string) => {
+		const update = () => (selectedItem = value)
+		if (radioGroupEl?.startViewTransition) radioGroupEl.startViewTransition(update)
+		else update()
+	}
 
 	let { items }: { items: SvelteMap<number, Media> } = $props()
 
 	let itemsArray = $derived([...items.values()].slice(5, 8))
 	let selectedItem = $derived(String(itemsArray[0].id))
 
-	const changeLayout = (value: string) => {
-		if (!document.startViewTransition) {
-			selectedItem = value
-			return
-		}
-		document.startViewTransition(() => (selectedItem = value))
-	}
+	let radioGroupEl: HTMLDivElement | null = null
 </script>
 
-<RadioGroup.Root class="bento full-bleed" value={selectedItem} onValueChange={changeLayout}>
-	{#each itemsArray as item, i (item.id)}
-		<div data-index={i + 1} class:checked={selectedItem === String(item.id)}>
-			<RadioGroup.Item
-				value={String(item.id)}
-				class="cursor-pointer focus:outline-none"
-				style={`view-transition-name: ${item.media_type}-${i + 1}; view-transition-class: image`}>
-				<Image
-					{item}
-					alt={item.media_type === 'movie' ? item.title : item.name}
-					sizes="100%"
-					backdrop
-					class="overflow-clip rounded-2xl" />
-			</RadioGroup.Item>
-		</div>
-	{/each}
-</RadioGroup.Root>
+<div class="full-bleed">
+	<RadioGroup.Root
+		{@attach ref((n) => (radioGroupEl = n))}
+		class="bento container mx-auto"
+		value={selectedItem}
+		onValueChange={changeLayout}>
+		{#each itemsArray as item, i (item.id)}
+			<div data-index={i + 1} class:checked={selectedItem === String(item.id)}>
+				<RadioGroup.Item
+					value={String(item.id)}
+					class="cursor-pointer focus:outline-none"
+					style={`view-transition-name: ${item.media_type}-${i + 1}; view-transition-class: image`}>
+					<Image
+						{item}
+						alt={item.media_type === 'movie' ? item.title : item.name}
+						sizes="100%"
+						backdrop
+						class="overflow-clip rounded-2xl" />
+				</RadioGroup.Item>
+			</div>
+		{/each}
+	</RadioGroup.Root>
+</div>
 
 <style lang="postcss">
 	@reference "tailwindcss";

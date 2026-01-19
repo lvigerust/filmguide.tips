@@ -8,6 +8,16 @@
 	import { cn } from '@lvigerust/utils'
 	import { Label } from '@lvigerust/components/Fieldset'
 	import { RadioGroup } from 'bits-ui'
+	import { ref } from '$utils'
+
+	type CountryCode = keyof typeof COUNTRIES
+
+	const handleCountryChange = (value: string) => {
+		const code = value as CountryCode
+		const update = () => (selectedCountry = code)
+		if (providersListEl?.startViewTransition) providersListEl.startViewTransition(update)
+		else update()
+	}
 
 	let {
 		providers,
@@ -17,23 +27,12 @@
 
 	let open = $state(false)
 
-	let selectedCountry = $state<keyof typeof COUNTRIES>('NO')
+	let selectedCountry = $state<CountryCode>('NO')
 	let availableCountries = $derived(
-		(Object.keys(COUNTRIES) as (keyof typeof COUNTRIES)[]).filter(
-			(code) => providers?.results?.[code]?.flatrate
-		)
+		(Object.keys(COUNTRIES) as CountryCode[]).filter((code) => providers?.results?.[code]?.flatrate)
 	)
 
-	const handleCountryChange = (value: string) => {
-		const update = () => (selectedCountry = value as keyof typeof COUNTRIES)
-
-		if (typeof document === 'undefined' || !document.startViewTransition) {
-			update()
-			return
-		}
-
-		document.startViewTransition(update)
-	}
+	let providersListEl: HTMLUListElement | null = null
 </script>
 
 <Button onclick={() => (open = true)} plain class={cn('', className)}>
@@ -69,10 +68,12 @@
 		</RadioGroup.Root>
 
 		{#if providers?.results?.[selectedCountry]}
-			<ul class="col-span-2 flex flex-wrap content-start gap-3">
-				{#each providers?.results?.[selectedCountry]?.flatrate as provider (provider.provider_id)}
+			<ul
+				class="col-span-2 flex flex-wrap content-start gap-3"
+				{@attach ref((n) => (providersListEl = n))}>
+				{#each providers.results[selectedCountry]?.flatrate as provider (provider.provider_id)}
 					<li
-						style:--transition-name={`provider-${provider.provider_id}`}
+						style:view-transition-name={`provider-${provider.provider_id}`}
 						style:view-transition-class="provider">
 						<img
 							src="{PUBLIC_TMDB_IMG_URL}/w300{provider.logo_path}"
@@ -88,10 +89,6 @@
 
 <style lang="postcss">
 	@reference "tailwindcss";
-
-	:where(li) {
-		view-transition-name: var(--transition-name, none);
-	}
 
 	::view-transition-group(*.provider) {
 		animation-duration: 0.5s;

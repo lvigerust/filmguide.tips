@@ -105,12 +105,12 @@
 
 	/* Scroll marker for the first episode of a season */
 	.carousel__item.scroll-button {
-		counter-increment: markers;
+		/* counter-increment: markers; */
 
 		&::scroll-marker {
-			content: 'Season ' counter(markers);
-			/* content: 'Season ' attr(data-season-number); */
-			@apply whitespace-nowrap text-zinc-500 no-underline transition-['font-weight'] duration-300 dark:text-zinc-400;
+			/* content: 'Season ' counter(markers); */
+			content: 'Season ' attr(data-season-number);
+			@apply whitespace-nowrap text-zinc-500 no-underline transition-['font-weight'] duration-300;
 		}
 
 		/*! BUG: This seems to have no effect */
@@ -119,7 +119,7 @@
 		}
 
 		&::scroll-marker:target-current {
-			@apply font-semibold text-zinc-950 dark:text-white;
+			@apply font-semibold text-white;
 		}
 
 		&::scroll-marker:focus-visible {

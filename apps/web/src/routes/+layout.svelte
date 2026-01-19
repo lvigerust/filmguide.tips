@@ -15,13 +15,27 @@
 		SidebarLabel,
 		SidebarSection
 	} from '@lvigerust/components/Sidebar'
-	import { afterNavigate } from '$app/navigation'
+	import { afterNavigate, onNavigate } from '$app/navigation'
 	import { CommandPalette } from '$components'
+	import { ref } from '$utils'
+
+	/* View Transition API */
+	onNavigate((navigation) => {
+		if (!sidebarSectionEl?.startViewTransition) return
+		return new Promise((resolve) => {
+			sidebarSectionEl?.startViewTransition?.(async () => {
+				resolve()
+				await navigation.complete
+			})
+		})
+	})
 
 	let { children } = $props()
 
 	let showSidebar = $state(false)
 	afterNavigate(() => (showSidebar = false)) // Close mobile sidebar when navigating
+
+	let sidebarSectionEl: HTMLElement | null = null
 </script>
 
 <svelte:head>
@@ -33,7 +47,7 @@
 	class="relative isolate flex min-h-svh w-full flex-col bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
 	<!--? Sidebar on mobile -->
 	<MobileSidebar bind:open={showSidebar}>
-		<Sidebar>
+		<Sidebar {@attach ref((n) => (sidebarSectionEl = n))}>
 			<SidebarHeader>
 				<SidebarSection>
 					<SidebarItem>
@@ -63,13 +77,13 @@
 	<header class="flex items-center px-4">
 		<div class="min-w-0 flex-1">
 			<Navbar class="grid grid-cols-3">
-				<NavbarSection class="sm:hidden">
+				<NavbarSection class="lg:hidden">
 					<NavbarItem onclick={() => (showSidebar = true)}>
 						<Icon src={Bars2} solid />
 					</NavbarItem>
 				</NavbarSection>
 
-				<NavbarSection class="max-sm:col-start-2 max-sm:justify-center">
+				<NavbarSection class="max-lg:col-start-2 max-lg:justify-center">
 					<NavbarItem href="/">
 						<NavbarLabel>Filmguide</NavbarLabel>
 					</NavbarItem>
