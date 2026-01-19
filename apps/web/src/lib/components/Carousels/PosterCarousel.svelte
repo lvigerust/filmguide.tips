@@ -72,33 +72,14 @@
 
 	@supports (animation-timeline: view()) {
 		.carousel__item-poster {
-			animation:
-				animate-in linear forwards,
-				animate-out linear forwards;
+			animation: animate-out linear forwards;
 			animation-timeline: view(inline);
-			animation-range:
-				entry -100% entry 0%,
-				exit;
-		}
-	}
-
-	@keyframes animate-in {
-		0% {
-			opacity: 0.5;
-			scale: 0.95;
-		}
-		100% {
-			opacity: 1;
-			scale: 1;
+			animation-range: exit;
 		}
 	}
 
 	@keyframes animate-out {
-		0% {
-			opacity: 1;
-			scale: 1;
-		}
-		100% {
+		to {
 			opacity: 0.5;
 			scale: 0.95;
 		}

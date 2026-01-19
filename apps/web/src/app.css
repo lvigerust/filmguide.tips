@@ -22,5 +22,6 @@
 }
 
 @utility full-bleed {
-	@apply ml-[calc(50%-50vw)] w-screen;
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
 }
