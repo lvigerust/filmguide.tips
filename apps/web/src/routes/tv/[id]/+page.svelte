@@ -12,7 +12,10 @@
 
 <div class="space-y-12">
 	<div class="flex gap-8 max-sm:flex-col">
-		<Image item={show} class="max-w-[calc((100cqi/4))] sm:max-w-80" sizes="320px" />
+		<Image
+			item={show}
+			class="max-w-[calc((100cqi/4))] rounded-lg sm:max-w-80 sm:rounded-xl"
+			sizes="320px" />
 
 		<div class="flex flex-col gap-4">
 			<div class="flex">
@@ -60,6 +63,6 @@
 	</div>
 
 	<div>
-		<SeriesCarousel seasons={data.seasons} />
+		<SeriesCarousel seasons={data.seasons} seen={{ season_number: 1, episode_number: 6 }} />
 	</div>
 </div>

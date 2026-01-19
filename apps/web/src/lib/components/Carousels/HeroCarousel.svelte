@@ -44,6 +44,7 @@
 			<CarouselItem
 				data-index={index}
 				data-id={item.id}
+				style="container-type: scroll-state;"
 				href={resolve(
 					`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
 				)}

@@ -11,13 +11,13 @@
 
 	let {
 		seasons,
+		seen = { season_number: 1, episode_number: 3 },
 		class: className,
 		...restProps
 	}: SvelteHTMLElements['div'] & {
 		seasons: SvelteMap<number, TvSeasonDetails>
+		seen?: { season_number: number; episode_number: number }
 	} = $props()
-
-	const seen = { season_number: 1, episode_number: 3 }
 </script>
 
 <div class={cn('full-bleed', className)} {...restProps}>
