@@ -18,10 +18,38 @@
 		seasons: SvelteMap<number, TvSeasonDetails>
 		seen?: { season_number: number; episode_number: number }
 	} = $props()
+
+	let activeSeason = $derived(seen.season_number)
+
+	const goToSeason = (n: number) => {
+		activeSeason = n
+		const el = document.querySelector<HTMLElement>(`[data-season-number="${n}"]`)
+		el?.scrollIntoView({ block: 'nearest', inline: 'start' })
+		el?.focus({ preventScroll: true })
+	}
 </script>
 
+<nav aria-label="Seasons" class="full-bleed supports-[scroll-marker-group:before]:hidden">
+	<ul class="flex gap-5 overflow-x-auto px-(--gutter) [scrollbar-width:none]">
+		{#each seasons.values() as season (season._id)}
+			<li>
+				<button
+					type="button"
+					aria-current={activeSeason === season.season_number ? 'true' : undefined}
+					class={[
+						'mb-4 whitespace-nowrap sm:text-base',
+						activeSeason === season.season_number ? 'font-semibold text-white' : 'text-zinc-500'
+					]}
+					onclick={() => goToSeason(season.season_number)}>
+					Season {season.season_number}
+				</button>
+			</li>
+		{/each}
+	</ul>
+</nav>
+
 <div class={cn('full-bleed', className)} {...restProps}>
-	<div class="carousel">
+	<div class="carousel" style="container-type: scroll-state;">
 		{#each seasons.values() as season (season._id)}
 			{#each season.episodes as episode, index (episode.id)}
 				<div
@@ -75,7 +103,7 @@
 <style lang="postcss">
 	@reference "../../../app.css";
 
-	.carousel {
+	:root {
 		/* Match layout: main has lg:px-2, inner div has p-6 lg:p-10, then max-w-6xl mx-auto */
 		--container-max: var(--container-6xl);
 		--layout-padding: --spacing(6);
@@ -85,7 +113,9 @@
 		}
 
 		--gutter: max(calc((100vw - var(--container-max)) / 2), var(--layout-padding));
+	}
 
+	.carousel {
 		@apply scroll-px-(--gutter) px-(--gutter) pt-0.5;
 
 		@apply grid auto-cols-[--spacing(80)] grid-flow-col gap-[2vmin];
@@ -94,36 +124,52 @@
 		scrollbar-width: none;
 		scroll-marker-group: before;
 
-		&::scroll-marker-group {
-			@apply mb-4 flex h-lh scroll-px-(--gutter) gap-5 overflow-x-scroll scroll-smooth px-(--gutter) [scrollbar-width:none];
-		}
-
 		& > :not(.seen):nth-child(1 of :not(.seen)) {
 			scroll-initial-target: nearest;
 		}
 	}
 
 	/* Scroll marker for the first episode of a season */
-	.carousel__item.scroll-button {
-		/* counter-increment: markers; */
+	@supports (scroll-marker-group: before) {
+		.carousel {
+			&::scroll-marker-group {
+				@apply mb-4 flex h-lh scroll-px-(--gutter) gap-5 overflow-x-scroll scroll-smooth px-(--gutter) [scrollbar-width:none];
+			}
 
-		&::scroll-marker {
-			/* content: 'Season ' counter(markers); */
-			content: 'Season ' attr(data-season-number);
-			@apply whitespace-nowrap text-zinc-500 no-underline transition-['font-weight'] duration-300;
+			.carousel__item.scroll-button {
+				&::scroll-marker {
+					content: 'Season ' attr(data-season-number);
+					@apply whitespace-nowrap text-zinc-500 no-underline transition-['font-weight'] duration-300;
+				}
+
+				/*! BUG: This seems to have no effect */
+				&::scroll-marker:is(:hover, :focus-visible, :target-current) {
+					@apply text-red-500 dark:text-red-500;
+				}
+
+				&::scroll-marker:target-current {
+					@apply font-semibold text-white;
+				}
+
+				&::scroll-marker:focus-visible {
+					@apply rounded-md outline-2 outline-offset-4 outline-blue-500;
+				}
+			}
+		}
+	}
+
+	@supports not (scroll-marker-group: before) {
+		.carousel__item {
+			animation: animate-out linear forwards;
+			animation-timeline: view(inline);
+			animation-range: exit;
 		}
 
-		/*! BUG: This seems to have no effect */
-		&::scroll-marker:is(:hover, :focus-visible, :target-current) {
-			@apply text-red-500 dark:text-red-500;
-		}
-
-		&::scroll-marker:target-current {
-			@apply font-semibold text-white;
-		}
-
-		&::scroll-marker:focus-visible {
-			@apply rounded-md outline-2 outline-offset-4 outline-blue-500;
+		@keyframes animate-out {
+			to {
+				opacity: 0.5;
+				scale: 0.95;
+			}
 		}
 	}
 
