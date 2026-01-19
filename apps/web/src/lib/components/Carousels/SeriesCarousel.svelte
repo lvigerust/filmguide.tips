@@ -49,12 +49,11 @@
 </nav>
 
 <div class={cn('full-bleed', className)} {...restProps}>
-	<div class="carousel" style="container-type: scroll-state;">
+	<div class="carousel">
 		{#each seasons.values() as season (season._id)}
 			{#each season.episodes as episode, index (episode.id)}
 				<div
-					class="carousel__item relative snap-start"
-					style="container-type: scroll-state;"
+					class="carousel__item @container-[scroll-state] relative snap-start"
 					class:seen={season.season_number < seen.season_number ||
 						(season.season_number === seen.season_number &&
 							episode.episode_number <= seen.episode_number)}
@@ -121,6 +120,7 @@
 		@apply grid auto-cols-[--spacing(80)] grid-flow-col gap-[2vmin];
 		@apply snap-x snap-mandatory overflow-x-auto scroll-smooth;
 
+		container-type: scroll-state;
 		scrollbar-width: none;
 		scroll-marker-group: before;
 
