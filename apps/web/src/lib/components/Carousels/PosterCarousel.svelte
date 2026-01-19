@@ -36,7 +36,7 @@
 </script>
 
 <div class={cn('relative [--gutter:--spacing(4)] sm:[--gutter:--spacing(20)]', containerClass)}>
-	<Heading class="mb-4 px-(--gutter) text-lg">
+	<Heading class="mb-2 px-(--gutter) text-lg sm:mb-4">
 		{heading}
 	</Heading>
 
