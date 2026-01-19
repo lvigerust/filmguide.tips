@@ -7,6 +7,8 @@
 
 @plugin '@tailwindcss/typography';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
 	* {
 		@apply divide-zinc-950/10 border-zinc-950/10 ring-zinc-950/10 outline-zinc-950/10 selection:bg-blue-600 selection:text-white dark:divide-white/10 dark:border-white/10 dark:ring-white/10 dark:outline-white/10;
