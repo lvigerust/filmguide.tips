@@ -70,14 +70,16 @@
 <style lang="postcss">
 	@reference "tailwindcss";
 
-	.carousel__item-poster {
-		animation:
-			animate-in linear forwards,
-			animate-out linear forwards;
-		animation-timeline: view(inline);
-		animation-range:
-			entry -100% entry 0%,
-			exit;
+	@supports (animation-timeline: view()) {
+		.carousel__item-poster {
+			animation:
+				animate-in linear forwards,
+				animate-out linear forwards;
+			animation-timeline: view(inline);
+			animation-range:
+				entry -100% entry 0%,
+				exit;
+		}
 	}
 
 	@keyframes animate-in {
