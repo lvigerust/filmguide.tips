@@ -45,7 +45,7 @@
 							</div>
 						{:else}
 							<div
-								class="grid aspect-video place-items-center rounded-lg ring dark:bg-zinc-900 dark:ring-white/5 dark:ring-inset">
+								class="grid aspect-video place-items-center rounded-lg ring dark:bg-zinc-950/25 dark:ring-white/5 dark:ring-inset dark:lg:bg-zinc-900">
 								<span class="sr-only">No image</span>
 								<Icon src={Photo} solid class="size-10" />
 							</div>

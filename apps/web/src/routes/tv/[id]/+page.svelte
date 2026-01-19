@@ -10,8 +10,8 @@
 	let show = $derived(data.show)
 </script>
 
-<div class="space-y-12">
-	<div class="flex gap-8 max-sm:flex-col">
+<div class="space-y-4 sm:space-y-12">
+	<div class="flex gap-6 max-sm:flex-col sm:gap-8">
 		<Image
 			data-vt
 			item={show}
