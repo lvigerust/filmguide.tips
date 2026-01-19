@@ -105,8 +105,12 @@
 
 	/* Scroll marker for the first episode of a season */
 	.carousel__item.scroll-button {
+		counter-increment: markers;
+
 		&::scroll-marker {
-			@apply whitespace-nowrap text-zinc-500 no-underline transition-['font-weight'] duration-300 content-['Season_'_attr(data-season-number)] dark:text-zinc-400;
+			content: 'Season ' counter(markers);
+			/* content: 'Season ' attr(data-season-number); */
+			@apply whitespace-nowrap text-zinc-500 no-underline transition-['font-weight'] duration-300 dark:text-zinc-400;
 		}
 
 		/*! BUG: This seems to have no effect */
