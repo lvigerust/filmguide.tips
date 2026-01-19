@@ -3,7 +3,7 @@
 	import { HeroCarousel, PosterCarousel } from '$components'
 </script>
 
-<div class="-mt-10">
+<div class="-mt-6 sm:-mt-10">
 	<HeroCarousel items={await getShows({ list: 'trending' })} />
 
 	<section class="mt-6 full-bleed flex flex-col gap-y-6 sm:mt-10 sm:gap-y-10">

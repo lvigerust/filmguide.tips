@@ -61,14 +61,15 @@
 
 	<!--? Navbar -->
 	<header class="flex items-center px-4">
-		<div class="py-2.5 lg:hidden">
-			<NavbarItem onclick={() => (showSidebar = true)}>
-				<Icon src={Bars2} solid />
-			</NavbarItem>
-		</div>
 		<div class="min-w-0 flex-1">
 			<Navbar class="grid grid-cols-3">
-				<NavbarSection class="max-lg:hidden">
+				<NavbarSection class="sm:hidden">
+					<NavbarItem onclick={() => (showSidebar = true)}>
+						<Icon src={Bars2} solid />
+					</NavbarItem>
+				</NavbarSection>
+
+				<NavbarSection class="max-sm:col-start-2 max-sm:justify-center">
 					<NavbarItem href="/">
 						<NavbarLabel>Filmguide</NavbarLabel>
 					</NavbarItem>
@@ -91,7 +92,7 @@
 
 	<!--? Content -->
 	<main class="flex flex-1 flex-col pb-2 lg:px-2">
-		<div class="grow p-6 pb-10 lg:p-10">
+		<div class="grow p-6 pb-10 lg:p-10 lg:pb-20">
 			<div class="mx-auto max-w-6xl">
 				{@render children?.()}
 			</div>
