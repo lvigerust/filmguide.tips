@@ -14,6 +14,16 @@ declare global {
 			callbackOptions?: ViewTransitionUpdateCallback | StartViewTransitionOptions
 		) => void
 	}
+
+	interface ScrollSnapEvent extends Event {
+		snapTargetBlock: HTMLElement | null
+		snapTargetInline: HTMLElement | null
+	}
+
+	interface HTMLElementEventMap {
+		scrollsnapchange: ScrollSnapEvent
+		scrollsnapchanging: ScrollSnapEvent
+	}
 }
 
 export {}

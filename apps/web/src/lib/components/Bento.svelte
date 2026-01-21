@@ -40,6 +40,8 @@
 </div>
 
 <style lang="postcss">
+	@reference "#app.css";
+
 	:global(.bento) {
 		display: grid;
 		grid-template-columns: 2fr 1fr;

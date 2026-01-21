@@ -1,37 +1,51 @@
 <script lang="ts">
 	import { cn, slugify } from '@lvigerust/utils'
-	import { untrack, type ComponentProps } from 'svelte'
+	import type { ComponentProps } from 'svelte'
 	import type { Media } from '$types'
 	import { Carousel, CarouselItem } from '../Carousel'
-	import { MediaQuery, SvelteSet, type SvelteMap } from 'svelte/reactivity'
+	import { SvelteSet, type SvelteMap } from 'svelte/reactivity'
 	import { Image, Logo } from '$components'
 	import { resolve } from '$app/paths'
 	import { fly } from 'svelte/transition'
 	import { quadOut } from 'svelte/easing'
 
-	const mobile = new MediaQuery('width < 64rem')
-
 	const trackSnap = (carousel: HTMLDivElement) => {
-		const handler = (event: Event & { snapTargetInline: HTMLElement | null }) => {
-			const element = event.snapTargetInline
-			const indexStr = element?.dataset.index
+		const getIndex = (event: ScrollSnapEvent) => event.snapTargetInline?.dataset.index
+
+		const onChanging = (event: ScrollSnapEvent) => {
+			const indexStr = getIndex(event)
 			if (indexStr) fetchedIndexes.add(Number(indexStr))
 		}
-		carousel.addEventListener('scrollsnapchanging', handler as EventListener)
-		return () => carousel.removeEventListener('scrollsnapchanging', handler as EventListener)
+
+		const onChange = (event: ScrollSnapEvent) => {
+			const indexStr = getIndex(event)
+			if (indexStr) startSnap = Number(indexStr)
+		}
+
+		carousel.addEventListener('scrollsnapchanging', onChanging)
+		carousel.addEventListener('scrollsnapchange', onChange)
+
+		return () => {
+			carousel.removeEventListener('scrollsnapchanging', onChanging)
+			carousel.removeEventListener('scrollsnapchange', onChange)
+		}
 	}
 
 	let {
 		items,
-		startIndex = mobile.current ? 0 : 1,
+		startSnap = $bindable(0),
 		class: className,
 		...restProps
 	}: ComponentProps<typeof Carousel> & {
 		items: SvelteMap<number, Media>
-		startIndex?: number
+		startSnap?: number
 	} = $props()
 
-	let fetchedIndexes = untrack(() => new SvelteSet([startIndex])) // Initial index
+	let fetchedIndexes = new SvelteSet<number>()
+
+	$effect(() => {
+		fetchedIndexes.add(startSnap)
+	})
 </script>
 
 <div class="hero-carousel contents">
@@ -48,7 +62,7 @@
 				)}
 				class="@container-[scroll-state] relative max-w-[85%] snap-center sm:max-w-4xl sm:rounded-2xl">
 				<figure
-					class:scroll-start={index === [...fetchedIndexes][0]}
+					class:scroll-start={index === startSnap}
 					class="grid aspect-video [place-items:end_stretch] overflow-clip rounded-lg *:[grid-area:1/1]">
 					<Image {item} sizes="896px" backdrop />
 

@@ -1,10 +1,18 @@
 <script lang="ts">
 	import { getShows } from '$api'
 	import { HeroCarousel, PosterCarousel } from '$components'
+	import type { Snapshot } from '@sveltejs/kit'
+
+	let startSnap = $state(1)
+
+	export const snapshot: Snapshot<number> = {
+		capture: () => startSnap,
+		restore: (value) => (startSnap = value)
+	}
 </script>
 
 <div class="-mt-6 lg:-mt-10">
-	<HeroCarousel items={await getShows({ list: 'trending' })} />
+	<HeroCarousel bind:startSnap items={await getShows({ list: 'trending' })} />
 
 	<section class="mt-6 full-bleed flex flex-col gap-y-6 sm:mt-10 sm:gap-y-10">
 		<PosterCarousel heading="Popular" items={await getShows({ list: 'popular' })} />
