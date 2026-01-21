@@ -73,7 +73,7 @@
 </div>
 
 <style lang="postcss">
-	@reference "../../../app.css";
+	@reference "#app.css";
 
 	.hero-carousel {
 		/* Transition modifiers that are applied to the transition below */

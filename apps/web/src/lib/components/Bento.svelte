@@ -40,8 +40,6 @@
 </div>
 
 <style lang="postcss">
-	@reference "tailwindcss";
-
 	:global(.bento) {
 		display: grid;
 		grid-template-columns: 2fr 1fr;

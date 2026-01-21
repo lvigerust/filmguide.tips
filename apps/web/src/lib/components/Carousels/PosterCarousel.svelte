@@ -59,8 +59,6 @@
 </div>
 
 <style lang="postcss">
-	@reference "tailwindcss";
-
 	@supports (animation-timeline: view()) {
 		.carousel__item-poster {
 			animation: animate-out linear forwards;

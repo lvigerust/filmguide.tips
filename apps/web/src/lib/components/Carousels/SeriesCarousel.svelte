@@ -100,7 +100,7 @@
 </div>
 
 <style lang="postcss">
-	@reference "../../../app.css";
+	@reference "#app.css";
 
 	:root {
 		/* Match layout: main has lg:px-2, inner div has p-6 lg:p-10, then max-w-6xl mx-auto */

@@ -95,8 +95,6 @@
 </div>
 
 <style lang="postcss">
-	@reference "tailwindcss";
-
 	/* Animate page indicator */
 	:global([data-slot='mobile-sidebar'] [data-vt]) {
 		view-transition-name: var(--transition-name, none);

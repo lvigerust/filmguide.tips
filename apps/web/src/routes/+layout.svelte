@@ -29,8 +29,6 @@
 </AppLayout>
 
 <style lang="postcss">
-	@reference "tailwindcss";
-
 	:global {
 		:root {
 			view-transition-name: none;

@@ -89,8 +89,6 @@
 </Dialog>
 
 <style lang="postcss">
-	@reference "tailwindcss";
-
 	::view-transition-group(*.provider) {
 		animation-duration: 0.5s;
 		animation-timing-function: var(--ease-spring-1);
