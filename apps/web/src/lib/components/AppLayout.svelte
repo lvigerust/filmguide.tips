@@ -17,6 +17,10 @@
 	import { Icon } from '@lvigerust/components/UI'
 	import type { Snippet } from 'svelte'
 	import { Bars2 } from 'svelte-heros-v2'
+	import AccountDropdownMenu from './AccountDropdownMenu.svelte'
+	import { Dropdown, DropdownButton } from '@lvigerust/components/Dropdown'
+	import { Avatar } from '@lvigerust/components/Avatar'
+	import { PUBLIC_TMDB_IMG_URL } from '$env/static/public'
 
 	let { children }: { children: Snippet } = $props()
 
@@ -83,11 +87,24 @@
 				<NavbarSection class="col-start-3 justify-end">
 					<CommandPalette />
 
-					<NavbarItem href={`/api/auth/${user ? 'logout' : 'login'}`}>
-						<NavbarLabel>
-							{user ? 'Logout' : 'Login'}
-						</NavbarLabel>
-					</NavbarItem>
+					{#if user}
+						<Dropdown>
+							<DropdownButton as={NavbarItem}>
+								<Avatar
+									src={`${PUBLIC_TMDB_IMG_URL}/w45/${user.avatar?.tmdb?.avatar_path}`}
+									initials={user.username?.[0]}
+									class="bg-purple-500 text-white"
+									alt={user.name}
+									square />
+							</DropdownButton>
+
+							<AccountDropdownMenu align="end" />
+						</Dropdown>
+					{:else}
+						<NavbarItem href="/api/auth/login">
+							<NavbarLabel>Login</NavbarLabel>
+						</NavbarItem>
+					{/if}
 				</NavbarSection>
 			</Navbar>
 		</div>
