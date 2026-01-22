@@ -78,8 +78,15 @@
 
 				<NavbarSection class="justify-center max-lg:hidden">
 					{#each navItems as { label, href } (label)}
-						<NavbarItem {href}>
-							<NavbarLabel>{label}</NavbarLabel>
+						<NavbarItem
+							{href}
+							class={[
+								'*:transition-colors hover:*:text-white',
+								page.url.pathname.startsWith(href) ? '*:text-white' : '*:text-zinc-400 '
+							]}>
+							<NavbarLabel>
+								{label}
+							</NavbarLabel>
 						</NavbarItem>
 					{/each}
 				</NavbarSection>
