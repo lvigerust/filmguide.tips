@@ -46,7 +46,6 @@ class ETagCacheHandler {
 
 		// Handle 304 Not Modified - return cached body
 		if (response.status === 304 && cached) {
-			console.log(`✓ 304: ${request.url.split(this.baseUrl)[1]}`)
 			return new Response(JSON.stringify(cached.body), {
 				status: 200,
 				headers: {
@@ -63,9 +62,6 @@ class ETagCacheHandler {
 				const clone = response.clone()
 				const body = await clone.json()
 				await this.setCached(request.url, etag, body)
-				console.log(`✓ 200 (cached): ${request.url.split(this.baseUrl)[1]}`)
-			} else {
-				console.log(`✓ 200: ${request.url.split(this.baseUrl)[1]}`)
 			}
 		}
 

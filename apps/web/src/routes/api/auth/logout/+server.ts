@@ -5,10 +5,7 @@ import { redirect } from '@sveltejs/kit'
 export const GET = async ({ fetch, cookies }) => {
 	const session_id = cookies.get('session_id')
 
-	if (!session_id) {
-		console.error(`No session_id cookie found`)
-		redirect(303, '/')
-	}
+	if (!session_id) redirect(303, '/')
 
 	const response = await fetch(`${PUBLIC_TMDB_BASE_URL}/authentication/session`, {
 		method: 'DELETE',
