@@ -4,9 +4,9 @@
 	import { page } from '$app/state'
 	import { onNavigate } from '$app/navigation'
 	import { AppLayout } from '$components'
-	import { setUserState } from '$lib/app.svelte.js'
 	import { untrack } from 'svelte'
 	import { Toaster } from '@lvigerust/components/Toaster'
+	import { setAccountState } from '$lib/app.svelte.js'
 
 	/* View Transition API */
 	onNavigate((navigation) => {
@@ -21,7 +21,7 @@
 
 	let { data, children } = $props()
 
-	untrack(() => setUserState(data.account))
+	untrack(() => setAccountState(data.account))
 </script>
 
 <svelte:head>

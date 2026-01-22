@@ -8,9 +8,12 @@
 	import { Button } from '@lvigerust/components/Button'
 	import { toast } from '@lvigerust/components/Toaster'
 	import { addToWatchlist } from '$api/account.remote.js'
+	import { getAccountState } from '$lib/app.svelte.js'
 
 	let { data } = $props()
 	let movie = $derived(data.movie)
+
+	const account = getAccountState()
 </script>
 
 <div class="space-y-8 sm:space-y-12">
@@ -58,18 +61,20 @@
 			<div class="flex flex-col items-start gap-2">
 				<WatchProviders providers={movie['watch/providers']} class="-mx-3.5 sm:-mx-3" />
 
-				<Button
-					plain
-					onclick={async () => {
-						toast.promise(() => addToWatchlist({ id: movie.id, media_type: movie.media_type }), {
-							loading: 'Adding to watchlist…',
-							success: 'Added to watchlist',
-							error: 'Failed to add to watchlist',
-							description: movie.title
-						})
-					}}>
-					Add to watchlist
-				</Button>
+				{#if account}
+					<Button
+						plain
+						onclick={async () => {
+							toast.promise(() => addToWatchlist({ id: movie.id, media_type: movie.media_type }), {
+								loading: 'Adding to watchlist…',
+								success: 'Added to watchlist',
+								error: 'Failed to add to watchlist',
+								description: movie.title
+							})
+						}}>
+						Add to watchlist
+					</Button>
+				{/if}
 			</div>
 		</div>
 	</div>
