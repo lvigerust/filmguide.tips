@@ -41,7 +41,7 @@
 					data-id={item.id}
 					href={createSlug(item)}
 					class={['poster snap-start', index === startIndex && 'scroll-start']}>
-					<Image {item} {backdrop} />
+					<Image {item} {backdrop} loading={index < 8 ? 'eager' : 'lazy'} />
 				</CarouselItem>
 			{/each}
 		</Carousel>
