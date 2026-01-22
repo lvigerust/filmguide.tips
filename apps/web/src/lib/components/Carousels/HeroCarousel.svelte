@@ -1,13 +1,21 @@
 <script lang="ts">
-	import { cn, slugify } from '@lvigerust/utils'
+	import { cn } from '@lvigerust/utils'
 	import type { ComponentProps } from 'svelte'
 	import type { Media } from '$types'
 	import { Carousel, CarouselItem } from '../Carousel'
 	import { SvelteSet, type SvelteMap } from 'svelte/reactivity'
 	import { Image, Logo } from '$components'
-	import { resolve } from '$app/paths'
 	import { fly } from 'svelte/transition'
 	import { quadOut } from 'svelte/easing'
+	import { createSlug } from '$utils'
+
+	const classes = [
+		// Hero Carousel styles
+		'snap-always auto-cols-(--container-4xl) gap-[3vmin]',
+
+		// Empty first and last slides
+		'before:block after:block'
+	]
 
 	const trackSnap = (carousel: HTMLDivElement) => {
 		const getIndex = (event: ScrollSnapEvent) => event.snapTargetInline?.dataset.index
@@ -48,88 +56,69 @@
 	})
 </script>
 
-<div class="hero-carousel contents">
-	<Carousel
-		{@attach trackSnap}
-		{...restProps}
-		class={cn('full-bleed snap-always gap-[4vmin] sm:gap-x-8', className)}>
-		{#each items.values() as item, index (item.id)}
-			<CarouselItem
-				data-index={index}
-				data-id={item.id}
-				href={resolve(
-					`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
-				)}
-				class="@container-[scroll-state] relative max-w-[85%] snap-center sm:max-w-4xl sm:rounded-2xl">
-				<figure
-					class:scroll-start={index === startSnap}
-					class="grid aspect-video [place-items:end_stretch] overflow-clip rounded-lg *:[grid-area:1/1]">
-					<Image {item} sizes="896px" backdrop />
+<Carousel {@attach trackSnap} markers bleed {...restProps} class={cn(classes, className)}>
+	{#each items.values() as item, index (item.id)}
+		<CarouselItem
+			data-index={index}
+			data-label={item.media_type === 'movie' ? item.title : item.name}
+			href={createSlug(item)}
+			class="@container-[scroll-state] snap-center">
+			<figure
+				class:scroll-start={index === startSnap}
+				class="grid aspect-video [place-items:end_stretch] overflow-clip rounded-lg *:[grid-area:1/1]">
+				<Image {item} sizes="896px" backdrop />
 
-					<figcaption class="flex h-1/3 items-end px-8 pb-6 sm:px-16 sm:pb-12">
-						{#if fetchedIndexes.has(index)}
-							<div
-								in:fly={{
-									x: 32,
-									duration: 1000,
-									delay: 300,
-									easing: quadOut
-								}}
-								class="logo w-full">
-								<Logo {item} />
-							</div>
-						{/if}
-					</figcaption>
-				</figure>
-			</CarouselItem>
-		{/each}
-	</Carousel>
-</div>
+				<figcaption class="flex h-1/3 items-end px-8 pb-6 sm:px-16 sm:pb-12">
+					{#if fetchedIndexes.has(index)}
+						<div
+							in:fly={{
+								x: 32,
+								duration: 1000,
+								delay: 300,
+								easing: quadOut
+							}}
+							class="logo w-full">
+							<Logo {item} />
+						</div>
+					{/if}
+				</figcaption>
+			</figure>
+		</CarouselItem>
+	{/each}
+</Carousel>
 
 <style lang="postcss">
 	@reference "#app.css";
 
-	.hero-carousel {
-		/* Transition modifiers that are applied to the transition below */
-		figure {
-			@apply transition-opacity duration-500;
+	/* Transition modifiers that are applied to the transition below */
+	figure {
+		@apply transition-opacity duration-500;
 
-			figcaption {
-				@apply bg-linear-to-t from-zinc-950/25 transition-colors duration-1000 ease-out-2;
+		figcaption {
+			@apply bg-linear-to-t from-zinc-950/25 transition-colors duration-1000 ease-out-2;
 
-				> .logo {
-					@apply transition delay-300 duration-1000 ease-out-3;
-				}
-			}
-		}
-
-		@supports (container-type: scroll-state) {
-			/* Snapped items */
-			@container scroll-state(snapped: inline) {
-				figcaption {
-					@apply opacity-100;
-				}
-			}
-			/* Unsnapped items */
-			@container not scroll-state(snapped: inline) {
-				figure {
-					@apply opacity-75;
-
-					figcaption > .logo {
-						@apply translate-x-8 opacity-0;
-					}
-				}
+			> .logo {
+				@apply transition delay-300 duration-1000 ease-out-3;
 			}
 		}
 	}
 
-	:global(.hero-carousel > .carousel) {
-		&::before,
-		&::after {
-			content: '';
-			display: block;
-			inline-size: 50cqi;
-			flex-shrink: 0;
+	@supports (container-type: scroll-state) {
+		/* Snapped items */
+		@container scroll-state(snapped: inline) {
+			figcaption {
+				@apply opacity-100;
+			}
+		}
+		/* Unsnapped items */
+		@container not scroll-state(snapped: inline) {
+			figure {
+				@apply opacity-75;
+
+				figcaption > .logo {
+					@apply translate-x-8 opacity-0;
+				}
+			}
 		}
 	}
 </style>

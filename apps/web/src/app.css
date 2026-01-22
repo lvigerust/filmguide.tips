@@ -27,3 +27,18 @@
 	width: 100vw;
 	margin-left: calc(50% - 50vw);
 }
+
+@layer theme {
+	:root {
+		/* Match layout: main has lg:px-2, inner div has p-6 lg:p-10, then max-w-6xl mx-auto */
+		--container-max: var(--container-6xl);
+		--layout-padding: --spacing(6);
+
+		@media (width >= 64rem) {
+			--layout-padding: calc(--spacing(2) + --spacing(10));
+		}
+
+		--gutter: max(calc((100vw - var(--container-max)) / 2), var(--layout-padding));
+		--carousel-padding: calc(var(--gutter) / 2);
+	}
+}

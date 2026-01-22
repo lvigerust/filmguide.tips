@@ -1,21 +1,21 @@
 <script lang="ts">
-	import { cn, slugify } from '@lvigerust/utils'
+	import { cn } from '@lvigerust/utils'
 	import { Carousel, CarouselItem } from '../Carousel'
 	import { Heading } from '@lvigerust/components/Heading'
-	import { resolve } from '$app/paths'
 	import { Image } from '$components'
 	import type { ComponentProps } from 'svelte'
 	import type { SvelteMap } from 'svelte/reactivity'
 	import type { ClassValue } from 'svelte/elements'
 	import type { Media } from '$types'
+	import { createSlug } from '$utils'
 
 	let {
 		heading,
 		items,
 		startIndex = 0,
 		backdrop = false,
-		containerClass,
 		class: className,
+		containerClass,
 		...restProps
 	}: ComponentProps<typeof Carousel> & {
 		heading: string
@@ -26,56 +26,50 @@
 	} = $props()
 </script>
 
-<div class={cn('relative [--gutter:--spacing(4)] sm:[--gutter:--spacing(20)]', containerClass)}>
-	<Heading class="mb-2 px-(--gutter) text-lg sm:mb-4">
+<div class={cn('carousel-wrapper relative full-bleed', containerClass)}>
+	<Heading class="mb-2 px-(--carousel-padding) text-lg sm:mb-4">
 		{heading}
 	</Heading>
 
-	<Carousel
-		{...restProps}
-		class={cn(
-			'poster-carousel @container-[scroll-state] scroll-px-(--gutter) px-(--gutter)',
-			className
-		)}>
-		{#each items.values() as item, index (item.id)}
-			<CarouselItem
-				data-id={item.id}
-				href={resolve(
-					`/${item.media_type}/${item.id}-${slugify((item.media_type === 'movie' ? item.title : item.name) ?? '')}`
-				)}
-				class={[
-					'snap-start transition-transform duration-200 ease-out-1 hover:-translate-y-0.5 max-sm:rounded-md',
-					backdrop
-						? 'max-w-[55cqi] sm:max-w-84'
-						: 'max-w-[calc((100cqi-var(--gutter)*2-(--spacing(2.5)*3))/3)] sm:max-w-40',
-					index === startIndex && 'scroll-start'
-				]}>
-				<div class="carousel__item-poster rounded-md sm:rounded-lg">
+	<div class="poster-carousel contents">
+		<Carousel
+			bleed
+			{...restProps}
+			class={cn('auto-cols-[--spacing(38)]', backdrop && 'auto-cols-[--spacing(80)]', className)}>
+			{#each items.values() as item, index (item.id)}
+				<CarouselItem
+					data-id={item.id}
+					href={createSlug(item)}
+					class={['poster snap-start', index === startIndex && 'scroll-start']}>
 					<Image {item} {backdrop} />
-				</div>
-			</CarouselItem>
-		{/each}
-	</Carousel>
+				</CarouselItem>
+			{/each}
+		</Carousel>
+	</div>
 </div>
 
 <style lang="postcss">
+	@reference "#app.css";
+
 	@supports (animation-timeline: view()) {
-		.carousel__item-poster {
-			animation: animate-out linear forwards;
-			animation-timeline: view(inline);
-			animation-range: exit;
+		.carousel-wrapper {
+			animation: slide-fade-in linear forwards;
+			animation-timeline: view();
+			animation-range: cover 0% cover 25dvh;
 		}
 	}
 
-	@keyframes animate-out {
-		to {
+	@keyframes slide-fade-in {
+		from {
 			opacity: 0.5;
-			scale: 0.95;
+			transform: translateY(2.5vh);
 		}
 	}
 
 	/* @supports (container-type: scroll-state) {
-		:global(.poster-carousel) {
+		:global(.poster-carousel > .carousel) {
+			@apply @container-[scroll-state];
+
 			&::before {
 				@apply pointer-events-none absolute top-2 right-10 z-10 rounded bg-zinc-800/60 px-2 py-1 text-xs text-white;
 			}

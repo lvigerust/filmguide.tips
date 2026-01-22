@@ -15,8 +15,8 @@ export type TrendingShowResponse = Response<'trending-tv'>
 export type Episode = NonNullable<ShowSeasonDetails['episodes']>[number]
 
 // Public types with media_type discriminator
-export type Show = ShowListItemResponse & { media_type: 'tv' }
-export type ShowDetails = ShowDetailsResponse & { media_type: 'tv' }
+export type Show = ShowListItemResponse & { name: string; media_type: 'tv' }
+export type ShowDetails = ShowDetailsResponse & { name: string; media_type: 'tv' }
 
 // Append to response options
 export const append_show_options = [

@@ -1,6 +1,7 @@
 import type { Attachment } from 'svelte/attachments'
-import { isSafeRedirect } from '@lvigerust/utils'
+import { isSafeRedirect, slugify } from '@lvigerust/utils'
 import { redirect, type NumericRange } from '@sveltejs/kit'
+import type { Media } from '$types'
 
 export const ref = <T extends Element>(set: (node: T | null) => void): Attachment<T> => {
 	return (node) => {
@@ -44,4 +45,8 @@ export const safeRedirect: (
 ) => never = (status, location, fallback = '/') => {
 	const safeUrl = validateRedirect(location, fallback)
 	return redirect(status, safeUrl)
+}
+
+export const createSlug = (item: Media) => {
+	return `/${item.media_type}/${item.id}-${slugify(item.media_type === 'movie' ? item.title : item.name)}` as const
 }

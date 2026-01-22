@@ -14,7 +14,7 @@
 <div class="-mt-6 lg:-mt-10">
 	<HeroCarousel bind:startSnap items={await getMovies('trending')} />
 
-	<section class="mt-6 full-bleed flex flex-col gap-y-6 sm:mt-10 sm:gap-y-10">
+	<section class="mt-6 flex flex-col gap-y-6 sm:mt-10 sm:gap-y-10">
 		<PosterCarousel heading="Now Playing" items={await getMovies('now_playing')} />
 		<PosterCarousel heading="Popular" items={await getMovies('popular')} />
 		<PosterCarousel heading="Upcoming" items={await getMovies('upcoming')} backdrop />

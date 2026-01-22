@@ -80,11 +80,8 @@
 					{#each navItems as { label, href } (label)}
 						<NavbarItem
 							{href}
-							class={[
-								'*:transition-colors hover:*:text-white',
-								page.url.pathname.startsWith(href) ? '*:text-white' : '*:text-zinc-400 '
-							]}>
-							<NavbarLabel>
+							class={[!page.url.pathname.startsWith(href) && 'not-hover:*:text-zinc-400']}>
+							<NavbarLabel class="transition-colors">
 								{label}
 							</NavbarLabel>
 						</NavbarItem>

@@ -11,8 +11,8 @@ export type MovieImages = Response<'movie-images'>
 export type MovieWatchProviders = Response<'movie-watch-providers'>
 
 // Public types with media_type discriminator
-export type Movie = MovieListItemResponse & { media_type: 'movie' }
-export type MovieDetails = MovieDetailsResponse & { media_type: 'movie' }
+export type Movie = MovieListItemResponse & { title: string; media_type: 'movie' }
+export type MovieDetails = MovieDetailsResponse & { title: string; media_type: 'movie' }
 
 // Append to response options
 export const append_movie_options = [
