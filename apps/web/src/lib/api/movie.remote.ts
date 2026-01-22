@@ -1,60 +1,53 @@
 import { getRequestEvent, query } from '$app/server'
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import type { Images, MovieDetails, MovieListItem, MovieListResponse } from '$types'
 import { SvelteMap } from 'svelte/reactivity'
 import { z } from 'zod/v4'
-
-const lists = ['now_playing', 'popular', 'top_rated', 'upcoming', 'trending'] as const
+import {
+	append_movie_options,
+	movieLists,
+	type Movie,
+	type MovieDetails,
+	type MovieDetailsWithAppends,
+	type MovieListResponse
+} from '$types'
 
 export const getMovies = query(
-	z.object({
-		list: z.enum(lists),
-		page: z.number().positive().default(1)
-	}),
-	async ({ list, page = 1 }) => {
+	z.enum(movieLists),
+	async (list): Promise<SvelteMap<number, Movie>> => {
 		const { fetch } = getRequestEvent()
 
-		const endpoint =
+		const url =
 			list === 'trending'
 				? `${PUBLIC_TMDB_BASE_URL}/trending/movie/week`
 				: `${PUBLIC_TMDB_BASE_URL}/movie/${list}`
 
-		const fetchPage = async (pageNumber: number) => {
-			const res = await fetch(`${endpoint}?page=${pageNumber}`)
-			if (!res.ok) throw new Error(res.statusText)
-			const movies: MovieListResponse = await res.json()
-			return movies
+		const res = await fetch(url)
+		if (!res.ok) throw new Error(res.statusText)
+
+		const data: MovieListResponse = await res.json()
+
+		const movies = new SvelteMap<number, Movie>()
+
+		for (const movie of data.results ?? []) {
+			movies.set(movie.id, { ...movie, media_type: 'movie' })
 		}
 
-		const responses = await Promise.all(Array.from({ length: page }, (_, i) => fetchPage(i + 1)))
-
-		return new SvelteMap<number, MovieListItem & { media_type: 'movie' }>(
-			responses
-				.flatMap((r) => r.results ?? [])
-				.map((movie) => [movie.id, { ...movie, media_type: 'movie' as const }])
-		)
+		return movies
 	}
 )
 
-export const getMovie = query(z.string(), async (id) => {
-	const { fetch } = getRequestEvent()
-
-	const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/movie/${id}`)
-	if (!res.ok) throw new Error(res.statusText)
-
-	const movie: MovieDetails = await res.json()
-	return { ...movie, media_type: 'movie' as const }
-})
-
-export const getMovieImages = query(
-	z.object({ id: z.number(), media_type: z.string() }),
-	async ({ id, media_type }) => {
+export const getMovieDetails = query(
+	z.object({ id: z.string(), append: z.array(z.enum(append_movie_options)).optional() }),
+	async ({ id, append }): Promise<MovieDetails & MovieDetailsWithAppends> => {
 		const { fetch } = getRequestEvent()
-		const res = await fetch(
-			`${PUBLIC_TMDB_BASE_URL}/${media_type}/${id}/images?include_image_language=en-US,null`
-		)
+
+		const url = new URL(`${PUBLIC_TMDB_BASE_URL}/movie/${id}`)
+		if (append?.length) url.searchParams.set('append_to_response', append.join(','))
+
+		const res = await fetch(url)
 		if (!res.ok) throw new Error(res.statusText)
-		const images: Images = await res.json()
-		return images
+
+		const movie = await res.json()
+		return { ...movie, media_type: 'movie' }
 	}
 )

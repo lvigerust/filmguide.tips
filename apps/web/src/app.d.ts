@@ -1,9 +1,14 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
+
+import type { Response } from '$types'
+
 // for information about these interfaces
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
+		interface Locals {
+			account: Response<'account-details'> | null
+		}
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}

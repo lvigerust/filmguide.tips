@@ -1,59 +1,53 @@
 import { getRequestEvent, query } from '$app/server'
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
 import {
-	append_tv_options,
-	type TvDetailsWithAppends,
-	type TvDetails,
-	type TvListItem,
-	type TvListResponse,
-	type TvSeasonDetails
+	append_show_options,
+	showLists,
+	type Show,
+	type ShowDetails,
+	type ShowDetailsResponse,
+	type ShowDetailsWithAppends,
+	type ShowListResponse,
+	type ShowSeasonDetails
 } from '$types'
 import { SvelteMap } from 'svelte/reactivity'
 import { z } from 'zod/v4'
 
-const lists = ['airing_today', 'on_the_air', 'popular', 'top_rated', 'trending'] as const
+export const getShows = query(z.enum(showLists), async (list): Promise<SvelteMap<number, Show>> => {
+	const { fetch } = getRequestEvent()
 
-export const getShows = query(
-	z.object({
-		list: z.enum(lists),
-		page: z.number().positive().default(1)
-	}),
-	async ({ list, page = 1 }) => {
-		const { fetch } = getRequestEvent()
+	const endpoint =
+		list === 'trending'
+			? `${PUBLIC_TMDB_BASE_URL}/trending/tv/week`
+			: `${PUBLIC_TMDB_BASE_URL}/tv/${list}`
 
-		const endpoint =
-			list === 'trending'
-				? `${PUBLIC_TMDB_BASE_URL}/trending/tv/week`
-				: `${PUBLIC_TMDB_BASE_URL}/tv/${list}`
+	const res = await fetch(endpoint)
+	if (!res.ok) throw new Error(res.statusText)
 
-		const fetchPage = async (pageNumber: number) => {
-			const res = await fetch(`${endpoint}?page=${pageNumber}`)
-			if (!res.ok) throw new Error(res.statusText)
-			const shows: TvListResponse = await res.json()
-			return shows
-		}
+	const data: ShowListResponse = await res.json()
 
-		const responses = await Promise.all(Array.from({ length: page }, (_, i) => fetchPage(i + 1)))
+	const shows = new SvelteMap<number, Show>()
 
-		return new SvelteMap<number, TvListItem & { media_type: 'tv' }>(
-			responses
-				.flatMap((r) => r.results ?? [])
-				.map((show) => [show.id, { ...show, media_type: 'tv' as const }])
-		)
+	for (const show of data.results ?? []) {
+		shows.set(show.id, { ...show, media_type: 'tv' })
 	}
-)
+
+	return shows
+})
 
 export const getShowDetails = query(
-	z.object({ id: z.string(), append: z.array(z.enum(append_tv_options)) }),
-	async ({ id, append }) => {
+	z.object({ id: z.string(), append: z.array(z.enum(append_show_options)) }),
+	async ({ id, append }): Promise<ShowDetails & ShowDetailsWithAppends> => {
 		const { fetch } = getRequestEvent()
-		const res = await fetch(
-			`${PUBLIC_TMDB_BASE_URL}/tv/${id}?append_to_response=${append.join(',')}`
-		)
+
+		const url = new URL(`${PUBLIC_TMDB_BASE_URL}/tv/${id}`)
+		url.searchParams.set('append_to_response', append.join(','))
+
+		const res = await fetch(url)
 		if (!res.ok) throw new Error(res.statusText)
 
-		const show: TvDetailsWithAppends = await res.json()
-		return { ...show, media_type: 'tv' as const }
+		const show = await res.json()
+		return { ...show, media_type: 'tv' }
 	}
 )
 
@@ -63,7 +57,7 @@ export const getShowSeasons = query(
 	z.object({
 		id: z.string(),
 		numberOfSeasons: z.number(),
-		offset: z.number().default(0)
+		offset: z.number().optional()
 	}),
 	async ({ id, numberOfSeasons, offset = 0 }) => {
 		const { fetch } = getRequestEvent()
@@ -72,16 +66,17 @@ export const getShowSeasons = query(
 		const count = Math.min(remaining, SEASONS_PER_PAGE)
 
 		const seasonKeys = Array.from({ length: count }, (_, i) => `season/${offset + i + 1}`)
-		const appendToResponse = seasonKeys.join(',')
 
-		const res = await fetch(
-			`${PUBLIC_TMDB_BASE_URL}/tv/${id}?append_to_response=${appendToResponse}`
-		)
+		const url = new URL(`${PUBLIC_TMDB_BASE_URL}/tv/${id}`)
+		url.searchParams.set('append_to_response', seasonKeys.join(','))
+
+		const res = await fetch(url)
 		if (!res.ok) throw new Error(res.statusText)
 
-		const data: TvDetails & Record<`season/${number}`, TvSeasonDetails> = await res.json()
+		const data: ShowDetailsResponse & Record<`season/${number}`, ShowSeasonDetails> =
+			await res.json()
 
-		return new SvelteMap<number, TvSeasonDetails>(
+		return new SvelteMap<number, ShowSeasonDetails>(
 			seasonKeys.map((key) => [
 				data[key as `season/${number}`].season_number,
 				data[key as `season/${number}`]

@@ -3,4 +3,4 @@
 	import { Bento } from '$components'
 </script>
 
-<Bento items={await getMovies({ list: 'popular' })} />
+<Bento items={await getMovies('popular')} />

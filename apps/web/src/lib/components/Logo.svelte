@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getMovieImages } from '$api/movie.remote'
+	import { getMediaImages } from '$api/images.remote'
 	import { PUBLIC_TMDB_IMG_URL } from '$env/static/public'
 	import type { Media } from '$types'
 	import { cn } from '@lvigerust/utils'
@@ -8,7 +8,7 @@
 
 	let { item, class: className, ...restProps }: HTMLImgAttributes & { item: Media } = $props()
 
-	const images = await untrack(() => getMovieImages({ id: item.id, media_type: item.media_type }))
+	const images = await untrack(() => getMediaImages({ id: item.id, media_type: item.media_type }))
 </script>
 
 {#if images.logos?.length}

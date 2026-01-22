@@ -5,6 +5,9 @@
 	import { BadgeButton } from '@lvigerust/components/Badge'
 	import { formatDate, formatNumber, slugify } from '@lvigerust/utils'
 	import { SeriesCarousel, WatchProviders } from '$components'
+	import { Button } from '@lvigerust/components/Button'
+	import { toast } from '@lvigerust/components/Toaster'
+	import { addToWatchlist } from '$api/account.remote.js'
 
 	let { data } = $props()
 	let show = $derived(data.show)
@@ -56,8 +59,21 @@
 				<Text class="mt-1">{show.overview}</Text>
 			</div>
 
-			<div>
+			<div class="flex flex-col items-start gap-2">
 				<WatchProviders providers={show['watch/providers']} class="-mx-3.5 sm:-mx-3" />
+
+				<Button
+					plain
+					onclick={async () => {
+						toast.promise(() => addToWatchlist({ id: show.id, media_type: show.media_type }), {
+							loading: 'Adding to watchlist…',
+							success: 'Added to watchlist',
+							error: 'Failed to add to watchlist',
+							description: show.name
+						})
+					}}>
+					Add to watchlist
+				</Button>
 			</div>
 		</div>
 	</div>

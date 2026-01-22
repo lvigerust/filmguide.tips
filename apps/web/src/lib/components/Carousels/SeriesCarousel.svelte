@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cn, formatDate } from '@lvigerust/utils'
-	import type { TvSeasonDetails } from '$types'
+	import type { ShowSeasonDetails } from '$types'
 	import type { SvelteMap } from 'svelte/reactivity'
 	import type { SvelteHTMLElements } from 'svelte/elements'
 	import { Text } from '@lvigerust/components/Text'
@@ -15,7 +15,7 @@
 		class: className,
 		...restProps
 	}: SvelteHTMLElements['div'] & {
-		seasons: SvelteMap<number, TvSeasonDetails>
+		seasons: SvelteMap<number, ShowSeasonDetails>
 		seen?: { season_number: number; episode_number: number }
 	} = $props()
 

@@ -1,77 +1,66 @@
 import type { Response, ResultItem } from '$types'
 
-// TV types (raw from API)
-export type TvListResponse = Response<'tv-series-popular-list'>
-export type TvListItem = ResultItem<'tv-series-popular-list'>
-export type TvDetails = Response<'tv-series-details'>
-export type TvSeasonDetails = Response<'tv-season-details'>
-export type TvEpisodeDetails = Response<'tv-episode-details'>
+// Raw API response types (internal use)
+export type ShowListResponse = Response<'tv-series-popular-list'>
+export type ShowListItemResponse = ResultItem<'tv-series-popular-list'>
+export type ShowDetailsResponse = Response<'tv-series-details'>
 
-// Append response types
-export type TvAccountStates = Response<'tv-series-account-states'>
-export type TvAggregateCredits = Response<'tv-series-aggregate-credits'>
-export type TvAlternativeTitles = Response<'tv-series-alternative-titles'>
-export type TvChanges = Response<'tv-series-changes'>
-export type TvContentRatings = Response<'tv-series-content-ratings'>
-export type TvCredits = Response<'tv-series-credits'>
-export type TvEpisodeGroups = Response<'tv-series-episode-groups'>
-export type TvExternalIds = Response<'tv-series-external-ids'>
-export type TvImages = Response<'tv-series-images'>
-export type TvKeywords = Response<'tv-series-keywords'>
-export type TvRecommendations = Response<'tv-series-recommendations'>
-export type TvReviews = Response<'tv-series-reviews'>
-export type TvScreenedTheatrically = Response<'tv-series-screened-theatrically'>
-export type TvSimilar = Response<'tv-series-similar'>
-export type TvTranslations = Response<'tv-series-translations'>
-export type TvVideos = Response<'tv-series-videos'>
-export type TvWatchProviders = Response<'tv-series-watch-providers'>
+// Standalone endpoint types
+export type ShowSeasonDetails = Response<'tv-season-details'>
+export type ShowEpisodeDetails = Response<'tv-episode-details'>
+export type ShowImages = Response<'tv-series-images'>
+export type ShowWatchProviders = Response<'tv-series-watch-providers'>
+export type TrendingShowResponse = Response<'trending-tv'>
 
-export type TrendingTvResponse = Response<'trending-tv'>
+export type Episode = NonNullable<ShowSeasonDetails['episodes']>[number]
 
-export type Episode = NonNullable<TvSeasonDetails['episodes']>[number]
+// Public types with media_type discriminator
+export type Show = ShowListItemResponse & { media_type: 'tv' }
+export type ShowDetails = ShowDetailsResponse & { media_type: 'tv' }
 
-export type Show = (TvListItem | TvDetails) & { media_type: 'tv' }
-
-/** All possible append response properties (optional) */
-export type TvAppendResponses = {
-	account_states?: TvAccountStates
-	aggregate_credits?: TvAggregateCredits
-	alternative_titles?: TvAlternativeTitles
-	changes?: TvChanges
-	content_ratings?: TvContentRatings
-	credits?: TvCredits
-	episode_groups?: TvEpisodeGroups
-	external_ids?: TvExternalIds
-	images?: TvImages
-	keywords?: TvKeywords
-	recommendations?: TvRecommendations
-	reviews?: TvReviews
-	screened_theatrically?: TvScreenedTheatrically
-	similar?: TvSimilar
-	translations?: TvTranslations
-	videos?: TvVideos
-	'watch/providers'?: TvWatchProviders
-}
-
-/** TvDetails with all append options as optional properties */
-export type TvDetailsWithAppends = TvDetails & TvAppendResponses
-
-export const append_tv_options = [
-	'account_states',
-	'aggregate_credits',
-	'alternative_titles',
-	'changes',
-	'content_ratings',
+// Append to response options
+export const append_show_options = [
+	'videos',
 	'credits',
-	'episode_groups',
-	'external_ids',
+	'aggregate_credits',
 	'images',
 	'keywords',
-	'recommendations',
 	'reviews',
-	'screened_theatrically',
 	'similar',
+	'recommendations',
+	'external_ids',
+	'alternative_titles',
+	'content_ratings',
+	'episode_groups',
 	'translations',
-	'videos',
-	'watch/providers'
-] as const satisfies readonly (keyof TvAppendResponses)[]
+	'watch/providers',
+	'account_states',
+	'changes',
+	'screened_theatrically'
+] as const
+
+export type ShowAppendToResponse = (typeof append_show_options)[number]
+
+export type ShowAppendResponses = {
+	videos?: Response<'tv-series-videos'>
+	credits?: Response<'tv-series-credits'>
+	aggregate_credits?: Response<'tv-series-aggregate-credits'>
+	images?: ShowImages
+	keywords?: Response<'tv-series-keywords'>
+	reviews?: Response<'tv-series-reviews'>
+	similar?: Response<'tv-series-similar'>
+	recommendations?: Response<'tv-series-recommendations'>
+	external_ids?: Response<'tv-series-external-ids'>
+	alternative_titles?: Response<'tv-series-alternative-titles'>
+	content_ratings?: Response<'tv-series-content-ratings'>
+	episode_groups?: Response<'tv-series-episode-groups'>
+	translations?: Response<'tv-series-translations'>
+	'watch/providers'?: ShowWatchProviders
+	account_states?: Response<'tv-series-account-states'>
+	changes?: Response<'tv-series-changes'>
+	screened_theatrically?: Response<'tv-series-screened-theatrically'>
+}
+
+export type ShowDetailsWithAppends = ShowDetailsResponse & ShowAppendResponses
+
+export const showLists = ['airing_today', 'on_the_air', 'popular', 'top_rated', 'trending'] as const
