@@ -2,6 +2,7 @@ import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
 import { cookiesConfig } from '$lib/config.js'
 import { redirect } from '@sveltejs/kit'
 import { safeRedirect } from '$lib/utils'
+import { userSessionCache } from '$lib/server/cache/session-cache'
 
 export const GET = async ({ fetch, cookies, url }) => {
 	const session_id = cookies.get('session_id')
@@ -18,6 +19,9 @@ export const GET = async ({ fetch, cookies, url }) => {
 
 	cookies.delete('session_id', cookiesConfig)
 	cookies.delete('account_id', cookiesConfig)
+
+	// Clean up cached session data from Redis
+	await userSessionCache.delete(session_id)
 
 	redirect(303, redirectTo)
 }
