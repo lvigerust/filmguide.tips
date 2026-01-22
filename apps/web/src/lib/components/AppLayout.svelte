@@ -83,7 +83,7 @@
 				<NavbarSection class="col-start-3 justify-end">
 					<CommandPalette />
 
-					<NavbarItem href={account ? '/api/auth/logout' : '/login'}>
+					<NavbarItem href={`/api/auth/${account ? 'logout' : 'login'}`}>
 						<NavbarLabel>
 							{account ? 'Logout' : 'Login'}
 						</NavbarLabel>
