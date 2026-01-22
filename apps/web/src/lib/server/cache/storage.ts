@@ -1,21 +1,27 @@
 import { Redis, type RedisConfigNodejs } from '@upstash/redis'
 import { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } from '$env/static/private'
 
-export interface CacheEntry {
+/**
+ * Entry stored in HTTP cache (for ETag-based conditional requests)
+ */
+export interface HttpCacheEntry {
 	etag: string
 	body: unknown
-	timestamp: number
+	expiresAt: number
 }
 
-interface CacheBackend {
-	get(url: string): Promise<CacheEntry | null>
+/**
+ * Storage interface for HTTP responses with ETag support
+ */
+export interface HttpCacheStorage {
+	get(url: string): Promise<HttpCacheEntry | null>
 	set(url: string, etag: string, body: unknown, ttlSeconds: number): Promise<void>
 }
 
 /**
- * Generic cache backend for arbitrary values
+ * Storage interface for generic key-value caching
  */
-export interface GenericCacheBackend {
+export interface KVStorage {
 	get<T>(key: string): Promise<T | null>
 	set<T>(key: string, value: T, ttlSeconds: number): Promise<void>
 	delete(key: string): Promise<void>
@@ -43,23 +49,23 @@ const createRedisClient = (): Redis | null => {
 	return new Redis(config)
 }
 
-const sharedRedis = createRedisClient()
+const redis = createRedisClient()
 
 /**
- * Upstash Redis backend (production)
+ * Redis-backed HTTP cache storage (production)
  */
-class UpstashBackend implements CacheBackend {
+class RedisHttpStorage implements HttpCacheStorage {
 	private redis: Redis
 
 	constructor(redis: Redis) {
 		this.redis = redis
 	}
 
-	async get(url: string): Promise<CacheEntry | null> {
+	async get(url: string): Promise<HttpCacheEntry | null> {
 		try {
-			return await this.redis.get<CacheEntry>(url)
+			return await this.redis.get<HttpCacheEntry>(url)
 		} catch (error) {
-			console.error('Upstash GET failed:', error instanceof Error ? error.message : error)
+			console.error('Redis HTTP cache GET failed:', error instanceof Error ? error.message : error)
 			return null
 		}
 	}
@@ -69,27 +75,26 @@ class UpstashBackend implements CacheBackend {
 			await this.redis.setex(url, ttlSeconds, {
 				etag,
 				body,
-				timestamp: Date.now()
+				expiresAt: Date.now() + ttlSeconds * 1000
 			})
 		} catch (error) {
-			console.error('Upstash SET failed:', error instanceof Error ? error.message : error)
+			console.error('Redis HTTP cache SET failed:', error instanceof Error ? error.message : error)
 			// Fail silently - caching is optional
 		}
 	}
 }
 
 /**
- * In-memory backend (development fallback)
+ * In-memory HTTP cache storage (development fallback)
  */
-class MemoryBackend implements CacheBackend {
-	private cache = new Map<string, CacheEntry>()
-	private readonly MAX_AGE_MS = 1000 * 60 * 60 // 60 minutes
+class MemoryHttpStorage implements HttpCacheStorage {
+	private cache = new Map<string, HttpCacheEntry>()
 
-	async get(url: string): Promise<CacheEntry | null> {
+	async get(url: string): Promise<HttpCacheEntry | null> {
 		const entry = this.cache.get(url)
 		if (!entry) return null
 
-		if (Date.now() - entry.timestamp > this.MAX_AGE_MS) {
+		if (Date.now() > entry.expiresAt) {
 			this.cache.delete(url)
 			return null
 		}
@@ -101,15 +106,15 @@ class MemoryBackend implements CacheBackend {
 		this.cache.set(url, {
 			etag,
 			body,
-			timestamp: Date.now()
+			expiresAt: Date.now() + ttlSeconds * 1000
 		})
 	}
 }
 
 /**
- * Generic Upstash backend (production)
+ * Redis-backed key-value storage (production)
  */
-class GenericUpstashBackend implements GenericCacheBackend {
+class RedisKVStorage implements KVStorage {
 	private redis: Redis
 
 	constructor(redis: Redis) {
@@ -120,7 +125,7 @@ class GenericUpstashBackend implements GenericCacheBackend {
 		try {
 			return await this.redis.get<T>(key)
 		} catch (error) {
-			console.error('Upstash GET failed:', error instanceof Error ? error.message : error)
+			console.error('Redis KV storage GET failed:', error instanceof Error ? error.message : error)
 			return null
 		}
 	}
@@ -129,7 +134,7 @@ class GenericUpstashBackend implements GenericCacheBackend {
 		try {
 			await this.redis.setex(key, ttlSeconds, value)
 		} catch (error) {
-			console.error('Upstash SET failed:', error instanceof Error ? error.message : error)
+			console.error('Redis KV storage SET failed:', error instanceof Error ? error.message : error)
 		}
 	}
 
@@ -137,15 +142,18 @@ class GenericUpstashBackend implements GenericCacheBackend {
 		try {
 			await this.redis.del(key)
 		} catch (error) {
-			console.error('Upstash DELETE failed:', error instanceof Error ? error.message : error)
+			console.error(
+				'Redis KV storage DELETE failed:',
+				error instanceof Error ? error.message : error
+			)
 		}
 	}
 }
 
 /**
- * Generic in-memory backend (development fallback)
+ * In-memory key-value storage (development fallback)
  */
-class GenericMemoryBackend implements GenericCacheBackend {
+class MemoryKVStorage implements KVStorage {
 	private cache = new Map<string, { value: unknown; expiresAt: number }>()
 
 	async get<T>(key: string): Promise<T | null> {
@@ -173,25 +181,18 @@ class GenericMemoryBackend implements GenericCacheBackend {
 }
 
 /**
- * Auto-select backend based on environment
+ * Auto-select HTTP cache storage based on environment
  */
-const createBackend = (): CacheBackend => {
-	if (sharedRedis) {
-		console.log('✓ Using Upstash Redis for ETag cache')
-		return new UpstashBackend(sharedRedis)
-	}
-
-	console.log('⚠ Using in-memory ETag cache (Upstash credentials missing)')
-	return new MemoryBackend()
+const createHttpStorage = (): HttpCacheStorage => {
+	return redis ? new RedisHttpStorage(redis) : new MemoryHttpStorage()
 }
 
-const createGenericBackend = (): GenericCacheBackend => {
-	if (sharedRedis) {
-		return new GenericUpstashBackend(sharedRedis)
-	}
-
-	return new GenericMemoryBackend()
+/**
+ * Auto-select KV storage based on environment
+ */
+const createKVStorage = (): KVStorage => {
+	return redis ? new RedisKVStorage(redis) : new MemoryKVStorage()
 }
 
-export const backend = createBackend()
-export const genericBackend = createGenericBackend()
+export const httpStorage = createHttpStorage()
+export const kvStorage = createKVStorage()

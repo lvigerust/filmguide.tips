@@ -1,18 +1,16 @@
 /**
- * ETag cache for TMDB API responses
- * Stores ETags and response bodies to enable 304 Not Modified responses
+ * HTTP cache with ETag support for TMDB API responses
+ * Enables 304 Not Modified responses via conditional requests
  *
  * Automatically uses:
- * - Upstash Redis (when credentials provided) - shared across all instances
- * - In-memory Map (fallback) - per-instance only
+ * - Upstash Redis (production) - shared across all instances
+ * - In-memory Map (development) - per-instance only
  */
 
-import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
 import { ETAG_CACHE_EXCLUDE_PATTERNS } from '$lib/config'
-import { backend } from './etag-cache-backend'
+import { httpStorage } from './storage'
 
-class ETagCacheHandler {
-	private readonly baseUrl = PUBLIC_TMDB_BASE_URL
+class HttpCache {
 	private readonly excludePatterns = ETAG_CACHE_EXCLUDE_PATTERNS
 	private readonly ttlSeconds = 60 * 60 // 1 hour
 
@@ -69,16 +67,16 @@ class ETagCacheHandler {
 	}
 
 	private async getCached(url: string) {
-		return await backend.get(url)
+		return await httpStorage.get(url)
 	}
 
 	private async setCached(url: string, etag: string, body: unknown) {
-		await backend.set(url, etag, body, this.ttlSeconds)
+		await httpStorage.set(url, etag, body, this.ttlSeconds)
 	}
 }
 
 // Singleton instance
-const handler = new ETagCacheHandler()
+const cache = new HttpCache()
 
-export const handleCachedRequest = (request: Request, fetch: typeof globalThis.fetch) =>
-	handler.handleRequest(request, fetch)
+export const handleHttpCacheRequest = (request: Request, fetch: typeof globalThis.fetch) =>
+	cache.handleRequest(request, fetch)
