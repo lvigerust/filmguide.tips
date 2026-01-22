@@ -1,7 +1,6 @@
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
 import { cookiesConfig } from '$lib/config.js'
 import type { Response } from '$types'
-import { redirect } from '@sveltejs/kit'
 import { safeRedirect } from '$lib/utils'
 
 export const GET = async ({ url, fetch, cookies }) => {
@@ -23,5 +22,5 @@ export const GET = async ({ url, fetch, cookies }) => {
 
 	cookies.set('session_id', sessionData.session_id, { ...cookiesConfig, maxAge: 60 * 60 * 24 * 90 })
 
-	redirect(303, safeRedirect(url.searchParams.get('redirectTo')))
+	safeRedirect(303, url.searchParams.get('redirectTo'))
 }

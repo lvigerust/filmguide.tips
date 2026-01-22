@@ -1,14 +1,13 @@
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
 import { cookiesConfig } from '$lib/config.js'
-import { redirect } from '@sveltejs/kit'
 import { safeRedirect } from '$lib/utils'
 import { userSessionCache } from '$lib/server/cache/session-cache'
 
 export const GET = async ({ fetch, cookies, url }) => {
 	const session_id = cookies.get('session_id')
-	const redirectTo = safeRedirect(url.searchParams.get('redirectTo'))
+	const redirectTo = url.searchParams.get('redirectTo')
 
-	if (!session_id) redirect(303, redirectTo)
+	if (!session_id) safeRedirect(303, redirectTo)
 
 	const response = await fetch(`${PUBLIC_TMDB_BASE_URL}/authentication/session`, {
 		method: 'DELETE',
@@ -23,5 +22,5 @@ export const GET = async ({ fetch, cookies, url }) => {
 	// Clean up cached session data from Redis
 	await userSessionCache.delete(session_id)
 
-	redirect(303, redirectTo)
+	safeRedirect(303, redirectTo)
 }
