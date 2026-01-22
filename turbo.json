@@ -5,7 +5,17 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".svelte-kit/**", "build/**"]
+      "outputs": [".svelte-kit/**", "build/**"],
+      "env": [
+        "TMDB_API_KEY",
+        "PUBLIC_TMDB_BASE_URL",
+        "PUBLIC_TMDB_IMG_URL",
+        "REDIS_URL",
+        "UPSTASH_REDIS_REST_URL",
+        "UPSTASH_REDIS_REST_TOKEN",
+        "NPM_RC",
+        "NPM_TOKEN"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]
