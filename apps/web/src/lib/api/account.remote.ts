@@ -7,10 +7,10 @@ export const addToWatchlist = query(
 	async ({ id, media_type }) => {
 		const { fetch, locals, cookies } = getRequestEvent()
 
-		if (!locals.account) throw new Error('No user')
+		if (!locals.user) throw new Error('No user')
 
 		const res = await fetch(
-			`${PUBLIC_TMDB_BASE_URL}/account/${locals.account.id}/watchlist?session_id=${cookies.get('session_id')}`,
+			`${PUBLIC_TMDB_BASE_URL}/account/${locals.user.id}/watchlist?session_id=${cookies.get('session_id')}`,
 			{
 				method: 'POST',
 				body: JSON.stringify({ media_type, media_id: id, watchlist: true })

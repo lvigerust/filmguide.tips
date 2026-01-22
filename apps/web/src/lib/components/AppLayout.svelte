@@ -2,7 +2,7 @@
 	import { afterNavigate } from '$app/navigation'
 	import { page } from '$app/state'
 	import { CommandPalette } from '$components'
-	import { getAccountState } from '$lib/app.svelte'
+	import { getUserState } from '$lib/app.svelte'
 	import { navItems } from '$lib/config'
 	import { Navbar, NavbarSection, NavbarItem, NavbarLabel } from '@lvigerust/components/Navbar'
 	import {
@@ -23,7 +23,7 @@
 	let showSidebar = $state(false)
 	afterNavigate(() => (showSidebar = false)) // Close mobile sidebar when navigating
 
-	const account = getAccountState()
+	const user = getUserState()
 </script>
 
 <div
@@ -83,9 +83,9 @@
 				<NavbarSection class="col-start-3 justify-end">
 					<CommandPalette />
 
-					<NavbarItem href={`/api/auth/${account ? 'logout' : 'login'}`}>
+					<NavbarItem href={`/api/auth/${user ? 'logout' : 'login'}`}>
 						<NavbarLabel>
-							{account ? 'Logout' : 'Login'}
+							{user ? 'Logout' : 'Login'}
 						</NavbarLabel>
 					</NavbarItem>
 				</NavbarSection>

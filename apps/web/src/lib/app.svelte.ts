@@ -1,4 +1,4 @@
-import type { Account } from '$types'
+import type { User } from '$types'
 import { createContext } from 'svelte'
 
-export const [getAccountState, setAccountState] = createContext<Account | null>()
+export const [getUserState, setUserState] = createContext<User | null>()

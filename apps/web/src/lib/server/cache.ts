@@ -22,4 +22,4 @@ export class Cache<T> {
 	}
 }
 
-export const accountCache = new Cache<Response<'account-details'>>()
+export const userCache = new Cache<Response<'account-details'>>()

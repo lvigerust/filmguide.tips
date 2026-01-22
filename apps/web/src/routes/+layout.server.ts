@@ -1,5 +1,5 @@
-export const load = async ({ locals: { account } }) => {
+export const load = async ({ locals: { user } }) => {
 	return {
-		account
+		user
 	}
 }

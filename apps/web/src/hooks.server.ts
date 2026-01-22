@@ -1,6 +1,6 @@
 import { TMDB_API_KEY } from '$env/static/private'
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import { getAccountDetails } from '$lib/server/auth'
+import { getUser } from '$lib/server/auth'
 import { handleCachedRequest } from '$lib/server/etag-cache'
 
 export const handleFetch = async ({ fetch, request }) => {
@@ -18,7 +18,7 @@ export const handleFetch = async ({ fetch, request }) => {
 export const handle = async ({ event, resolve }) => {
 	const { locals } = event
 
-	locals.account = await getAccountDetails(event)
+	locals.user = await getUser(event)
 
 	return resolve(event)
 }

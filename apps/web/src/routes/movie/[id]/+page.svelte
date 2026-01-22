@@ -8,12 +8,12 @@
 	import { Button } from '@lvigerust/components/Button'
 	import { toast } from '@lvigerust/components/Toaster'
 	import { addToWatchlist } from '$api/account.remote.js'
-	import { getAccountState } from '$lib/app.svelte.js'
+	import { getUserState } from '$lib/app.svelte.js'
 
 	let { data } = $props()
 	let movie = $derived(data.movie)
 
-	const account = getAccountState()
+	const user = getUserState()
 </script>
 
 <div class="space-y-8 sm:space-y-12">
@@ -61,7 +61,7 @@
 			<div class="flex flex-col items-start gap-2">
 				<WatchProviders providers={movie['watch/providers']} class="-mx-3.5 sm:-mx-3" />
 
-				{#if account}
+				{#if user}
 					<Button
 						plain
 						onclick={async () => {
