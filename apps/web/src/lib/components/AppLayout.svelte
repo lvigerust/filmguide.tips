@@ -101,7 +101,8 @@
 							<AccountDropdownMenu align="end" />
 						</Dropdown>
 					{:else}
-						<NavbarItem href="/api/auth/login">
+						<NavbarItem
+							href={`/api/auth/login?redirectTo=${encodeURIComponent(page.url.pathname)}`}>
 							<NavbarLabel>Login</NavbarLabel>
 						</NavbarItem>
 					{/if}

@@ -1,11 +1,13 @@
 import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
 import { cookiesConfig } from '$lib/config.js'
 import { redirect } from '@sveltejs/kit'
+import { safeRedirect } from '$lib/utils'
 
-export const GET = async ({ fetch, cookies }) => {
+export const GET = async ({ fetch, cookies, url }) => {
 	const session_id = cookies.get('session_id')
+	const redirectTo = safeRedirect(url.searchParams.get('redirectTo'))
 
-	if (!session_id) redirect(303, '/')
+	if (!session_id) redirect(303, redirectTo)
 
 	const response = await fetch(`${PUBLIC_TMDB_BASE_URL}/authentication/session`, {
 		method: 'DELETE',
@@ -17,5 +19,5 @@ export const GET = async ({ fetch, cookies }) => {
 	cookies.delete('session_id', cookiesConfig)
 	cookies.delete('account_id', cookiesConfig)
 
-	redirect(303, '/')
+	redirect(303, redirectTo)
 }
