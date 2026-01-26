@@ -6,7 +6,12 @@ https://nerdy.dev/cascading-secret-sauce
 https://nerdy.dev/sibling-index
 
 https://codepen.io/collection/JYdmwr
+https://codepen.io/collection/QWVKma
 
 https://www.youtube.com/watch?v=kOwLG3Nc5eM
 
 https://nerdy.dev/carousel-adaptive-anchor-positioning-with-calc-in-a-container-query
+
+https://codepen.io/argyleink
+
+https://codepen.io/argyleink/pen/qBoryoL

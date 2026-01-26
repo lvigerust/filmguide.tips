@@ -3,15 +3,15 @@
 	import type { ComponentProps } from 'svelte'
 	import type { Media } from '$types'
 	import { Carousel, CarouselItem } from '../Carousel'
-	import { SvelteSet, type SvelteMap } from 'svelte/reactivity'
+	import { MediaQuery, SvelteSet, type SvelteMap } from 'svelte/reactivity'
 	import { Image, Logo } from '$components'
-	import { fly } from 'svelte/transition'
-	import { quadOut } from 'svelte/easing'
 	import { createSlug } from '$utils'
+
+	const mobile = new MediaQuery('width < 40rem')
 
 	const classes = [
 		// Hero Carousel styles
-		'snap-always auto-cols-(--container-4xl) gap-[3vmin]',
+		'snap-always sm:[--item-width:var(--container-4xl)] [--item-width:calc(100%-5vw)] sm:[--gap:2vmin] [--gap:2.5vmin]',
 
 		// Empty first and last slides
 		'before:block after:block'
@@ -56,7 +56,12 @@
 	})
 </script>
 
-<Carousel {@attach trackSnap} markers bleed {...restProps} class={cn(classes, className)}>
+<Carousel
+	{@attach trackSnap}
+	markers={!mobile.current}
+	bleed
+	{...restProps}
+	class={cn(classes, className)}>
 	{#each items.values() as item, index (item.id)}
 		<CarouselItem
 			data-index={index}
@@ -68,20 +73,11 @@
 				class="grid aspect-video [place-items:end_stretch] overflow-clip rounded-lg *:[grid-area:1/1]">
 				<Image {item} sizes="896px" backdrop />
 
-				<figcaption class="flex h-1/3 items-end px-8 pb-6 sm:px-16 sm:pb-12">
-					{#if fetchedIndexes.has(index)}
-						<div
-							in:fly={{
-								x: 32,
-								duration: 1000,
-								delay: 300,
-								easing: quadOut
-							}}
-							class="logo w-full">
-							<Logo {item} />
-						</div>
-					{/if}
-				</figcaption>
+				{#if fetchedIndexes.has(index)}
+					<figcaption class="flex h-1/3 items-end px-8 pb-6 sm:px-16 sm:pb-12">
+						<Logo {item} class="logo" />
+					</figcaption>
+				{/if}
 			</figure>
 		</CarouselItem>
 	{/each}
@@ -92,13 +88,19 @@
 
 	/* Transition modifiers that are applied to the transition below */
 	figure {
-		@apply transition-opacity duration-500;
+		@apply transition-opacity duration-500 ease-out-1;
 
 		figcaption {
-			@apply bg-linear-to-t from-zinc-950/25 transition-colors duration-1000 ease-out-2;
+			@apply bg-linear-to-t from-zinc-950/25 transition duration-1000 ease-out-2;
+			@starting-style {
+				@apply opacity-0;
+			}
 
-			> .logo {
-				@apply transition delay-300 duration-1000 ease-out-3;
+			> :global(.logo) {
+				@apply transition delay-150 duration-700 ease-2;
+				@starting-style {
+					@apply translate-x-4 opacity-0;
+				}
 			}
 		}
 	}
@@ -115,8 +117,8 @@
 			figure {
 				@apply opacity-75;
 
-				figcaption > .logo {
-					@apply translate-x-8 opacity-0;
+				figcaption > :global(.logo) {
+					@apply translate-x-4 opacity-0;
 				}
 			}
 		}

@@ -115,9 +115,9 @@
 	}
 
 	.carousel {
-		@apply scroll-px-(--gutter) px-(--gutter) pt-0.5;
+		@apply scroll-px-(--gutter) px-(--gutter) pt-0.5 focus:outline-none;
 
-		@apply grid auto-cols-[--spacing(80)] grid-flow-col gap-[2vmin];
+		@apply grid auto-cols-[--spacing(80)] grid-flow-col gap-[2vmin] sm:gap-[1.5vmin];
 		@apply snap-x snap-mandatory overflow-x-auto scroll-smooth;
 
 		@apply @container-[scroll-state] [scroll-marker-group:before] [scrollbar-width:none];
@@ -158,11 +158,18 @@
 
 	figure {
 		/* Transition modifiers that are applied to the transition below */
-		@apply transition-['filter'] duration-700 ease-out-3;
+		@apply transition-[filter] duration-700 ease-out-3;
 
 		/* Unsnapped items */
 		@container not scroll-state(snapped: inline) {
 			@apply not-hover:grayscale-75;
+		}
+
+		:global(img) {
+			/* Unsnapped items */
+			@container scroll-state(snapped: inline) {
+				@apply not-hover:scale-100;
+			}
 		}
 	}
 </style>

@@ -31,21 +31,24 @@
 		{heading}
 	</Heading>
 
-	<div class="poster-carousel contents">
-		<Carousel
-			bleed
-			{...restProps}
-			class={cn('auto-cols-[--spacing(38)]', backdrop && 'auto-cols-[--spacing(80)]', className)}>
-			{#each items.values() as item, index (item.id)}
-				<CarouselItem
-					data-id={item.id}
-					href={createSlug(item)}
-					class={['poster snap-start', index === startIndex && 'scroll-start']}>
-					<Image {item} {backdrop} loading={index < 8 ? 'eager' : 'lazy'} />
-				</CarouselItem>
-			{/each}
-		</Carousel>
-	</div>
+	<Carousel
+		bleed
+		{...restProps}
+		class={cn(
+			'[--gap:2vmin] [--item-width:calc(100vw/3.5)] sm:[--gap:1.5vmin] sm:[--item-width:--spacing(38)]',
+			backdrop &&
+				'[--item-width:calc((100vw/3.5*2)+var(--gap))] sm:[--item-width:calc(--spacing(38)*2+var(--gap))]',
+			className
+		)}>
+		{#each items.values() as item, index (item.id)}
+			<CarouselItem
+				data-id={item.id}
+				href={createSlug(item)}
+				class={['poster snap-start', index === startIndex && 'scroll-start']}>
+				<Image {item} {backdrop} loading={index < 8 ? 'eager' : 'lazy'} />
+			</CarouselItem>
+		{/each}
+	</Carousel>
 </div>
 
 <style lang="postcss">

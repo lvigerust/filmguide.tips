@@ -23,7 +23,7 @@
 <div
 	{...restProps}
 	class={cn(
-		'carousel auto-cols-[--spacing(40)]',
+		'carousel [--gap:1.5vmin] [--item-width:--spacing(40)]',
 		buttons && 'carousel--scroll-buttons',
 		markers && 'carousel--scroll-markers',
 		bleed && 'full-bleed',
@@ -55,7 +55,8 @@
 		grid-auto-flow: column;
 		padding-inline: var(--carousel-padding);
 		scroll-padding-inline: var(--carousel-padding);
-		column-gap: --spacing(4);
+		column-gap: var(--gap);
+		grid-auto-columns: var(--item-width);
 		scrollbar-width: none;
 	}
 
