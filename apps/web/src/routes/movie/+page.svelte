@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { getMovies } from '$api'
-	import { HeroCarousel, PosterCarousel } from '$components'
-	import type { Snapshot } from '@sveltejs/kit'
+	import { getMovies } from '#api'
+	import { HeroCarousel, PosterCarousel } from '#components'
+	import { snapshot } from '$app/navigation'
 
 	let startSnap = $state(1)
 
-	export const snapshot: Snapshot<number> = {
+	snapshot({
 		capture: () => startSnap,
 		restore: (value) => (startSnap = value)
-	}
+	})
 </script>
 
 <div class="-mt-6 lg:-mt-10">

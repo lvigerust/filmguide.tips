@@ -1,7 +1,7 @@
-import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import { cookiesConfig } from '$lib/config.js'
-import type { Response } from '$types'
-import { safeRedirect } from '$lib/utils'
+import { PUBLIC_TMDB_BASE_URL } from '$app/env/public'
+import { cookiesConfig } from '#lib/config.js'
+import type { Response } from '#types'
+import { safeRedirect } from '#lib/utils.js'
 
 export const GET = async ({ url, fetch, cookies }) => {
 	const request_token = url.searchParams.get('request_token')

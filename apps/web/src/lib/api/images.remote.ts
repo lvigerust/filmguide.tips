@@ -1,6 +1,6 @@
 import { getRequestEvent, query } from '$app/server'
-import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import type { Images } from '$types'
+import { PUBLIC_TMDB_BASE_URL } from '$app/env/public'
+import type { Images } from '#types'
 import { z } from 'zod/v4-mini'
 
 export const getMediaImages = query(

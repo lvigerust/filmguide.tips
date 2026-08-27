@@ -1,14 +1,14 @@
 <script lang="ts">
-	import Image from '$components/Image.svelte'
+	import Image from '#components/Image.svelte'
 	import { Heading, Subheading } from '@lvigerust/components/Heading'
 	import { Text } from '@lvigerust/components/Text'
 	import { BadgeButton } from '@lvigerust/components/Badge'
 	import { formatDate, formatNumber, slugify } from '@lvigerust/utils'
-	import { WatchProviders } from '$components'
+	import { WatchProviders } from '#components'
 	import { Button } from '@lvigerust/components/Button'
 	import { toast } from '@lvigerust/components/Toaster'
-	import { addToWatchlist } from '$api/account.remote.js'
-	import { getUserState } from '$lib/app.svelte.js'
+	import { addToWatchlist } from '#api/account.remote.js'
+	import { getUserState } from '#lib/app.svelte.js'
 
 	let { data } = $props()
 	let movie = $derived(data.movie)

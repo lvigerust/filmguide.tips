@@ -1,16 +1,18 @@
 <script lang="ts">
 	import '../app.css'
-	import favicon from '$lib/assets/favicon.svg'
+	import favicon from '#lib/assets/favicon.svg'
 	import { page } from '$app/state'
 	import { onNavigate } from '$app/navigation'
-	import { AppLayout } from '$components'
+	import { AppLayout } from '#components'
 	import { untrack } from 'svelte'
 	import { Toaster } from '@lvigerust/components/Toaster'
-	import { setUserState } from '$lib/app.svelte.js'
+	import { setUserState } from '#lib/app.svelte.js'
 
 	/* View Transition API */
 	onNavigate((navigation) => {
+		if (navigation.shallow) return
 		if (!document.startViewTransition) return
+
 		return new Promise((resolve) => {
 			document.startViewTransition(async () => {
 				resolve()
@@ -30,10 +32,7 @@
 </svelte:head>
 
 <Toaster />
-
-<AppLayout>
-	{@render children()}
-</AppLayout>
+<AppLayout>{@render children()}</AppLayout>
 
 <style lang="postcss">
 	:global {

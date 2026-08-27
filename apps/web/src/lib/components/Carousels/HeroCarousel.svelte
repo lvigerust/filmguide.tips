@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { cn } from '@lvigerust/utils'
 	import type { ComponentProps } from 'svelte'
-	import type { Media } from '$types'
+	import type { Media } from '#types'
 	import { Carousel, CarouselItem } from '../Carousel'
 	import { MediaQuery, SvelteSet, type SvelteMap } from 'svelte/reactivity'
-	import { Image, Logo } from '$components'
-	import { createSlug } from '$utils'
+	import { Image, Logo } from '#components'
+	import { createSlug } from '#utils'
 
 	const mobile = new MediaQuery('width < 40rem')
 
@@ -18,14 +18,14 @@
 	]
 
 	const trackSnap = (carousel: HTMLDivElement) => {
-		const getIndex = (event: ScrollSnapEvent) => event.snapTargetInline?.dataset.index
+		const getIndex = (event: SnapEvent) => event.snapTargetInline?.dataset.index
 
-		const onChanging = (event: ScrollSnapEvent) => {
+		const onChanging = (event: SnapEvent) => {
 			const indexStr = getIndex(event)
 			if (indexStr) fetchedIndexes.add(Number(indexStr))
 		}
 
-		const onChange = (event: ScrollSnapEvent) => {
+		const onChange = (event: SnapEvent) => {
 			const indexStr = getIndex(event)
 			if (indexStr) startSnap = Number(indexStr)
 		}
@@ -49,11 +49,7 @@
 		startSnap?: number
 	} = $props()
 
-	let fetchedIndexes = new SvelteSet<number>()
-
-	$effect(() => {
-		fetchedIndexes.add(startSnap)
-	})
+	let fetchedIndexes = new SvelteSet<number>([startSnap])
 </script>
 
 <Carousel
@@ -72,7 +68,6 @@
 				class:scroll-start={index === startSnap}
 				class="grid aspect-video [place-items:end_stretch] overflow-clip rounded-lg *:[grid-area:1/1]">
 				<Image {item} sizes="896px" backdrop />
-
 				{#if fetchedIndexes.has(index)}
 					<figcaption class="flex h-1/3 items-end px-8 pb-6 sm:px-16 sm:pb-12">
 						<Logo {item} class="logo" />
@@ -84,7 +79,7 @@
 </Carousel>
 
 <style lang="postcss">
-	@reference "#app.css";
+	@reference "../../../app.css";
 
 	/* Transition modifiers that are applied to the transition below */
 	figure {

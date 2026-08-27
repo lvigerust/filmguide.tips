@@ -10,7 +10,7 @@
 	import { ArrowRightStartOnRectangle } from 'svelte-heros-v2'
 	import { Icon } from '@lvigerust/components/UI'
 	import { cn } from '@lvigerust/utils'
-	import { navItems } from '$lib/config'
+	import { navItems } from '#lib/config.js'
 	import { page } from '$app/state'
 	import type { ComponentProps } from 'svelte'
 

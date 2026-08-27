@@ -1,7 +1,7 @@
-import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import type { Response } from '$types'
+import { PUBLIC_TMDB_BASE_URL } from '$app/env/public'
+import type { Response } from '#types'
 import { redirect } from '@sveltejs/kit'
-import { validateRedirect } from '$lib/utils'
+import { validateRedirect } from '#lib/utils.js'
 
 export const GET = async ({ fetch, url }) => {
 	const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/authentication/token/new`)
@@ -13,10 +13,11 @@ export const GET = async ({ fetch, url }) => {
 	if (!data.request_token) throw new Error('No request token')
 
 	const redirectUrl = new URL('/api/auth/callback', url.origin)
+
 	redirectUrl.searchParams.set('redirectTo', validateRedirect(url.searchParams.get('redirectTo')))
 
 	const approveUrl = new URL(`/authenticate/${data.request_token}`, 'https://www.themoviedb.org')
-	approveUrl.searchParams.set('redirect_to', String(redirectUrl))
 
+	approveUrl.searchParams.set('redirect_to', String(redirectUrl))
 	redirect(302, approveUrl)
 }

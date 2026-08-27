@@ -1,4 +1,4 @@
-import { getShowDetails, getShowSeasons } from '$api'
+import { getShowDetails, getShowSeasons } from '#api'
 
 export const load = async ({ params }) => {
 	const show = await getShowDetails({

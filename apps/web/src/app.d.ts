@@ -1,6 +1,6 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 
-import type { Response } from '$types'
+import type { Response } from '#types'
 
 // for information about these interfaces
 declare global {
@@ -20,14 +20,14 @@ declare global {
 		) => void
 	}
 
-	interface ScrollSnapEvent extends Event {
+	interface SnapEvent extends Event {
 		snapTargetBlock: HTMLElement | null
 		snapTargetInline: HTMLElement | null
 	}
 
 	interface HTMLElementEventMap {
-		scrollsnapchange: ScrollSnapEvent
-		scrollsnapchanging: ScrollSnapEvent
+		scrollsnapchange: SnapEvent
+		scrollsnapchanging: SnapEvent
 	}
 }
 

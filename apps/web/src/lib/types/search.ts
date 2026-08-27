@@ -1,4 +1,4 @@
-import type { ResultItem } from '$types'
+import type { ResultItem } from '#types'
 
 // Search result item types (from dedicated search endpoints)
 export type MovieSearchItem = ResultItem<'search-movie'> & { media_type: 'movie' }

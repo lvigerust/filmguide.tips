@@ -1,23 +1,24 @@
 <script lang="ts">
 	import { cn } from '@lvigerust/utils'
-	import type { SvelteHTMLElements } from 'svelte/elements'
-	import type { WithElementRef } from 'bits-ui'
+	import type { HTMLAttributes } from 'svelte/elements'
+
+	const _id = $props.id()
 
 	let {
 		ref = $bindable(),
+		id = _id,
 		buttons = false,
 		markers = false,
 		bleed = false,
 		class: className,
 		children,
 		...restProps
-	}: WithElementRef<SvelteHTMLElements['div'], HTMLDivElement> & {
+	}: HTMLAttributes<HTMLDivElement> & {
+		ref?: HTMLDivElement | null
 		buttons?: boolean
 		markers?: boolean
 		bleed?: boolean
 	} = $props()
-
-	const id = $props.id()
 </script>
 
 <div
@@ -35,7 +36,7 @@
 </div>
 
 <style lang="postcss">
-	@reference "#app.css";
+	@reference "tailwindcss";
 
 	.carousel {
 		anchor-name: var(--carousel-anchor);

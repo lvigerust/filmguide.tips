@@ -1,18 +1,18 @@
 import { getRequestEvent, query } from '$app/server'
-import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
+import { PUBLIC_TMDB_BASE_URL } from '$app/env/public'
 import type {
 	MovieSearchItem,
 	MultiSearchResponse,
 	PersonSearchItem,
 	TmdbError,
 	TvSearchItem
-} from '$types'
+} from '#types'
+
 import { SvelteMap } from 'svelte/reactivity'
 import { z } from 'zod/v4'
 
 export const searchMultiple = query(z.string(), async (searchQuery) => {
 	const { fetch } = getRequestEvent()
-
 	const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/search/multi?query=${searchQuery}`)
 
 	if (!res.ok) {
@@ -21,7 +21,6 @@ export const searchMultiple = query(z.string(), async (searchQuery) => {
 	}
 
 	const data: MultiSearchResponse = await res.json()
-
 	const movieEntries: [number, MovieSearchItem][] = []
 	const tvEntries: [number, TvSearchItem][] = []
 	const personEntries: [number, PersonSearchItem][] = []

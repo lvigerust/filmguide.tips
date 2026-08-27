@@ -7,7 +7,7 @@
  * - In-memory Map (development) - per-instance only
  */
 
-import { ETAG_CACHE_EXCLUDE_PATTERNS } from '$lib/config'
+import { ETAG_CACHE_EXCLUDE_PATTERNS } from '#lib/config.js'
 import { httpStorage } from './storage'
 
 class HttpCache {

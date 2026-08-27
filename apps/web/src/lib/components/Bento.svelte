@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Image } from '$components'
-	import type { Media } from '$types'
+	import { Image } from '#components'
+	import type { Media } from '#types'
 	import { RadioGroup } from 'bits-ui'
 	import type { SvelteMap } from 'svelte/reactivity'
 
@@ -40,7 +40,7 @@
 </div>
 
 <style lang="postcss">
-	@reference "#app.css";
+	@reference "tailwindcss";
 
 	:global(.bento) {
 		display: grid;

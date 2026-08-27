@@ -1,6 +1,6 @@
-import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import { cookiesConfig } from '$lib/config'
-import type { Response } from '$types'
+import { PUBLIC_TMDB_BASE_URL } from '$app/env/public'
+import { cookiesConfig } from '#lib/config.js'
+import type { Response } from '#types'
 import type { RequestEvent } from '@sveltejs/kit'
 import { userSessionCache } from '../cache/session-cache'
 
@@ -8,13 +8,13 @@ const CACHE_TTL_SECONDS = 300 // 5 minutes
 
 export const getUser = async (event: RequestEvent) => {
 	const { fetch, cookies } = event
-
 	const session_id = cookies.get('session_id')
 
 	if (!session_id) return null
 
 	// Check cache first
 	const cached = await userSessionCache.get(session_id)
+
 	if (cached) return cached
 
 	const res = await fetch(`${PUBLIC_TMDB_BASE_URL}/account?session_id=${session_id}`)

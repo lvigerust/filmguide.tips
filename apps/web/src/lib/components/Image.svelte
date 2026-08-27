@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { PUBLIC_TMDB_IMG_URL } from '$env/static/public'
+	import { PUBLIC_TMDB_IMG_URL } from '$app/env/public'
 	import { cn } from '@lvigerust/utils'
-	import type { Episode, Media } from '$types'
+	import type { Episode, Media } from '#types'
 	import type { HTMLImgAttributes } from 'svelte/elements'
 	import type { WithElementRef } from 'bits-ui'
 

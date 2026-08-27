@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation'
 	import { page } from '$app/state'
-	import { CommandPalette } from '$components'
-	import { getUserState } from '$lib/app.svelte'
-	import { navItems } from '$lib/config'
+	import { CommandPalette } from '#components'
+	import { getUserState } from '#lib/app.svelte.js'
+	import { navItems } from '#lib/config.js'
 	import { Navbar, NavbarSection, NavbarItem, NavbarLabel } from '@lvigerust/components/Navbar'
 	import {
 		MobileSidebar,
@@ -14,18 +14,23 @@
 		SidebarLabel,
 		SidebarBody
 	} from '@lvigerust/components/Sidebar'
+
 	import { Icon } from '@lvigerust/components/UI'
 	import type { Snippet } from 'svelte'
 	import { Bars2 } from 'svelte-heros-v2'
 	import AccountDropdownMenu from './AccountDropdownMenu.svelte'
 	import { Dropdown, DropdownButton } from '@lvigerust/components/Dropdown'
 	import { Avatar } from '@lvigerust/components/Avatar'
-	import { PUBLIC_TMDB_IMG_URL } from '$env/static/public'
+	import { PUBLIC_TMDB_IMG_URL } from '$app/env/public'
 
 	let { children }: { children: Snippet } = $props()
-
 	let showSidebar = $state(false)
-	afterNavigate(() => (showSidebar = false)) // Close mobile sidebar when navigating
+
+	afterNavigate(({ shallow }) => {
+		if (shallow) return
+
+		return (showSidebar = false)
+	})
 
 	const user = getUserState()
 </script>
@@ -64,27 +69,18 @@
 	<header class="flex items-center px-4">
 		<div class="min-w-0 flex-1">
 			<Navbar class="grid grid-cols-3">
-				<NavbarSection class="lg:hidden">
-					<NavbarItem onclick={() => (showSidebar = true)}>
-						<Icon src={Bars2} solid />
-					</NavbarItem>
-				</NavbarSection>
-
-				<NavbarSection class="max-lg:col-start-2 max-lg:justify-center">
-					<NavbarItem href="/">
-						<NavbarLabel>Filmguide</NavbarLabel>
-					</NavbarItem>
-				</NavbarSection>
+				<NavbarSection class="lg:hidden"
+					><NavbarItem onclick={() => (showSidebar = true)}><Icon src={Bars2} solid /></NavbarItem
+					></NavbarSection>
+				<NavbarSection class="max-lg:col-start-2 max-lg:justify-center"
+					><NavbarItem href="/"><NavbarLabel>Filmguide</NavbarLabel></NavbarItem></NavbarSection>
 
 				<NavbarSection class="justify-center max-lg:hidden">
 					{#each navItems as { label, href } (label)}
 						<NavbarItem
 							{href}
-							class={[!page.url.pathname.startsWith(href) && 'not-hover:*:text-zinc-400']}>
-							<NavbarLabel class="transition-colors">
-								{label}
-							</NavbarLabel>
-						</NavbarItem>
+							class={[!page.url.pathname.startsWith(href) && 'not-hover:*:text-zinc-400']}
+							><NavbarLabel class="transition-colors">{label}</NavbarLabel></NavbarItem>
 					{/each}
 				</NavbarSection>
 

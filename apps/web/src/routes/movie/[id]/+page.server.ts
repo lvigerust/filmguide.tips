@@ -1,4 +1,4 @@
-import { getMovieDetails } from '$api'
+import { getMovieDetails } from '#api'
 
 export const load = async ({ params }) => {
 	const movie = await getMovieDetails({ id: params.id })

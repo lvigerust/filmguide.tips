@@ -1,20 +1,21 @@
 <script lang="ts">
-	import { PUBLIC_TMDB_IMG_URL } from '$env/static/public'
-	import { COUNTRIES } from '$lib/config'
-	import type { WatchProviders } from '$types'
+	import { PUBLIC_TMDB_IMG_URL } from '$app/env/public'
+	import { COUNTRIES } from '#lib/config.js'
+	import type { WatchProviders } from '#types'
 	import type { ComponentProps } from 'svelte'
 	import { Dialog, DialogBody, DialogDescription, DialogTitle } from '@lvigerust/components/Dialog'
 	import { Button, TouchTarget } from '@lvigerust/components/Button'
 	import { cn } from '@lvigerust/utils'
 	import { Label } from '@lvigerust/components/Fieldset'
 	import { RadioGroup } from 'bits-ui'
-	import { ref } from '$utils'
+	import { ref } from '#utils'
 
 	type CountryCode = keyof typeof COUNTRIES
 
 	const handleCountryChange = (value: string) => {
 		const code = value as CountryCode
 		const update = () => (selectedCountry = code)
+
 		if (providersListEl?.startViewTransition) providersListEl.startViewTransition(update)
 		else if (document?.startViewTransition) document.startViewTransition(update)
 		else update()
@@ -27,12 +28,10 @@
 	}: ComponentProps<typeof Button> & { providers?: WatchProviders } = $props()
 
 	let open = $state(false)
-
 	let selectedCountry = $state<CountryCode>('NO')
 	let availableCountries = $derived(
 		(Object.keys(COUNTRIES) as CountryCode[]).filter((code) => providers?.results?.[code]?.flatrate)
 	)
-
 	let providersListEl: HTMLUListElement | null = null
 </script>
 

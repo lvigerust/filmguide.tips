@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { getShows } from '$api'
-	import { HeroCarousel, PosterCarousel } from '$components'
+	import { getShows } from '#api'
+	import { HeroCarousel, PosterCarousel } from '#components'
 	import type { Snapshot } from '@sveltejs/kit'
 
 	let startSnap = $state(1)

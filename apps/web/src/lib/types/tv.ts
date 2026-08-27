@@ -1,4 +1,4 @@
-import type { Response, ResultItem } from '$types'
+import type { Response, ResultItem } from '#types'
 
 // Raw API response types (internal use)
 export type ShowListResponse = Response<'tv-series-popular-list'>

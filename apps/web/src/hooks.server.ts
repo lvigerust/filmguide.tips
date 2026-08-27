@@ -1,7 +1,7 @@
-import { TMDB_API_KEY } from '$env/static/private'
-import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import { getUser } from '$lib/server/auth/auth'
-import { handleHttpCacheRequest } from '$lib/server/cache'
+import { TMDB_API_KEY } from '$app/env/private'
+import { PUBLIC_TMDB_BASE_URL } from '$app/env/public'
+import { getUser } from '#lib/server/auth/auth.js'
+import { handleHttpCacheRequest } from '#lib/server/cache/index.js'
 
 export const handleFetch = async ({ fetch, request }) => {
 	if (request.url.startsWith(PUBLIC_TMDB_BASE_URL)) {

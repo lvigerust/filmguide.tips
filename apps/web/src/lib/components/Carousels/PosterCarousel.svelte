@@ -2,12 +2,12 @@
 	import { cn } from '@lvigerust/utils'
 	import { Carousel, CarouselItem } from '../Carousel'
 	import { Heading } from '@lvigerust/components/Heading'
-	import { Image } from '$components'
+	import { Image } from '#components'
 	import type { ComponentProps } from 'svelte'
 	import type { SvelteMap } from 'svelte/reactivity'
 	import type { ClassValue } from 'svelte/elements'
-	import type { Media } from '$types'
-	import { createSlug } from '$utils'
+	import type { Media } from '#types'
+	import { createSlug } from '#utils'
 
 	let {
 		heading,
@@ -52,7 +52,7 @@
 </div>
 
 <style lang="postcss">
-	@reference "#app.css";
+	@reference "../../../app.css";
 
 	@supports (animation-timeline: view()) {
 		.carousel-wrapper {

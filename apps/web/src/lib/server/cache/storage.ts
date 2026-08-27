@@ -1,5 +1,5 @@
 import { Redis, type RedisConfigNodejs } from '@upstash/redis'
-import { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } from '$env/static/private'
+import { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } from '$app/env/private'
 
 /**
  * Entry stored in HTTP cache (for ETag-based conditional requests)
@@ -92,6 +92,7 @@ class MemoryHttpStorage implements HttpCacheStorage {
 
 	async get(url: string): Promise<HttpCacheEntry | null> {
 		const entry = this.cache.get(url)
+
 		if (!entry) return null
 
 		if (Date.now() > entry.expiresAt) {
@@ -158,6 +159,7 @@ class MemoryKVStorage implements KVStorage {
 
 	async get<T>(key: string): Promise<T | null> {
 		const entry = this.cache.get(key)
+
 		if (!entry) return null
 
 		if (Date.now() > entry.expiresAt) {

@@ -1,5 +1,5 @@
 import { getRequestEvent, query } from '$app/server'
-import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
+import { PUBLIC_TMDB_BASE_URL } from '$app/env/public'
 import { z } from 'zod/v4'
 
 export const addToWatchlist = query(

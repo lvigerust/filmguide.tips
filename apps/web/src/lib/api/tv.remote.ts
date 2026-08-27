@@ -1,5 +1,5 @@
 import { getRequestEvent, query } from '$app/server'
-import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
+import { PUBLIC_TMDB_BASE_URL } from '$app/env/public'
 import {
 	append_show_options,
 	showLists,
@@ -9,7 +9,8 @@ import {
 	type ShowDetailsWithAppends,
 	type ShowListResponse,
 	type ShowSeasonDetails
-} from '$types'
+} from '#types'
+
 import { SvelteMap } from 'svelte/reactivity'
 import { z } from 'zod/v4'
 
@@ -22,14 +23,15 @@ export const getShows = query(z.enum(showLists), async (list): Promise<SvelteMap
 			: `${PUBLIC_TMDB_BASE_URL}/tv/${list}`
 
 	const res = await fetch(endpoint)
+
 	if (!res.ok) throw new Error(res.statusText)
 
 	const data: ShowListResponse = await res.json()
-
 	const shows = new SvelteMap<number, Show>()
 
 	for (const show of data.results ?? []) {
-		shows.set(show.id, { ...show, media_type: 'tv' })
+		if (!show.name) continue
+		shows.set(show.id, { ...show, name: show.name, media_type: 'tv' })
 	}
 
 	return shows
@@ -39,14 +41,16 @@ export const getShowDetails = query(
 	z.object({ id: z.string(), append: z.array(z.enum(append_show_options)) }),
 	async ({ id, append }): Promise<ShowDetails & ShowDetailsWithAppends> => {
 		const { fetch } = getRequestEvent()
-
 		const url = new URL(`${PUBLIC_TMDB_BASE_URL}/tv/${id}`)
+
 		url.searchParams.set('append_to_response', append.join(','))
 
 		const res = await fetch(url)
+
 		if (!res.ok) throw new Error(res.statusText)
 
 		const show = await res.json()
+
 		return { ...show, media_type: 'tv' }
 	}
 )
@@ -61,16 +65,15 @@ export const getShowSeasons = query(
 	}),
 	async ({ id, numberOfSeasons, offset = 0 }) => {
 		const { fetch } = getRequestEvent()
-
 		const remaining = numberOfSeasons - offset
 		const count = Math.min(remaining, SEASONS_PER_PAGE)
-
 		const seasonKeys = Array.from({ length: count }, (_, i) => `season/${offset + i + 1}`)
-
 		const url = new URL(`${PUBLIC_TMDB_BASE_URL}/tv/${id}`)
+
 		url.searchParams.set('append_to_response', seasonKeys.join(','))
 
 		const res = await fetch(url)
+
 		if (!res.ok) throw new Error(res.statusText)
 
 		const data: ShowDetailsResponse & Record<`season/${number}`, ShowSeasonDetails> =

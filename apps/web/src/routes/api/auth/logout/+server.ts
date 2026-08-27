@@ -1,7 +1,7 @@
-import { PUBLIC_TMDB_BASE_URL } from '$env/static/public'
-import { cookiesConfig } from '$lib/config.js'
-import { safeRedirect } from '$lib/utils'
-import { userSessionCache } from '$lib/server/cache/session-cache'
+import { PUBLIC_TMDB_BASE_URL } from '$app/env/public'
+import { cookiesConfig } from '#lib/config.js'
+import { safeRedirect } from '#lib/utils.js'
+import { userSessionCache } from '#lib/server/cache/session-cache.js'
 
 export const GET = async ({ fetch, cookies, url }) => {
 	const session_id = cookies.get('session_id')

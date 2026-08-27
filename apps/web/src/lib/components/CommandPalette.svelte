@@ -13,8 +13,8 @@
 	import { NavbarItem } from '@lvigerust/components/Navbar'
 	import { Icon } from '@lvigerust/components/UI'
 	import { ArrowPath, MagnifyingGlass } from 'svelte-heros-v2'
-	import { searchMultiple } from '$api/search.remote'
-	import type { MovieSearchItem, TvSearchItem } from '$types'
+	import { searchMultiple } from '#api/search.remote.js'
+	import type { MovieSearchItem, TvSearchItem } from '#types'
 	import { SvelteMap } from 'svelte/reactivity'
 	import { debounce } from '@lvigerust/utils'
 

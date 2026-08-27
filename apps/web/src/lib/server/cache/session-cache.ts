@@ -4,7 +4,7 @@
  * Automatically selects backend based on environment variables
  */
 
-import type { Response } from '$types'
+import type { Response } from '#types'
 import { kvStorage } from './storage'
 
 export class SessionCache<T> {

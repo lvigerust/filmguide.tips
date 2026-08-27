@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { cn, formatDate } from '@lvigerust/utils'
-	import type { ShowSeasonDetails } from '$types'
+	import type { ShowSeasonDetails } from '#types'
 	import type { SvelteMap } from 'svelte/reactivity'
 	import type { SvelteHTMLElements } from 'svelte/elements'
 	import { Text } from '@lvigerust/components/Text'
 	import { Subheading } from '@lvigerust/components/Heading'
 	import { Icon } from '@lvigerust/components/UI'
 	import { Photo } from 'svelte-heros-v2'
-	import { Image } from '$components'
+	import { Image } from '#components'
 
 	let {
 		seasons,
@@ -100,7 +100,7 @@
 </div>
 
 <style lang="postcss">
-	@reference "#app.css";
+	@reference "../../../app.css";
 
 	:root {
 		/* Match layout: main has lg:px-2, inner div has p-6 lg:p-10, then max-w-6xl mx-auto */

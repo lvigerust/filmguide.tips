@@ -2,7 +2,7 @@
 	import { cn } from '@lvigerust/utils'
 	import type { SvelteHTMLElements } from 'svelte/elements'
 	import type { WithElementRef } from 'bits-ui'
-	import type { Pathname } from '$app/types'
+	import type { Path } from '$app/types'
 	import { resolve } from '$app/paths'
 
 	let {
@@ -11,9 +11,7 @@
 		href,
 		children,
 		...restProps
-	}: WithElementRef<SvelteHTMLElements['div'], HTMLDivElement> & {
-		href?: Pathname
-	} = $props()
+	}: WithElementRef<SvelteHTMLElements['div'], HTMLDivElement> & { href?: Path } = $props()
 </script>
 
 <div
@@ -30,7 +28,7 @@
 </div>
 
 <style lang="postcss">
-	@reference "#app.css";
+	@reference "tailwindcss";
 
 	.carousel__item {
 		&::scroll-marker {
