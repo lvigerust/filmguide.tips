@@ -19,5 +19,5 @@ export const GET = async ({ fetch, url }) => {
 	const approveUrl = new URL(`/authenticate/${data.request_token}`, 'https://www.themoviedb.org')
 
 	approveUrl.searchParams.set('redirect_to', String(redirectUrl))
-	redirect(302, approveUrl)
+	redirect(302, approveUrl, { external: true })
 }

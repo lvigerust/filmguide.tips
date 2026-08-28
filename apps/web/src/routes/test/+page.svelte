@@ -15,8 +15,12 @@
 	bind:clientWidth={radiusWidth}
 	style:--orbit-radius="{radiusWidth ? radiusWidth / 2 - 45 : 0}px"
 	class="sibling-orbit relative mx-auto mt-10 aspect-square w-lg rounded-full border-3 border-dashed">
-	{#each { length: count }}
-		<div class="sibling-dot absolute top-1/2 left-1/2 size-12 rounded-full"></div>
+	{#each { length: count }, index}
+		<button
+			class="sibling-dot absolute top-1/2 left-1/2 size-12 rounded-full"
+			onclick={() => count--}>
+			{index + 1}
+		</button>
 	{/each}
 </div>
 

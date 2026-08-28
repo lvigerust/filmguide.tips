@@ -12,14 +12,19 @@ import {
 } from '#types'
 
 export const getMovies = query(
-	z.enum(movieLists),
-	async (list): Promise<SvelteMap<number, Movie>> => {
+	z.object({ list: z.enum(movieLists), page: z.number().int().min(1).max(500) }),
+	async ({
+		list,
+		page
+	}): Promise<{ movies: SvelteMap<number, Movie>; page: number; totalPages: number }> => {
 		const { fetch } = getRequestEvent()
 
-		const url =
+		const url = new URL(
 			list === 'trending'
 				? `${PUBLIC_TMDB_BASE_URL}/trending/movie/week`
 				: `${PUBLIC_TMDB_BASE_URL}/movie/${list}`
+		)
+		url.searchParams.set('page', String(page))
 
 		const res = await fetch(url)
 
@@ -33,7 +38,7 @@ export const getMovies = query(
 			movies.set(movie.id, { ...movie, title: movie.title, media_type: 'movie' })
 		}
 
-		return movies
+		return { movies, page: data.page, totalPages: data.total_pages }
 	}
 )
 

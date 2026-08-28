@@ -1,16 +1,20 @@
 <script lang="ts">
-	import { getMovies } from '#api'
 	import { Image } from '#components'
+	import { MovieFeed } from '#lib/movie-feed.svelte.js'
+
+	const { movies, loadMore } = await new MovieFeed('popular')
 </script>
+
+<svelte:window onscroll={() => loadMore()} onresize={() => loadMore()} />
 
 <div
 	class={[
 		// Columns
 		'[--cols:2] sm:[--cols:5]',
 		// Base styles
-		'grid grid-cols-[repeat(var(--cols),minmax(0,1fr))] gap-x-6 gap-y-8'
+		'grid grid-cols-[repeat(var(--cols),minmax(0,1fr))] gap-x-5 gap-y-7'
 	]}>
-	{#each await getMovies('trending') as [id, movie] (id)}
+	{#each movies.values() as movie (movie.id)}
 		<div class="item">
 			<div class="card">
 				<Image item={movie} class="rounded-md" />
