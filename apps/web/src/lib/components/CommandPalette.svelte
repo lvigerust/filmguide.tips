@@ -16,7 +16,7 @@
 	import { searchMultiple } from '#api/search.remote.js'
 	import type { MovieSearchItem, TvSearchItem } from '#types'
 	import { SvelteMap } from 'svelte/reactivity'
-	import { debounce } from '@lvigerust/utils'
+	import { debounce } from '@lvigerust/components'
 
 	let { open = $bindable(false), ...restProps }: ComponentProps<typeof Command> = $props()
 

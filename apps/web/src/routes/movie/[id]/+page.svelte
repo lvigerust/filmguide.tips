@@ -3,7 +3,7 @@
 	import { Heading, Subheading } from '@lvigerust/components/Heading'
 	import { Text } from '@lvigerust/components/Text'
 	import { BadgeButton } from '@lvigerust/components/Badge'
-	import { formatDate, formatNumber, slugify } from '@lvigerust/utils'
+	import { formatDate, formatNumber, slugify } from '@lvigerust/components'
 	import { WatchProviders } from '#components'
 	import { Button } from '@lvigerust/components/Button'
 	import { toast } from '@lvigerust/components/Toaster'

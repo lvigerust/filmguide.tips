@@ -1,5 +1,5 @@
 import type { Attachment } from 'svelte/attachments'
-import { isSafeRedirect, slugify } from '@lvigerust/utils'
+import { isSafeRedirect, slugify } from '@lvigerust/components'
 import { redirect } from '@sveltejs/kit'
 import type { Media } from '#types'
 
