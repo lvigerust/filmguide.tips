@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '@lvigerust/utils'
+	import { cn } from '#utils'
 	import type { HTMLAttributes } from 'svelte/elements'
 
 	const _id = $props.id()

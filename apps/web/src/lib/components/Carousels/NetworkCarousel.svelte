@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '@lvigerust/utils'
+	import { cn } from '#utils'
 	import { Carousel, CarouselItem } from '../Carousel'
 	import type { ComponentProps } from 'svelte'
 

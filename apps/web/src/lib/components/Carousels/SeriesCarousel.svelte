@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { cn, formatDate } from '@lvigerust/utils'
+	import { formatDate } from '@lvigerust/components'
+	import { cn } from '#utils'
 	import type { ShowSeasonDetails } from '#types'
 	import type { SvelteMap } from 'svelte/reactivity'
 	import type { SvelteHTMLElements } from 'svelte/elements'

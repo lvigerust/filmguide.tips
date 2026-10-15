@@ -1,7 +1,11 @@
 import type { Attachment } from 'svelte/attachments'
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 import { isSafeRedirect, slugify } from '@lvigerust/components'
 import { redirect } from '@sveltejs/kit'
 import type { Media } from '#types'
+
+export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
 
 export const ref = <T extends Element>(set: (node: T | null) => void): Attachment<T> => {
 	return (node) => {

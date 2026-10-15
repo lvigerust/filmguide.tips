@@ -2,7 +2,7 @@
 	import { getMediaImages } from '#api/images.remote.js'
 	import { PUBLIC_TMDB_IMG_URL } from '$app/env/public'
 	import type { Media } from '#types'
-	import { cn } from '@lvigerust/utils'
+	import { cn } from '#utils'
 	import type { HTMLImgAttributes } from 'svelte/elements'
 
 	let { item, class: className, ...restProps }: HTMLImgAttributes & { item: Media } = $props()

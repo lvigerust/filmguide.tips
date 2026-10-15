@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '@lvigerust/utils'
+	import { cn } from '#utils'
 	import type { SvelteHTMLElements } from 'svelte/elements'
 	import type { WithElementRef } from 'bits-ui'
 	import type { Path } from '$app/types'

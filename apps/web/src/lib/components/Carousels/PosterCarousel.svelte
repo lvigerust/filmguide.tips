@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '@lvigerust/utils'
+	import { cn, createSlug } from '#utils'
 	import { Carousel, CarouselItem } from '../Carousel'
 	import { Heading } from '@lvigerust/components/Heading'
 	import { Image } from '#components'
@@ -7,7 +7,6 @@
 	import type { SvelteMap } from 'svelte/reactivity'
 	import type { ClassValue } from 'svelte/elements'
 	import type { Media } from '#types'
-	import { createSlug } from '#utils'
 
 	let {
 		heading,

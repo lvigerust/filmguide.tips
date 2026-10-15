@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { cn } from '@lvigerust/utils'
+	import { cn, createSlug } from '#utils'
 	import type { ComponentProps } from 'svelte'
 	import type { Media } from '#types'
 	import { Carousel, CarouselItem } from '../Carousel'
 	import { MediaQuery, SvelteSet, type SvelteMap } from 'svelte/reactivity'
 	import { Image, Logo } from '#components'
-	import { createSlug } from '#utils'
 
 	const mobile = new MediaQuery('width < 40rem')
 

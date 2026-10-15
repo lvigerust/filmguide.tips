@@ -5,10 +5,9 @@
 	import type { ComponentProps } from 'svelte'
 	import { Dialog, DialogBody, DialogDescription, DialogTitle } from '@lvigerust/components/Dialog'
 	import { Button, TouchTarget } from '@lvigerust/components/Button'
-	import { cn } from '@lvigerust/utils'
+	import { cn, ref } from '#utils'
 	import { Label } from '@lvigerust/components/Fieldset'
 	import { RadioGroup } from 'bits-ui'
-	import { ref } from '#utils'
 
 	type CountryCode = keyof typeof COUNTRIES
 
