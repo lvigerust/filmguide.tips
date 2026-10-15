@@ -17,7 +17,7 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
 		"@eslint/js": "^9.39.5",
-		"@lvigerust/components": "^0.1.9587",
+		"@lvigerust/components": "^0.5.1",
 		"@sveltejs/adapter-vercel": "7.0.0-next.8",
 		"@sveltejs/enhanced-img": "^0.11.0",
 		"@sveltejs/kit": "3.0.0-next.25",
