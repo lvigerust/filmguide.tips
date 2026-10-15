@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { formatDate } from '@lvigerust/components'
-	import { cn } from '#utils'
+	import { cn, formatDate } from '#utils'
 	import type { ShowSeasonDetails } from '#types'
 	import type { SvelteMap } from 'svelte/reactivity'
 	import type { SvelteHTMLElements } from 'svelte/elements'
@@ -89,7 +88,7 @@
 									{episode.runtime} min
 								</Text>
 								<Text class={{ hidden: !episode.air_date }}>
-									{formatDate(episode.air_date, undefined, 'en-US')}
+									{episode.air_date && formatDate(episode.air_date, undefined, 'en-US')}
 								</Text>
 							</div>
 						</figcaption>

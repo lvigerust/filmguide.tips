@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation'
 	import { page } from '$app/state'
-	import { CommandPalette } from '#components'
 	import { getUserState } from '#lib/app.svelte.js'
 	import { navItems } from '#lib/config.js'
 	import { Navbar, NavbarSection, NavbarItem, NavbarLabel } from '@lvigerust/components/Navbar'
@@ -85,8 +84,6 @@
 				</NavbarSection>
 
 				<NavbarSection class="col-start-3 justify-end">
-					<CommandPalette />
-
 					{#if user}
 						<Dropdown>
 							<DropdownButton as={NavbarItem}>
